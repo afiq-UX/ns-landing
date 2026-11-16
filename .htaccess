@@ -1,0 +1,52 @@
+# ==========================================================================
+# .htaccess — cache policy for the static build.
+#
+# The host serves everything with max-age=14400. That is what broke staging
+# on 16 Nov: the HTML deployed, the CSS deployed with it, but a four-hour-old
+# copy of css/megamenu.css was still being handed out, so new markup met old
+# styles and the megamenu head band rendered unstyled.
+#
+# The files that change every release are the ones that must never go stale,
+# so CSS, JS and HTML revalidate on every request. Images and fonts keep a
+# long TTL: they change rarely, and a stale one is cosmetic rather than
+# structural.
+#
+# "no-cache" does not mean "do not store". The browser still keeps the file
+# and simply asks whether it is current; Apache answers 304 from the ETag it
+# already sends. One small round trip, no re-download.
+#
+# Both modules are configured deliberately. mod_expires and mod_headers each
+# emit Cache-Control, and which one wins depends on the server's module order
+# — setting only one of them leaves the result to chance, so they are set to
+# agree instead.
+#
+# Cloudflare sits in front of this origin. For these headers to survive the
+# edge, Caching -> Configuration -> Browser Cache TTL must be set to "Respect
+# Existing Headers"; if it is set to a fixed duration, the dashboard value
+# overrides whatever Apache sends here and this file will appear to do
+# nothing.
+# ==========================================================================
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Revalidate every time — the release-critical files.
+  ExpiresByType text/html              "access plus 0 seconds"
+  ExpiresByType text/css               "access plus 0 seconds"
+  ExpiresByType text/javascript        "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+
+  # Everything else — images, fonts — is deliberately left alone and keeps
+  # the host's own default. Raising it would be the usual next step, but
+  # these assets are replaced in place rather than renamed (swap a photo,
+  # keep the filename), so a longer TTL would trade this bug for a slower
+  # version of the same one.
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Matched on the file on disk, so it still applies to extensionless URLs
+  # served through MultiViews (/kerajaan -> kerajaan.html).
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
