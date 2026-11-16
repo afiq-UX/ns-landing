@@ -828,7 +828,50 @@
   .gov-card__cta::after,
   .explore__link > span:first-child::after,
   .explore__cta::after,
-  .lk::before { transition: none; }
+  .lk::before,
+  .chatbot { transition: none; }
+}
+
+/* ===== Chatbot launcher ================================================== */
+
+/* Placeholder for the assistant: avatar only, no behaviour behind it yet.
+
+   Fixed rather than sticky — it has to hold its corner through the whole
+   scroll, and sticky only pins inside its own scroll container.
+
+   z-index 9 puts it under the megamenu scrim (10) and the masthead zone
+   (20), so an open menu dims and covers it instead of leaving a face
+   floating over the panel. */
+.chatbot {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: var(--n9-light);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.chatbot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chatbot:hover,
+.chatbot:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.34);
 }
 
 /* ===== Responsive ======================================================== */
