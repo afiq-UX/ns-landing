@@ -1,0 +1,301 @@
+/* ==========================================================================
+   megamenu.css — the full-bleed panel that drops out of the masthead.
+   Geometry mirrors Figma "Mega Menu / …" (node 531:33267) and its three
+   components: megamenu item, nav-item, link text (node 531:33320).
+   ========================================================================== */
+
+/* The hero clips its own shader plate, so the panel lives outside it and
+   this wrapper is what both are positioned against. */
+.masthead-zone {
+  position: relative;
+  z-index: 20;
+}
+
+.megamenu {
+  position: absolute;
+  top: 88px;            /* masthead: 24px padding + 64px row */
+  left: 0;
+  width: 100%;
+  background: var(--n9-light);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12);
+  color: var(--ink);
+}
+
+.megamenu[hidden] { display: none; }
+
+/* Bunga lada lattice. It belongs to the 1280 container, not the full bleed:
+   the shader's fade is measured against the panel, so letting the motif run
+   the whole viewport drifts the clear centre off the content and bleeds
+   flowers in behind the text. Outside the container the background stays plain. */
+.megamenu__motif {
+  position: absolute;
+  inset: 0;
+  background: url("../assets/img/bunga-lada.svg") repeat;
+  background-size: 228px 228px;
+  -webkit-mask-image: radial-gradient(farthest-corner at 54% 44%, transparent 30%, #000 105%);
+  mask-image: radial-gradient(farthest-corner at 54% 44%, transparent 30%, #000 105%);
+  pointer-events: none;
+}
+
+/* One height for every menu: the tallest panel is Sistem Luaran's 20 links.
+   min- rather than a hard height so a longer group can still grow instead of
+   being clipped. */
+.megamenu__inner {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 755px;
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+/* ---- Rail ---------------------------------------------------------------- */
+
+/* Both columns sit above the motif, so the rail's white stays solid. */
+.mm-rail,
+.mm-pane { position: relative; }
+
+.mm-rail {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 344px;
+  padding: 20px;
+  background: var(--n9-light);
+  border-right: var(--hairline) solid #e5e5e5;
+}
+
+.mm-rail__items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mm-item {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  /* Transparent by default so going active never nudges the label. */
+  border-left: 2px solid transparent;
+  font-family: var(--font-text);
+  font-size: var(--size-body);
+  font-weight: 500;
+  line-height: 22px;
+  color: #0a0a0a;
+  text-align: left;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.mm-item__chev {
+  flex: none;
+  color: #6b6b6b;
+}
+
+/* The red edge wipes down from the top rather than snapping on. It sits on
+   the transparent border so the label never moves. */
+.mm-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 2px;
+  background: var(--n9-red);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+.mm-item:hover::before,
+.mm-item:focus-visible::before,
+.mm-item[aria-selected="true"]::before { transform: scaleY(1); }
+
+.mm-item:hover,
+.mm-item:focus-visible { background: #f1f5f9; }
+.mm-item[aria-selected="true"] { background: none; }
+
+.mm-rail__foot { margin-top: auto; }
+.mm-rail__foot .mm-rule { margin: 0 4px; }
+.mm-rail__foot .mm-cta { margin: 16px 0 0 16px; }
+
+/* ---- Pane ---------------------------------------------------------------- */
+
+.mm-pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 40px 40px 48px;
+}
+
+.mm-panel { display: none; }
+.mm-panel.is-current {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* With the height fixed, the closing rule and CTA sit on the pane's baseline
+   rather than trailing a short list halfway up the panel. */
+.mm-panel .mm-rule { margin-top: auto; }
+
+.mm-panel__head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+.mm-eyebrow {
+  font-size: var(--size-label);
+  font-weight: 700;
+  line-height: 17px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--n9-red);
+}
+.mm-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 39px;
+  color: var(--ink);
+}
+.mm-deck {
+  font-size: var(--size-meta);
+  line-height: 20px;
+  color: #6b6b6b;
+}
+
+/* Two columns that fill down and then across, the way the design reads. */
+.mm-cols {
+  width: 676px;          /* 318 + 40 gutter + 318 */
+  max-width: 100%;
+  column-count: 2;
+  column-gap: 40px;
+  margin-bottom: 32px;
+}
+
+.mm-link {
+  display: flex;
+  break-inside: avoid;
+  margin-bottom: 2px;
+  flex-direction: column;
+  /* flex-start so the label shrinks to its text rather than filling the
+     column — the rule is sized off the label. */
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 12px;
+  font-size: var(--size-body);
+  line-height: 22px;
+  color: #0a0a0a;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* The 4px below the label is the gap the rule sits in; the rule itself is
+   taken out of flow so the row stays 42px tall in both states. */
+.mm-link__label {
+  position: relative;
+  display: block;
+  margin-bottom: 4px;
+}
+.mm-link__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(100% + 2px);
+  width: 100%;
+  height: 2px;
+  background: var(--n9-red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+.mm-link:hover .mm-link__label::after,
+.mm-link:focus-visible .mm-link__label::after { transform: scaleX(1); }
+.mm-link[aria-current="page"] { color: var(--n9-red); }
+
+.mm-rule {
+  height: 1px;
+  background: #e5e5e5;
+}
+
+.mm-cta {
+  display: inline-block;
+  margin-top: 23px;
+  font-size: var(--size-meta);
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--ink);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.mm-cta:hover,
+.mm-cta:focus-visible { color: var(--n9-red); }
+
+/* ---- Trigger + scrim ------------------------------------------------------ */
+
+/* ---- Masthead, while a menu is open --------------------------------------
+   The red hero plate reads as a stray band once the white panel is under it,
+   so the masthead borrows the panel's surface and flips its text to black. */
+
+/* The band is pinned to the hero, which is already full-bleed, so it needs no
+   viewport-width trickery. It sits above the shader plate and below the row. */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: 88px;            /* 24px hero padding + the 64px row */
+  background: var(--n9-light);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.masthead-zone.is-menu-open .hero::after { opacity: 1; }
+
+.masthead {
+  z-index: 1;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.masthead-zone.is-menu-open .masthead { color: var(--ink); }
+.masthead-zone.is-menu-open .masthead :focus-visible { outline-color: var(--n9-black); }
+
+.masthead__nav .primary a { position: relative; }
+.masthead__nav .primary a[aria-expanded="true"] { color: var(--n9-red); }
+
+.mm-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.25);
+}
+.mm-scrim[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-link__line::before { transition: none; }
+}
+
+@media (max-width: 900px) {
+  /* Below the breakpoint the masthead stacks, so the panel can't be pinned
+     to a fixed offset — it becomes an in-flow block instead. */
+  .megamenu {
+    position: static;
+    box-shadow: none;
+    border-top: var(--hairline) solid #e5e5e5;
+  }
+  .megamenu__inner { flex-direction: column; }
+  .mm-rail {
+    width: 100%;
+    border-right: 0;
+    border-bottom: var(--hairline) solid #e5e5e5;
+  }
+  .mm-pane { padding: 24px; }
+  .mm-cols { width: 100%; column-count: 1; }
+  .mm-scrim { display: none; }
+}

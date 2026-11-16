@@ -1,0 +1,94 @@
+/* ==========================================================================
+   tokens.css — one-to-one with the Figma file (node 308:262).
+   Values are the literal design values; downstream files never hardcode.
+   ========================================================================== */
+
+:root {
+  /* ---- N9 Main Colors (Figma paint styles) ---------------------------- */
+  --n9-light:      #ffffff;
+  --n9-yellow:     #fcee21;
+  --n9-black:      #000000;
+  --n9-red:        #ff0000;
+
+  /* ---- Surfaces -------------------------------------------------------- */
+  --maroon:        #82181a;   /* hero base fill */
+  --tourism:       #ffd100;   /* Pelancongan breaker */
+  --ink-card:      #1a1a1a;   /* "Lihat Semua" card */
+  --persona:       #15181d;   /* persona bar */
+  --surface:       #ffffff;
+
+  /* ---- Ink ------------------------------------------------------------- */
+  --ink:           #000000;
+  --muted:         #7a818c;   /* news dates, card body */
+  --slate-500:     #62748e;   /* directory body */
+  --gray-600:      #4a5565;   /* directory title */
+  --rule:          #d3d7de;   /* section + card hairlines */
+  --rule-dark:     #2b2f36;   /* link rules on black */
+  --rule-ondark:   rgba(43, 47, 54, 0.2); /* link rules on yellow */
+
+  /* ---- Type families --------------------------------------------------- */
+  --font-display: "Urbanist", system-ui, sans-serif;
+  --font-text:    "Inter", system-ui, sans-serif;
+
+  /* ---- Type scale (Figma px) ------------------------------------------- */
+  --size-wordmark: 84px;   /* breaker headlines, Urbanist Black */
+  --size-hero:     76px;   /* hero + footer wordmark */
+  --size-h2:       40px;   /* section headings, Urbanist ExtraBold */
+  --size-persona:  26px;
+  --size-h3:       22px;   /* card titles */
+  --size-news:     20px;
+  --size-brand:    24px;
+  --size-body:     16px;
+  --size-meta:     14px;
+  --size-label:    12px;
+
+  /* ---- Tracking -------------------------------------------------------- */
+  --track-wordmark: -2.52px;
+  --track-hero:     -1.52px;
+  --track-h2:       -0.4px;
+  --track-persona:  -0.26px;
+  --track-h3:       -0.22px;
+  --track-news:     -0.2px;
+  --track-brand:    -0.48px;
+  --track-16:       -0.08px;
+  --track-14:       -0.07px;
+  --track-label:    0.96px;
+
+  /* ---- Leading --------------------------------------------------------- */
+  --lh-display: 0.88;
+  --lh-h3:      1.12;
+  --lh-news:    1.18;
+  --lh-dir:     1.14;
+  --lh-ui:      1.45;
+  --lh-body:    1.5;
+  --lh-link:    1.4;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --container:    1280px;  /* inner cap */
+  --gutter:       64px;    /* section side padding */
+  --gutter-hero:  40px;    /* hero side padding */
+  --hairline:     1px;
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --dur-fast:   180ms;
+  --dur-base:   420ms;
+  --dur-slow:   720ms;
+  --stagger:     70ms;
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-wipe:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:    cubic-bezier(0.4, 0, 0.6, 1);  /* edges + underlines sweeping in */
+  --dur-sweep:  520ms;
+  --marquee:    40s;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --size-wordmark: 52px;
+    --size-hero:     46px;
+    --size-h2:       30px;
+    --gutter:        24px;
+    --gutter-hero:   24px;
+    --track-wordmark: -1.4px;
+    --track-hero:     -0.9px;
+  }
+}

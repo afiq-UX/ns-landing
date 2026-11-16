@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Bunga lada motif, one 100-unit cell per flower, odd rows offset by half
+       a cell so the lattice staggers the way the Figma shader does. -->
+  <defs>
+    <g id="bunga">
+      <g fill="none" stroke="#e2e2e2" stroke-width="2.2">
+        <circle cx="0" cy="23.14" r="15.6"/>
+        <circle cx="-22.01" cy="7.15" r="15.6"/>
+        <circle cx="-13.60" cy="-18.72" r="15.6"/>
+        <circle cx="13.60" cy="-18.72" r="15.6"/>
+        <circle cx="22.01" cy="7.15" r="15.6"/>
+      </g>
+      <g stroke="#e2e2e2" stroke-width="1.1" stroke-linecap="round">
+        <line x1="0" y1="0" x2="-11.46" y2="15.78"/>
+        <line x1="0" y1="0" x2="-18.55" y2="-6.03"/>
+        <line x1="0" y1="0" x2="0" y2="-19.5"/>
+        <line x1="0" y1="0" x2="18.55" y2="-6.03"/>
+        <line x1="0" y1="0" x2="11.46" y2="15.78"/>
+      </g>
+      <g fill="#e2e2e2">
+        <circle cx="-11.46" cy="15.78" r="1.43"/>
+        <circle cx="-18.55" cy="-6.03" r="1.43"/>
+        <circle cx="0" cy="-19.5" r="1.43"/>
+        <circle cx="18.55" cy="-6.03" r="1.43"/>
+        <circle cx="11.46" cy="15.78" r="1.43"/>
+        <circle cx="0" cy="0" r="1.76"/>
+      </g>
+    </g>
+  </defs>
+
+  <use href="#bunga" x="50" y="50"/>
+  <use href="#bunga" x="150" y="50"/>
+  <use href="#bunga" x="0" y="150"/>
+  <use href="#bunga" x="100" y="150"/>
+  <use href="#bunga" x="200" y="150"/>
+</svg>

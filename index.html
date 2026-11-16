@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal Rasmi Negeri Sembilan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Urbanist:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/megamenu.css">
+<link rel="stylesheet" href="css/motion.css">
+</head>
+<body>
+
+<div class="masthead-zone">
+
+<!-- ===== Hero ===== -->
+<section class="hero on-dark">
+  <div class="hero__plate" aria-hidden="true"></div>
+
+  <header class="masthead">
+    <a class="brand" href="#">
+      <span class="brand__crest">
+        <img src="assets/img/logo-banner.png" alt="">
+      </span>
+      <span class="brand__text">
+        <span class="brand__kicker">Portal Rasmi</span>
+        <span class="brand__name">Negeri Sembilan</span>
+      </span>
+    </a>
+    <div class="masthead__nav">
+      <nav class="utility" aria-label="Pautan utiliti">
+        <a href="#">Hubungi Kami</a>
+        <a href="#">Aduan &amp; Maklumbalas</a>
+        <a href="#">Balai Berita</a>
+        <a href="#">Soalan Lazim</a>
+      </nav>
+      <nav class="primary" aria-label="Navigasi utama">
+        <a href="#" data-megamenu="mm-info">Info &amp; Perkhidmatan</a>
+        <a href="#" data-megamenu="mm-kerajaan">Kerajaan</a>
+        <a href="#" data-megamenu="mm-kakitangan">Kakitangan</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero__body">
+    <div class="hero__title-block">
+      <div data-reveal="wipe">
+        <h1 class="hero__title">Apa yang<br>anda perlukan<br>hari ini?</h1>
+      </div>
+      <p class="hero__lead" data-reveal="rise">Cari perkhidmatan, borang, maklumat dan pengumuman</p>
+    </div>
+
+    <div class="hero__search" data-reveal="rise">
+      <form class="search" role="search" onsubmit="return false">
+        <label class="visually-hidden" for="q">Cari</label>
+        <input class="search__field" id="q" type="search" placeholder="Masukkan carian anda...">
+        <button class="search__go" type="submit" aria-label="Cari">
+          <img src="assets/icons/search.svg" alt="">
+        </button>
+      </form>
+
+      <div class="popular">
+        <p class="label">Carian popular</p>
+        <ul data-reveal="stagger">
+          <li><a href="#"><span>Cukai tanah</span><img src="assets/icons/arrow-up-right.svg" alt=""></a></li>
+          <li><a href="#"><span>Rumah Mampu Milik</span><img src="assets/icons/arrow-up-right.svg" alt=""></a></li>
+          <li><a href="#"><span>Jawatan kosong</span><img src="assets/icons/arrow-up-right.svg" alt=""></a></li>
+          <li><a href="#"><span>Cuti umum 2026</span><img src="assets/icons/arrow-up-right.svg" alt=""></a></li>
+          <li><a href="#"><span>Borang</span><img src="assets/icons/arrow-up-right.svg" alt=""></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="megamenu" id="mm-info" hidden>
+  <div class="megamenu__inner">
+    <div class="megamenu__motif" aria-hidden="true"></div>
+    <div class="mm-rail">
+      <ul class="mm-rail__items" role="tablist" aria-label="Info &amp; Perkhidmatan">
+        <li><button class="mm-item" type="button" role="tab" aria-selected="true" aria-controls="p-info-0"><span>Perkhidmatan Atas Talian</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-info-1"><span>Topik</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-info-2"><span>Dasar &amp; Inisiatif</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><a class="mm-item" href="#"><span>Borang Awam</span><span class="mm-item__chev" aria-hidden="true">›</span></a></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-info-4"><span>Penerbitan</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-info-5"><span>Tender &amp; Sebut Harga</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+      </ul>
+      <div class="mm-rail__foot">
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Semua perkhidmatan A–Z <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="mm-pane">
+      <section class="mm-panel is-current" id="p-info-0" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Info &amp; Perkhidmatan</p>
+          <h2 class="mm-title">Perkhidmatan Atas Talian</h2>
+          <p class="mm-deck">9 sistem yang boleh digunakan terus tanpa ke kaunter.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Bayaran Cukai Tanah</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Perkahwinan Islam</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Aduan Awam (SPPIM)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">N9Pay</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Perumahan NS (ePENS)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">N9Digital Bantuan Rakyat</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Bantuan Ibu Tunggal (C4UN9)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Lesen Abstraksi Air (SPSA)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Anugerah Siswazah Cemerlang</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 9 perkhidmatan <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-info-1" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Info &amp; Perkhidmatan</p>
+          <h2 class="mm-title">Topik</h2>
+          <p class="mm-deck">11 bidang — setiap satu mengumpul perkhidmatan, borang, dasar dan berita berkaitan.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Perumahan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pendidikan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Kesihatan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pertanian</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelaburan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelancongan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sukan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Tanah (GIS9)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Air</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Agama &amp; Syariah</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Keselamatan &amp; Anti Dadah</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 11 topik <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-info-2" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Info &amp; Perkhidmatan</p>
+          <h2 class="mm-title">Dasar &amp; Inisiatif</h2>
+          <p class="mm-deck">3 dokumen dasar dan pelan pembangunan negeri.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Rancangan Pembangunan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Inisiatif Belanjawan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelan Ekonomi Digital</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 3 dasar <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-info-4" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Info &amp; Perkhidmatan</p>
+          <h2 class="mm-title">Penerbitan</h2>
+          <p class="mm-deck">10 penerbitan rasmi terbitan PSUK Negeri Sembilan.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelan Ekonomi Digital Negeri Sembilan 2027</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Buletin Edisi Januari–Jun 2024</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Polisi Keselamatan Siber Pentadbiran Kerajaan Negeri Sembilan Versi 1.0</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Rancangan Pembangunan Negeri Sembilan 2021–2025</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Dasar Keselamatan ICT Versi 3.0 Negeri Sembilan Darul Khusus</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelan Antirasuah Negeri Sembilan 2020–2024</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelan Antirasuah Nasional 2019–2023</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Business Process Re-engineering PSUK Negeri Sembilan 2015/2016</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Buku Peraturan-Peraturan Pegawai Awam (Kelakuan dan Tatatertib) (Negeri Sembilan) 2006</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pelan Strategik PSUK Negeri Sembilan 2021–2025</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua penerbitan <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-info-5" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Info &amp; Perkhidmatan</p>
+          <h2 class="mm-title">Tender &amp; Sebut Harga</h2>
+          <p class="mm-deck">Terokai tender dan sebut harga semasa.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Terkini</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Ditutup</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua <span aria-hidden="true">→</span></a>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="megamenu" id="mm-kerajaan" hidden>
+  <div class="megamenu__inner">
+    <div class="megamenu__motif" aria-hidden="true"></div>
+    <div class="mm-rail">
+      <ul class="mm-rail__items" role="tablist" aria-label="Kerajaan">
+        <li><button class="mm-item" type="button" role="tab" aria-selected="true" aria-controls="p-kerajaan-0"><span>Mengenai Negeri Sembilan</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kerajaan-1"><span>Pimpinan Negeri</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kerajaan-2"><span>Dewan Undangan Negeri</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kerajaan-3"><span>Pentadbiran</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kerajaan-4"><span>Akta / Pekeliling</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kerajaan-5"><span>Daerah</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><a class="mm-item" href="#"><span>Direktori Agensi</span><span class="mm-item__chev" aria-hidden="true">›</span></a></li>
+      </ul>
+      <div class="mm-rail__foot">
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Peta Laman Kerajaan <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="mm-pane">
+      <section class="mm-panel is-current" id="p-kerajaan-0" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kerajaan</p>
+          <h2 class="mm-title">Mengenai Negeri Sembilan</h2>
+          <p class="mm-deck">5 halaman latar negeri dan lambang rasmi.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Pengenalan &amp; Lokasi</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sejarah Penubuhan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Adat Perpatih</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Bendera &amp; Jata</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Lagu Kebesaran</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 5 halaman <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kerajaan-1" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kerajaan</p>
+          <h2 class="mm-title">Pimpinan Negeri</h2>
+          <p class="mm-deck">4 peringkat kepimpinan negeri.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Institusi Diraja</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Undang &amp; Tunku Besar Tampin</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Menteri Besar</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">EXCO</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 4 halaman <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kerajaan-2" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kerajaan</p>
+          <h2 class="mm-title">Dewan Undangan Negeri</h2>
+          <p class="mm-deck">2 halaman — wakil rakyat dan rekod persidangan.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Cari ADUN anda (36 kawasan)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Penyata Dewan → Pusat Dokumen</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 2 halaman <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kerajaan-3" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kerajaan</p>
+          <h2 class="mm-title">Pentadbiran</h2>
+          <p class="mm-deck">3 halaman. Kandungan Pejabat SUK NS diserap ke dalam pane ini.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Struktur Pentadbiran Negeri</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Struktur Organisasi</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Pejabat SUK NS</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua dalam Pentadbiran <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kerajaan-4" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kerajaan</p>
+          <h2 class="mm-title">Akta / Pekeliling</h2>
+          <p class="mm-deck">3 jenis dokumen perundangan dan panduan.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Pekeliling</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Garis Panduan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Polisi Agensi</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 3 jenis dokumen <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kerajaan-5" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kerajaan</p>
+          <h2 class="mm-title">Daerah</h2>
+          <p class="mm-deck">7 daerah Negeri Sembilan.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Jempol</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Jelebu</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Kuala Pilah</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Seremban</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Tampin</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Port Dickson</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Rembau</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 7 daerah <span aria-hidden="true">→</span></a>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="megamenu" id="mm-kakitangan" hidden>
+  <div class="megamenu__inner">
+    <div class="megamenu__motif" aria-hidden="true"></div>
+    <div class="mm-rail">
+      <ul class="mm-rail__items" role="tablist" aria-label="Kakitangan">
+        <li><a class="mm-item" href="#"><span>Direktori Pegawai</span><span class="mm-item__chev" aria-hidden="true">›</span></a></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="true" aria-controls="p-kakitangan-1"><span>Majlis Bersama Jabatan (MBJ)</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kakitangan-2"><span>Borang Penjawat Awam</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+        <li><a class="mm-item" href="#"><span>CSIRTNS</span><span class="mm-item__chev" aria-hidden="true">›</span></a></li>
+        <li><button class="mm-item" type="button" role="tab" aria-selected="false" aria-controls="p-kakitangan-4"><span>Sistem Luaran</span><span class="mm-item__chev" aria-hidden="true">›</span></button></li>
+      </ul>
+      <div class="mm-rail__foot">
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Semua sistem A–Z <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="mm-pane">
+      <section class="mm-panel is-current" id="p-kakitangan-1" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kakitangan</p>
+          <h2 class="mm-title">Majlis Bersama Jabatan (MBJ)</h2>
+          <p class="mm-deck">2 halaman — latar dan keanggotaan majlis.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Pengenalan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Keanggotaan MBJ</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 2 halaman <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kakitangan-2" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kakitangan</p>
+          <h2 class="mm-title">Borang Penjawat Awam</h2>
+          <p class="mm-deck">3 borang untuk kegunaan penjawat awam negeri.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">Borang A</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Borang B</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Borang C</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua borang <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="mm-panel" id="p-kakitangan-4" role="tabpanel">
+        <div class="mm-panel__head">
+          <p class="mm-eyebrow">Kakitangan</p>
+          <h2 class="mm-title">Sistem Luaran</h2>
+          <p class="mm-deck">20 sistem dalaman untuk kegunaan penjawat awam negeri.</p>
+        </div>
+        <div class="mm-cols">
+          <a class="mm-link" href="#"><span class="mm-link__label">MyGovUC 3.0</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">HRMIS</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">e-Punch Card</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">e-Gerak</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Portal iSPEKS</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">eHelpdesk (Pejabat SUK sahaja)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">eRating</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">eKursus</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Tempahan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Aduan Aplikasi (Faultlog)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Pengurusan Stor (SPS)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Pingat</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem RatingNS</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Click N Repair</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Tempahan Rumah Peranginan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Pemantauan Projek ICT (SPPICT)</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Profil ADUN (SPADUN) 2.0</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">NSPROMISE</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Direktori Pegawai &amp; Kakitangan</span></a>
+          <a class="mm-link" href="#"><span class="mm-link__label">Sistem Pengurusan Sumber Air (SPSA)</span></a>
+        </div>
+        <div class="mm-rule"></div>
+        <a class="mm-cta" href="#">Lihat semua 20 sistem <span aria-hidden="true">→</span></a>
+      </section>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="mm-scrim" hidden></div>
+
+<main>
+
+<!-- ===== 02 Info & Perkhidmatan Utama ===== -->
+<section class="section section--ruled services">
+  <div class="container">
+    <div class="section__head" data-reveal="rise">
+      <h2 class="h2">Info &amp; Perkhidmatan Utama</h2>
+    </div>
+    <div class="services__grid" data-reveal="stagger">
+      <a class="card" href="#">
+        <span class="card__icon"><img src="assets/icons/life-buoy.svg" alt=""></span>
+        <span class="card__body">
+          <span class="h3">N9Digital</span>
+          <span class="card__desc"><span>Perkhidmatan digital negeri</span></span>
+        </span>
+      </a>
+      <a class="card" href="#">
+        <span class="card__icon"><img src="assets/icons/scroll-text.svg" alt=""></span>
+        <span class="card__body">
+          <span class="h3">Cari Borang</span>
+          <span class="card__desc"><span>Borang rasmi jabatan dan agensi</span></span>
+        </span>
+      </a>
+      <a class="card" href="#">
+        <span class="card__icon"><img src="assets/icons/briefcase.svg" alt=""></span>
+        <span class="card__body">
+          <span class="h3">Jawatan Kosong</span>
+          <span class="card__desc"><span>Peluang kerjaya perkhidmatan awam</span></span>
+        </span>
+      </a>
+      <a class="card" href="#">
+        <span class="card__icon"><img src="assets/icons/house.svg" alt=""></span>
+        <span class="card__body">
+          <span class="h3">Perumahan</span>
+          <span class="card__desc"><span>Rumah mampu milik dan permohonan</span></span>
+        </span>
+      </a>
+      <a class="card" href="#">
+        <span class="card__icon"><img src="assets/icons/handshake.svg" alt=""></span>
+        <span class="card__body">
+          <span class="h3">Tender &amp; Sebut Harga</span>
+          <span class="card__desc"><span>Kenyataan tawaran dan keputusan</span></span>
+        </span>
+      </a>
+      <a class="card card--all" href="#">
+        <span class="card__icon">
+          <img src="assets/icons/grid.svg" alt="">
+          <img src="assets/icons/grid-hover.svg" alt="">
+        </span>
+        <span class="card__body">
+          <span class="h3">Lihat Semua</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 Saya seorang… ===== -->
+<section class="section persona-section">
+  <div class="container">
+    <div class="persona-section__head" data-reveal="rise">
+      <h2 class="h2">Saya seorang…</h2>
+      <p class="persona-section__deck">Tak jumpa di atas? Cari ikut siapa anda.</p>
+    </div>
+    <div class="persona" data-reveal="stagger">
+      <a class="persona__chip" href="#"><span>Penduduk</span><span aria-hidden="true">→</span></a>
+      <a class="persona__chip" href="#"><span>Pelabur</span><span aria-hidden="true">→</span></a>
+      <a class="persona__chip" href="#"><span>Pelancong</span><span aria-hidden="true">→</span></a>
+      <a class="persona__chip" href="#"><span>Penjawat Awam</span><span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Breaker · Pelancongan ===== -->
+<section class="breaker breaker--tourism">
+  <div class="container">
+    <div data-reveal="wipe">
+      <h2 class="wordmark">Pelancongan</h2>
+    </div>
+    <div class="lk-grid lk-grid--row" data-reveal="stagger">
+      <a class="lk" href="#">
+        <span class="lk__title">Tourism Negeri Sembilan</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Lembaga Muzium Negeri Sembilan</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Visit Negeri Sembilan Facebook</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="carousel" aria-hidden="true">
+    <div class="carousel__strip">
+      <figure><img src="assets/img/tour-1-masjid.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-2-pantai.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-3-gunung.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-4-taman.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-5-muzium.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-1-masjid.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-2-pantai.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-3-gunung.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-4-taman.jpg" alt=""></figure>
+      <figure><img src="assets/img/tour-5-muzium.jpg" alt=""></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 Berita & Pengumuman ===== -->
+<section class="section section--ruled section--body news-section">
+  <div class="container">
+    <div class="section__head" data-reveal="rise">
+      <h2 class="h2">Berita Negeri</h2>
+      <a class="label" href="#">Semua berita →</a>
+    </div>
+
+    <div class="news__cols">
+      <div class="news__list" data-reveal="stagger">
+        <a class="news__item" href="#">
+          <span class="news__date label">02 Sep 2026</span>
+          <span class="news__title">Tahap tepu bina rendah, peluang Negeri Sembilan rancang pembangunan</span>
+          <span class="news__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="news__item" href="#">
+          <span class="news__date label">31 Ogo 2026</span>
+          <span class="news__title">Lebih 30,000 pengunjung meriahkan Hari Kebangsaan</span>
+          <span class="news__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="news__item" href="#">
+          <span class="news__date label">07 Ogo 2026</span>
+          <span class="news__title">10 ADUN angkat sumpah EXCO Negeri Sembilan</span>
+          <span class="news__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="news__item" href="#">
+          <span class="news__date label">07 Ogo 2026</span>
+          <span class="news__title">10 ADUN angkat sumpah EXCO Negeri Sembilan</span>
+          <span class="news__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="news__item" href="#">
+          <span class="news__date label">07 Ogo 2026</span>
+          <span class="news__title">10 ADUN angkat sumpah EXCO Negeri Sembilan</span>
+          <span class="news__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <figure class="news__figure" data-reveal="rise">
+        <img src="assets/img/berita-utama.jpg" alt="Menteri Besar Negeri Sembilan bersama rombongan pada satu majlis rasmi">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Breaker · Inisiatif dan Kempen ===== -->
+<section class="section breaker breaker--dark on-dark">
+  <div class="container">
+    <div class="breaker__head">
+      <div data-reveal="wipe">
+        <h2 class="wordmark">Inisiatif<br>dan Kempen</h2>
+      </div>
+      <div class="breaker__rule" data-reveal="draw"></div>
+    </div>
+    <div class="lk-grid lk-grid--3" data-reveal="stagger">
+      <a class="lk" href="#">
+        <span class="lk__title">Tabung Pembangunan Usahawan NS (TUNS)</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Insentif Pembangunan Tanah Terbiar</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Biasiswa Anak Negeri</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Rumah Harapan Rakyat</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Rancangan Pembangunan NS 2021–2025</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Pelan Ekonomi Digital</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 Pimpinan Negeri ===== -->
+<section class="section section--ruled section--body dir-section">
+  <div class="container">
+    <div class="section__head" data-reveal="rise">
+      <h2 class="h2">Pimpinan Negeri</h2>
+      <a class="label" href="#">Kenali pimpinan →</a>
+    </div>
+    <div class="dir dir--5" data-reveal="stagger">
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Yang di-Pertuan Besar</span>
+          <span class="dir__body">Institusi Diraja</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Undang &amp; Tunku Besar Tampin</span>
+          <span class="dir__body">Adat Perpatih</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell dir__cell--loose" href="#">
+        <span>
+          <span class="h3 dir__title">Menteri Besar</span>
+          <span class="dir__body">Dato’ Haji Ismail Lasim</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell dir__cell--loose" href="#">
+        <span>
+          <span class="h3 dir__title">Ahli EXCO</span>
+          <span class="dir__body">Agensi negeri</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Dewan Undangan Negeri</span>
+          <span class="dir__body">Ahli Dewan Undangan Negeri</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Breaker · Belia dan Sukan ===== -->
+<section class="section breaker breaker--dark on-dark">
+  <div class="container">
+    <div class="breaker__head">
+      <div data-reveal="wipe">
+        <h2 class="wordmark">Belia<br>dan Sukan</h2>
+      </div>
+      <div class="breaker__rule" data-reveal="draw"></div>
+    </div>
+    <div class="lk-grid lk-grid--3" data-reveal="stagger">
+      <a class="lk" href="#">
+        <span class="lk__title">Program &amp; acara sukan</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Kemudahan &amp; stadium</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lk" href="#">
+        <span class="lk__title">Majlis Sukan Negeri Sembilan</span>
+        <span class="lk__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 Direktori agensi ===== -->
+<section class="section section--body dir-section">
+  <div class="container">
+    <div class="section__head" data-reveal="rise">
+      <h2 class="h2">Direktori agensi</h2>
+      <a class="label" href="#">Semua agensi →</a>
+    </div>
+    <div class="dir dir--4 dir--agency" data-reveal="stagger">
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Jabatan Negeri</span>
+          <span class="dir__body">Jabatan &amp; unit</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Pejabat Daerah &amp; Tanah</span>
+          <span class="dir__body">7 daerah</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Pihak Berkuasa Tempatan</span>
+          <span class="dir__body">Majlis bandaraya &amp; perbandaran</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+      <a class="dir__cell" href="#">
+        <span>
+          <span class="h3 dir__title">Badan Berkanun</span>
+          <span class="dir__body">Agensi negeri</span>
+        </span>
+        <img src="assets/icons/arrow-right.svg" alt="">
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="footer on-dark">
+  <div class="footer__bg" aria-hidden="true">
+    <img src="assets/img/footer-bg.jpg" alt="">
+  </div>
+
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__left">
+        <div class="footer__blurb" data-reveal="rise">
+          <div class="stack">
+            <p>Platform digital rasmi Kerajaan Negeri Sembilan untuk perkhidmatan awam yang lebih cekap dan mudah diakses.</p>
+            <p>© Kerajaan Negeri Sembilan. Hak Cipta Terpelihara.</p>
+          </div>
+          <nav class="socials" aria-label="Media sosial">
+            <a href="#" aria-label="Facebook"><img src="assets/icons/facebook.svg" alt=""></a>
+            <a href="#" aria-label="YouTube"><img src="assets/icons/youtube.svg" alt=""></a>
+            <a href="#" aria-label="LinkedIn"><img src="assets/icons/linkedin.svg" alt=""></a>
+            <a href="#" aria-label="X"><img src="assets/icons/x.svg" alt=""></a>
+          </nav>
+        </div>
+
+        <div data-reveal="wipe">
+          <p class="footer__wordmark">Portal Rasmi<br>Negeri Sembilan</p>
+        </div>
+      </div>
+
+      <div class="footer__right" data-reveal="rise">
+        <div class="footer__nav">
+          <nav class="footer__col footer__col--links">
+            <h2>Pautan Pantas</h2>
+            <a href="#">Dasar Privasi</a>
+            <a href="#">Dasar Keselamatan</a>
+            <a href="#">Soalan Lazim</a>
+            <a href="#">Peta Laman</a>
+          </nav>
+          <div class="footer__col footer__col--contact">
+            <h2>Hubungi Kami</h2>
+            <p>
+              Pejabat Setiausaha Kerajaan Negeri Sembilan,<br>
+              Tingkat 5, Blok A, Wisma Negeri,<br>
+              Jalan Dato’ Abdul Malek,<br>
+              70503 Seremban, Negeri Sembilan.
+            </p>
+            <p>Tel : 606-765 9900</p>
+            <p>Faks : 606-761 7386</p>
+            <a class="underline" href="#">Hantar Maklumbalas</a>
+          </div>
+        </div>
+
+        <div class="footer__certs">
+          <img src="assets/img/iso-certs.png" alt="Pensijilan ISO 9001:2015, ISO/IEC 20000-1:2018 dan ISO/IEC 27001:2022">
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/reveal.js"></script>
+<script src="js/megamenu.js"></script>
+</body>
+</html>

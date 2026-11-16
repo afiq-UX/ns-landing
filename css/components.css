@@ -1,0 +1,819 @@
+/* ==========================================================================
+   components.css — every named block on the page, in document order.
+   Geometry mirrors Figma node 308:262 at the 1280px frame width.
+   ========================================================================== */
+
+/* ===== Hero ============================================================== */
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  overflow: hidden;
+  padding: 24px var(--gutter-hero) 48px;
+  background: var(--maroon);
+  color: var(--n9-light);
+}
+
+/* The shader-textured plate, exported from Figma at 2x. 1920px wide,
+   centred, 552px tall — the sections below crop whatever overhangs. */
+.hero__plate {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 552px;
+  transform: translateX(-50%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: url("../assets/img/hero-bg.jpg") center top / 1920px 552px no-repeat;
+  pointer-events: none;
+}
+
+.hero > *:not(.hero__plate) {
+  position: relative;
+  width: 100%;
+  max-width: var(--container);
+}
+
+/* ---- Masthead ---------------------------------------------------------- */
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The crest is cropped out of the full portal banner artwork, exactly as
+   the design frames it. */
+.brand__crest {
+  position: relative;
+  flex: none;
+  width: 45.449px;
+  height: 64px;
+  overflow: hidden;
+}
+.brand__crest img {
+  position: absolute;
+  top: 0;
+  left: -1.628px;
+  width: 532.42px;
+  max-width: none;
+  height: 76.058px;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: 600;
+  line-height: var(--lh-ui);
+}
+.brand__kicker {
+  font-size: var(--size-meta);
+  letter-spacing: var(--track-brand);
+  letter-spacing: -0.28px;
+}
+.brand__name {
+  font-size: var(--size-brand);
+  letter-spacing: var(--track-brand);
+}
+
+.masthead__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.masthead__nav nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  line-height: var(--lh-ui);
+}
+.masthead__nav .utility { font-size: var(--size-meta); letter-spacing: var(--track-14); }
+.masthead__nav .primary { font-size: var(--size-body); letter-spacing: var(--track-16); }
+
+/* ---- Title + search ---------------------------------------------------- */
+
+.hero__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.hero__title-block {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 24px;
+  width: 744px;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--size-hero);
+  letter-spacing: var(--track-hero);
+  line-height: var(--lh-display);
+  text-transform: uppercase;
+}
+
+.hero__lead {
+  font-size: var(--size-body);
+  line-height: var(--lh-body);
+}
+
+.hero__search {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.search {
+  display: flex;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--n9-light);
+}
+.search__field {
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 16px;
+  border: 0;
+  font-family: var(--font-text);
+  font-size: var(--size-body);
+  font-weight: 500;
+  letter-spacing: -0.32px;
+  line-height: 1.2;
+  color: var(--ink);
+  background: none;
+}
+.search__field::placeholder { color: var(--ink); opacity: 1; }
+.search__field:focus { outline: 0; }
+.search__go {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--n9-black);
+}
+.search__go img { width: 24px; height: 24px; }
+
+.popular {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+.popular ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.popular li + li { border-top: var(--hairline) solid rgba(255, 255, 255, 0.35); padding-top: 12px; }
+.popular a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  font-size: var(--size-meta);
+  font-weight: 500;
+  line-height: normal;
+}
+.popular a img { width: 24px; height: 24px; }
+
+/* ===== 02 Info & Perkhidmatan Utama ====================================== */
+
+.services { padding-block: 80px 32px; }
+.services .container { display: flex; flex-direction: column; gap: 24px; }
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 270px;
+  padding: 16px;
+  overflow: hidden;
+  border: var(--hairline) solid var(--rule);
+  background: var(--n9-light);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.card__icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 100px;
+  height: 100px;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.card__icon img { width: 100px; height: 100px; }
+
+.card__body {
+  position: relative;
+  display: flex;
+  flex: 1 0 0;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0;
+  transition: padding-bottom var(--dur-base) var(--ease-out);
+}
+
+/* The blurb is absent until hover. The 0fr→1fr grid lets it animate open
+   from its own height instead of a guessed max-height. */
+.card__desc {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.card__desc > span {
+  display: block;
+  overflow: hidden;
+  padding-top: 12px;
+  max-width: 145px;
+  font-size: var(--size-meta);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* The black edge wipes down from the top, matching the ghost cards. */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  z-index: 1;
+  width: 2px;
+  background: var(--n9-black);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+.card--all::before { content: none; }
+.card:hover::before,
+.card:focus-visible::before { transform: scaleY(1); }
+
+/* Hover: yellow plate, icon drops back, blurb opens. */
+.card:hover,
+.card:focus-visible {
+  background: var(--n9-yellow);
+  border-color: transparent;
+}
+.card:hover .card__icon,
+.card:focus-visible .card__icon { opacity: 0.2; }
+
+.card:hover .card__body,
+.card:focus-visible .card__body { padding-bottom: 24px; }
+
+.card:hover .card__desc,
+.card:focus-visible .card__desc {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.card--all {
+  justify-content: space-between;
+  background: linear-gradient(to bottom, var(--ink-card) 96.722%, red 197.04%);
+  color: var(--n9-light);
+}
+.card--all .card__icon {
+  position: relative;
+  top: auto;
+  right: auto;
+  align-self: flex-end;
+}
+.card--all .card__icon img { position: absolute; top: 0; left: 0; }
+.card--all .card__icon img,
+.card--all .card__icon img + img { transition: opacity var(--dur-fast) var(--ease-out); }
+.card--all .card__icon img + img { opacity: 0; }
+
+/* Lihat Semua keeps its dark plate and turns its icon and title yellow. */
+.card--all:hover,
+.card--all:focus-visible {
+  background: var(--ink-card);
+  border-color: var(--rule);
+  box-shadow: none;
+  color: var(--n9-yellow);
+}
+.card--all:hover .card__icon,
+.card--all:focus-visible .card__icon { opacity: 1; }
+.card--all:hover .card__icon img:first-child,
+.card--all:focus-visible .card__icon img:first-child { opacity: 0; }
+.card--all:hover .card__icon img + img,
+.card--all:focus-visible .card__icon img + img { opacity: 1; }
+
+/* ===== 03 Saya seorang… ================================================== */
+
+.persona-section { padding-block: 32px 100px; }
+.persona-section .container { display: flex; flex-direction: column; gap: 24px; }
+
+.persona-section__head { display: flex; flex-direction: column; gap: 8px; }
+.persona-section__deck {
+  font-size: var(--size-body);
+  line-height: var(--lh-link);
+  color: #6b737d;
+}
+
+.persona {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.persona__chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px 40px;
+  overflow: hidden;
+  background: var(--persona);
+  color: var(--n9-light);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.persona__chip span:first-child {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-persona);
+  letter-spacing: var(--track-persona);
+  line-height: normal;
+}
+.persona__chip span:last-child { font-weight: 700; font-size: var(--size-body); }
+
+/* Plate stays put; the label and arrow go yellow. */
+.persona__chip,
+.persona__chip span { transition: color var(--dur-fast) var(--ease-out); }
+.persona__chip:hover,
+.persona__chip:focus-visible { color: var(--n9-yellow); }
+
+/* ===== Breakers ========================================================== */
+
+.breaker { color: var(--n9-black); }
+
+.breaker--tourism {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding-top: 80px;
+  background: var(--tourism);
+}
+.breaker--tourism > .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-inline: var(--gutter);
+}
+
+.breaker--dark {
+  padding-block: 100px;
+  background: var(--n9-black);
+  color: var(--n9-light);
+}
+.breaker--dark .container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.breaker__head { display: flex; flex-direction: column; gap: 24px; }
+.breaker__rule {
+  height: 4px;
+  background: var(--n9-yellow);
+  transform: rotate(-0.18deg);
+}
+
+/* Link columns under a hairline — shared by every breaker. */
+.lk-grid { display: grid; gap: 28px; }
+.lk-grid--row { grid-auto-flow: column; gap: 10px; }
+.lk-grid--3 { grid-template-columns: repeat(3, 1fr); width: 506px; }
+
+.lk {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
+  width: 150px;
+  padding-top: 12px;
+  overflow: hidden;
+  border-top: var(--hairline) solid var(--rule-dark);
+  font-size: var(--size-meta);
+}
+.lk-grid--3 .lk { width: auto; }
+.breaker--tourism .lk { border-top-color: var(--rule-ondark); }
+.lk__title { font-weight: 600; line-height: var(--lh-link); }
+.lk__arrow { font-weight: 700; line-height: normal; }
+
+/* These carry no underline: the rule they already sit under fills instead,
+   left to right, sitting exactly on the existing hairline. */
+.lk { position: relative; }
+.lk::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+.lk:hover::before,
+.lk:focus-visible::before { transform: scaleX(1); }
+
+/* ---- Tourism carousel --------------------------------------------------- */
+
+.carousel {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.carousel__strip {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee) linear infinite;
+}
+.carousel figure {
+  flex: none;
+  width: 300px;
+  height: 200px;
+  overflow: hidden;
+  background: var(--n9-light);
+}
+.carousel img { width: 100%; height: 100%; object-fit: cover; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-1500px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .carousel__strip { animation: none; }
+}
+
+/* ===== 04 Berita & Pengumuman ============================================ */
+
+.news-section .container { display: flex; flex-direction: column; gap: 24px; }
+
+.news__cols {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.news__list {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 24px;
+}
+.news__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: var(--hairline) solid var(--rule);
+}
+.news__date {
+  flex: none;
+  width: 110px;
+  color: var(--muted);
+}
+.news__title {
+  flex: 1 0 0;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-news);
+  letter-spacing: var(--track-news);
+  line-height: var(--lh-news);
+}
+.news__arrow { flex: none; font-weight: 700; font-size: var(--size-body); }
+
+.news__figure {
+  flex: none;
+  align-self: stretch;
+  width: 500px;
+  min-height: 453px;
+  overflow: hidden;
+  border: var(--hairline) solid rgba(0, 0, 0, 0.1);
+}
+.news__figure img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===== Directory-style rows (Pimpinan + Direktori agensi) ================ */
+
+.dir-section .container { display: flex; flex-direction: column; gap: 24px; }
+
+.dir { display: grid; }
+.dir--5 { grid-template-columns: repeat(5, 1fr); }
+.dir--4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Row heights are fixed in Figma and the cells clip — a long body line
+   runs under the arrow rather than pushing the row taller. */
+.dir__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 119px;
+  padding: 4px 20px 0;
+  overflow: hidden;
+  border-left: var(--hairline) solid var(--rule);
+}
+.dir--agency .dir__cell { height: 100px; }
+.dir__cell--loose { gap: 40px; }
+.dir__cell > span {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dir__title { display: block; }
+.dir__body {
+  display: block;
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: var(--size-meta);
+  line-height: normal;
+  white-space: nowrap;
+  color: var(--muted);
+}
+.dir__cell img { width: 24px; height: 24px; margin-top: auto; }
+
+/* Both directory rows are the same ghost-card: ghosted until hover. */
+.dir__title { color: var(--gray-600); }
+.dir__body  { color: var(--slate-500); }
+
+/* Hover brings the ghosted cell up to full contrast. The black edge wipes
+   down from the top over the existing hairline, so nothing shifts. */
+.dir__cell { position: relative; }
+.dir__cell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  background: var(--n9-black);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+.dir__cell:hover::before,
+.dir__cell:focus-visible::before { transform: scaleY(1); }
+
+.dir__title,
+.dir__body { transition: color var(--dur-fast) var(--ease-out); }
+.dir__cell:hover .dir__title,
+.dir__cell:hover .dir__body,
+.dir__cell:focus-visible .dir__title,
+.dir__cell:focus-visible .dir__body { color: var(--n9-black); }
+
+/* ===== Footer ============================================================ */
+
+.footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 605px;
+  padding: 150px var(--gutter) 48px;
+  overflow: hidden;
+  color: var(--n9-light);
+}
+.footer__bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.footer__bg img {
+  position: absolute;
+  top: -40.02%;
+  left: -0.03%;
+  width: 100%;
+  height: 219.18%;
+  max-width: none;
+  object-fit: cover;
+}
+.footer__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #ffffff 1.2602%, #7f90a3 33.941%, rgba(0, 0, 0, 0) 85.257%),
+    rgba(0, 0, 0, 0.5);
+}
+
+.footer .container { position: relative; }
+
+.footer__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.footer__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: 48px;
+}
+
+.footer__blurb {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+}
+.footer__blurb p {
+  font-weight: 500;
+  letter-spacing: var(--track-16);
+  line-height: var(--lh-ui);
+}
+.footer__blurb .stack { display: flex; flex-direction: column; gap: 8px; }
+
+.socials { display: flex; align-items: center; gap: 24px; }
+.socials img { width: 24px; height: 24px; }
+.socials a { opacity: 0.9; transition: opacity var(--dur-fast) var(--ease-out); }
+.socials a:hover { opacity: 1; }
+
+.footer__wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--size-hero);
+  letter-spacing: var(--track-hero);
+  line-height: normal;
+}
+
+.footer__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 24px;
+}
+.footer__nav { display: flex; align-items: flex-start; gap: 40px; }
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.footer__col--links   { width: 130px; }
+.footer__col--contact { width: 264px; }
+.footer__col h2 {
+  padding-bottom: 16px;
+  font-size: var(--size-body);
+  font-weight: 600;
+  letter-spacing: var(--track-16);
+  line-height: var(--lh-ui);
+}
+.footer__col a,
+.footer__col p {
+  font-size: var(--size-meta);
+  font-weight: 500;
+  letter-spacing: var(--track-14);
+  line-height: var(--lh-ui);
+}
+.footer__col .underline { text-decoration: underline; }
+
+.footer__certs { width: 434px; height: 92px; }
+.footer__certs img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===== Sweeping underlines ===============================================
+   Every hover underline on the page wipes in from the left over the same
+   duration as the vertical edges, which wipe down from the top. The rule is
+   out of flow, so no row changes height when it appears.
+   ========================================================================== */
+
+.masthead__nav a,
+.popular a span,
+.news__title,
+.footer__col a:not(.underline) {
+  position: relative;
+}
+
+.masthead__nav a::after,
+.popular a span::after,
+.news__title::after,
+.footer__col a:not(.underline)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+
+/* Offsets match what the old text-decoration used. */
+.masthead__nav a::after,
+.popular a span::after { margin-top: 4px; }
+.news__title::after,
+.footer__col a:not(.underline)::after { margin-top: 3px; }
+
+.masthead__nav a:hover::after,
+.masthead__nav a:focus-visible::after,
+.popular a:hover span::after,
+.popular a:focus-visible span::after,
+.news__item:hover .news__title::after,
+.news__item:focus-visible .news__title::after,
+.footer__col a:not(.underline):hover::after,
+.footer__col a:not(.underline):focus-visible::after { transform: scaleX(1); }
+
+/* Footer links hug their text rather than the column they sit in. */
+.footer__col a { width: fit-content; }
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead__nav a::after,
+  .popular a span::after,
+  .news__title::after,
+  .footer__col a:not(.underline)::after,
+  .lk::before { transition: none; }
+}
+
+/* ===== Responsive ======================================================== */
+
+@media (max-width: 1100px) {
+  .services__grid { grid-template-columns: repeat(3, 1fr); }
+  .dir--5, .dir--4 { grid-template-columns: repeat(2, 1fr); }
+  .dir__cell,
+  .dir--agency .dir__cell { height: auto; min-height: 119px; padding-bottom: 24px; }
+  .dir__body { white-space: normal; }
+  .lk-grid--3 { width: auto; }
+  .news__figure { width: 360px; min-height: 0; align-self: auto; height: 320px; }
+}
+
+@media (max-width: 900px) {
+  .hero__plate { width: 100%; min-width: 1100px; }
+  .hero__body { flex-direction: column; }
+  .hero__title-block { width: 100%; }
+  .hero__search { width: 100%; }
+  .masthead { flex-direction: column; align-items: flex-start; }
+  .masthead__nav { align-items: flex-start; }
+
+  .breaker--tourism > .container,
+  .breaker--dark .container { flex-direction: column; align-items: stretch; }
+  .lk-grid--row { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); }
+  .lk { width: auto; }
+
+  .news__cols { flex-direction: column; }
+  .news__figure { width: 100%; }
+
+  .footer { padding-top: 100px; }
+  .footer__top { flex-direction: column; }
+  .footer__left { gap: 48px; }
+  .footer__blurb { width: 100%; }
+  .footer__right { align-items: flex-start; }
+  .footer__certs { width: 100%; max-width: 434px; height: auto; aspect-ratio: 434 / 92; }
+}
+
+@media (max-width: 620px) {
+  .services__grid { grid-template-columns: repeat(2, 1fr); }
+  .persona { grid-template-columns: 1fr; }
+  .dir--5, .dir--4 { grid-template-columns: 1fr; }
+  .lk-grid--row { grid-template-columns: 1fr; }
+  .lk-grid--3 { grid-template-columns: 1fr; }
+  .news__item { flex-wrap: wrap; }
+  .footer__nav { flex-direction: column; gap: 32px; }
+}

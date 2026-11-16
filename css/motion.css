@@ -1,0 +1,86 @@
+/* ==========================================================================
+   motion.css — the whole reveal system. Delete this file and the page
+   still works; everything here is the resting (revealed) state by default,
+   and only becomes hidden once js/reveal.js marks the document as capable.
+
+   Contract with reveal.js:
+     html.js-reveal      set by JS before first paint — only then do things hide
+     [data-reveal]       opt in. Value picks the treatment.
+     .is-in              added by the observer when the element enters view
+     --i                 child index, set by JS, drives the stagger
+   ========================================================================== */
+
+/* ---- Treatments: hidden state --------------------------------------------
+   Scoped under .js-reveal so a JS failure degrades to a plain visible page. */
+
+.js-reveal [data-reveal] {
+  will-change: transform, opacity;
+}
+
+/* rise — the quiet default for body sections */
+.js-reveal [data-reveal="rise"] {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+/* wipe — the one loud moment. Breaker wordmarks climb out of a mask. */
+.js-reveal [data-reveal="wipe"] > * {
+  display: block;
+  transform: translateY(110%);
+  transition: transform var(--dur-slow) var(--ease-wipe);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+.js-reveal [data-reveal="wipe"] {
+  overflow: hidden;
+  padding-bottom: 0.08em; /* stop descenders being clipped at rest */
+}
+
+/* draw — the yellow rule under a wordmark, left to right */
+.js-reveal [data-reveal="draw"] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease-wipe) 220ms;
+}
+
+/* stagger — a grid whose children arrive in sequence */
+.js-reveal [data-reveal="stagger"] > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+
+/* ---- Revealed state ------------------------------------------------------ */
+
+.js-reveal [data-reveal="rise"].is-in {
+  opacity: 1;
+  transform: none;
+}
+.js-reveal [data-reveal="wipe"].is-in > *   { transform: none; }
+.js-reveal [data-reveal="draw"].is-in       { transform: scaleX(1); }
+.js-reveal [data-reveal="stagger"].is-in > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Once it has arrived, stop holding a compositor layer for it. */
+.js-reveal [data-reveal].is-in { will-change: auto; }
+
+/* ---- Reduced motion ------------------------------------------------------
+   Not "faster" — off. Everything starts and stays at its resting state. */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
