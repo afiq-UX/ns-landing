@@ -16,6 +16,7 @@
   top: 88px;            /* masthead: 24px padding + 64px row */
   left: 0;
   width: 100%;
+  overflow: hidden;      /* keeps the full-bleed motif off the page scrollbar */
   background: var(--n9-light);
   box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12);
   color: var(--ink);
@@ -23,17 +24,25 @@
 
 .megamenu[hidden] { display: none; }
 
-/* Bunga lada lattice. It belongs to the 1280 container, not the full bleed:
-   the shader's fade is measured against the panel, so letting the motif run
-   the whole viewport drifts the clear centre off the content and bleeds
-   flowers in behind the text. Outside the container the background stays plain. */
+/* Bunga lada lattice. Densest against the right edge and gone by the middle
+   of the panel, so the motif never sits behind the rail or the pane copy —
+   the same read as the Kerajaan page header.
+
+   It breaks out of the 1280 container to the full viewport width. The fade
+   now runs to a screen edge rather than a radial centre, so stopping it at
+   the container would leave a column of flowers cut off at full strength on
+   anything wider than the frame. .megamenu clips the overflow. */
 .megamenu__motif {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
   background: url("../assets/img/bunga-lada.svg") repeat;
   background-size: 228px 228px;
-  -webkit-mask-image: radial-gradient(farthest-corner at 54% 44%, transparent 30%, #000 105%);
-  mask-image: radial-gradient(farthest-corner at 54% 44%, transparent 30%, #000 105%);
+  -webkit-mask-image: linear-gradient(to left, rgb(0 0 0) 0%, rgb(0 0 0 / 0.72) 21%, rgb(0 0 0 / 0) 50%);
+  mask-image: linear-gradient(to left, rgb(0 0 0) 0%, rgb(0 0 0 / 0.72) 21%, rgb(0 0 0 / 0) 50%);
   pointer-events: none;
 }
 
@@ -96,20 +105,43 @@
   line-height: normal;
   color: #0a0a0a;
 }
-.mm-section-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 2px;
-  background: var(--n9-red);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform var(--dur-sweep) var(--ease-in);
+/* Hover fills the words themselves with red, left to right. The gradient is
+   three link-widths with a wide feather through the middle, so what crosses
+   the text is a soft edge rather than a hard boundary — red smoke drifting
+   across rather than a progress bar.
+
+   Behind @supports because text painted by background-clip has to be
+   transparent, and transparent text with no painted background is an
+   invisible link. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .mm-section-link {
+    background-image: linear-gradient(
+      to right,
+      var(--n9-red) 0%,
+      var(--n9-red) 33.33%,
+      #0a0a0a 66.67%,
+      #0a0a0a 100%
+    );
+    background-repeat: no-repeat;
+    /* Three element-widths: a red third, a feather exactly one width wide,
+       then a dark third. At rest only the dark third is over the text and
+       at the end only the red one, so the feather is the whole animation
+       and neither end state shows a half-tinted word. */
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    transition: background-position var(--dur-sweep) var(--ease-in);
+  }
+  .mm-section-link:hover,
+  .mm-section-link:focus-visible { background-position: 0 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mm-section-link { transition: none; }
+  }
 }
-.mm-section-link:hover::after,
-.mm-section-link:focus-visible::after { transform: scaleX(1); }
 
 /* ---- Rail ---------------------------------------------------------------- */
 

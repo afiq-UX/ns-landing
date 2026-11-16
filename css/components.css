@@ -753,14 +753,26 @@
 .masthead__nav a,
 .popular a span,
 .news__title,
-.footer__col a:not(.underline) {
+.footer__col a:not(.underline),
+/* Kerajaan page. Listed here rather than in kerajaan.css so the sweep has
+   one definition: the duration and easing cannot drift between pages. */
+.crumb a,
+.urusan__agency-name,
+.gov-card__cta,
+.explore__link > span:first-child,
+.explore__cta {
   position: relative;
 }
 
 .masthead__nav a::after,
 .popular a span::after,
 .news__title::after,
-.footer__col a:not(.underline)::after {
+.footer__col a:not(.underline)::after,
+.crumb a::after,
+.urusan__agency-name::after,
+.gov-card__cta::after,
+.explore__link > span:first-child::after,
+.explore__cta::after {
   content: "";
   position: absolute;
   left: 0;
@@ -777,7 +789,12 @@
 .masthead__nav a::after,
 .popular a span::after { margin-top: 4px; }
 .news__title::after,
-.footer__col a:not(.underline)::after { margin-top: 3px; }
+.footer__col a:not(.underline)::after,
+.crumb a::after,
+.urusan__agency-name::after,
+.gov-card__cta::after,
+.explore__link > span:first-child::after,
+.explore__cta::after { margin-top: 3px; }
 
 .masthead__nav a:hover::after,
 .masthead__nav a:focus-visible::after,
@@ -786,7 +803,17 @@
 .news__item:hover .news__title::after,
 .news__item:focus-visible .news__title::after,
 .footer__col a:not(.underline):hover::after,
-.footer__col a:not(.underline):focus-visible::after { transform: scaleX(1); }
+.footer__col a:not(.underline):focus-visible::after,
+.crumb a:hover::after,
+.crumb a:focus-visible::after,
+.urusan__row:hover .urusan__agency-name::after,
+.urusan__row:focus-visible .urusan__agency-name::after,
+.gov-card__cta:hover::after,
+.gov-card__cta:focus-visible::after,
+.explore__link:hover > span:first-child::after,
+.explore__link:focus-visible > span:first-child::after,
+.explore__cta:hover::after,
+.explore__cta:focus-visible::after { transform: scaleX(1); }
 
 /* Footer links hug their text rather than the column they sit in. */
 .footer__col a { width: fit-content; }
@@ -796,6 +823,11 @@
   .popular a span::after,
   .news__title::after,
   .footer__col a:not(.underline)::after,
+  .crumb a::after,
+  .urusan__agency-name::after,
+  .gov-card__cta::after,
+  .explore__link > span:first-child::after,
+  .explore__cta::after,
   .lk::before { transition: none; }
 }
 

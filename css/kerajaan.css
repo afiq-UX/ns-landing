@@ -178,7 +178,8 @@
   gap: 4px;
   line-height: 1.4;
 }
-.urusan__agency-name { font-weight: 600; }
+/* Hugs its text so the hover rule underlines the words, not the column. */
+.urusan__agency-name { width: fit-content; font-weight: 600; }
 .urusan__agency-note {
   font-size: var(--size-meta);
   color: var(--muted);
@@ -189,14 +190,6 @@
   font-weight: 700;
   line-height: normal;
 }
-
-/* The arrow is a grandchild of the reveal target, so a transition here
-   survives the stagger treatment's transition shorthand. */
-.urusan__row .urusan__arrow {
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-.urusan__row:hover .urusan__arrow,
-.urusan__row:focus-visible .urusan__arrow { transform: translateX(4px); }
 
 /* ---- Right rail --------------------------------------------------------- */
 
@@ -353,6 +346,7 @@
 .explore__link {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 10px;
   padding-block: 16px;
   border-top: var(--hairline) solid var(--rule);
@@ -361,8 +355,11 @@
   line-height: 1.4;
   color: var(--ink);
 }
+/* Shrinks to its own text, never grows: the hover rule has to be the width
+   of the words, not of the column. space-between still puts the arrow on
+   the right edge. */
 .explore__link > span:first-child {
-  flex: 1 0 0;
+  flex: 0 1 auto;
   min-width: 0;
 }
 .explore__link > span:last-child {
@@ -370,12 +367,9 @@
   font-size: var(--size-meta);
   font-weight: 700;
   line-height: normal;
-  transition: transform var(--dur-fast) var(--ease-out);
 }
-.explore__link:hover > span:last-child,
-.explore__link:focus-visible > span:last-child { transform: translateX(4px); }
 
-.explore__cta { color: var(--ink); }
+.explore__cta { width: fit-content; color: var(--ink); }
 
 /* ===== Responsive ======================================================== */
 
