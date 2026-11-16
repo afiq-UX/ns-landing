@@ -84,3 +84,115 @@
     transition: none !important;
   }
 }
+
+
+/* ==========================================================================
+   The load sequence — masthead, then hero.
+
+   Separate from the scroll system on purpose. [data-reveal] waits for an
+   intersection; [data-load] fires once, on first paint, driven by
+   html.is-loaded.
+
+   Same safety contract: nothing hides unless the document has been marked
+   .js-reveal, and the watchdog in index.html drops that class if
+   reveal.js never runs.
+   ========================================================================== */
+
+/* ---- Masthead ------------------------------------------------------------
+   Settles down from above while the hero copy climbs up out of its mask —
+   two directions meeting, so the fold reads as one arrival rather than
+   eight separate fades. */
+
+.js-reveal [data-load] {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity var(--load-dur) var(--ease-out),
+    transform var(--load-dur) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--load-stagger));
+  will-change: transform, opacity;
+}
+
+.js-reveal.is-loaded [data-load] {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* ---- The sequence --------------------------------------------------------
+   Everything on the first screenful is in view at load, so without delays
+   it all reveals at once. .at-load (set by reveal.js) marks exactly those
+   elements, and each gets a place in the queue:
+
+     masthead  →  hero  →  Info & Perkhidmatan Utama
+
+   Scoping to .at-load matters: the same section reached by scrolling has
+   no .at-load, so it reveals on arrival instead of sitting through a
+   delay that was only ever meant for the opening.
+
+   The two end markers are derived, not typed — change a duration or add a
+   nav link and everything downstream re-times itself. */
+
+.js-reveal {
+  --masthead-end: calc(var(--load-last, 7) * var(--load-stagger) + var(--load-dur));
+  --hero-tail:    166ms;  /* last hero element's offset — shared, so the two cannot drift */
+  --hero-end:     calc(var(--masthead-end) + var(--hero-tail) + var(--load-dur));
+}
+
+/* During the opening, staggered children cascade at the load tempo too.
+   Below the fold they keep the quicker scroll --stagger: an intro pace
+   applied to a section you just scrolled to reads as lag. */
+.js-reveal .at-load {
+  --stagger: var(--load-stagger);
+}
+
+/* Hero — answers the masthead. */
+.js-reveal .hero__title-block [data-reveal="wipe"] {
+  --load-base: var(--masthead-end);
+}
+.js-reveal .hero__title-block [data-reveal="wipe"] > * {
+  transition-duration: var(--load-dur-slow);
+}
+.js-reveal .hero__title-block [data-reveal="rise"] {
+  --load-base: calc(var(--masthead-end) + 132ms);
+}
+.js-reveal .hero__search[data-reveal="rise"] {
+  --load-base: calc(var(--masthead-end) + var(--hero-tail));
+}
+.js-reveal .hero [data-reveal="rise"] {
+  transition-duration: var(--load-dur);
+}
+
+/* Info & Perkhidmatan Utama — last, and only when it is on screen at load.
+   Heading leads its own grid, so the cards land under a title that is
+   already there rather than racing it. */
+.js-reveal .services .section__head.at-load {
+  --load-base: var(--hero-end);
+}
+.js-reveal .services__grid.at-load {
+  --load-base: calc(var(--hero-end) + 106ms);
+}
+
+/* ---- Delay plumbing ------------------------------------------------------
+   --load-base shifts a whole treatment; it is 0 everywhere it is not set,
+   which is every section below the fold. */
+
+.js-reveal [data-reveal="rise"] {
+  transition-delay: var(--load-base, 0ms);
+}
+.js-reveal [data-reveal="wipe"] > * {
+  transition-delay: calc(var(--load-base, 0ms) + var(--i, 0) * var(--stagger));
+}
+.js-reveal [data-reveal="stagger"] > * {
+  transition-delay: calc(var(--load-base, 0ms) + var(--i, 0) * var(--stagger));
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-load] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

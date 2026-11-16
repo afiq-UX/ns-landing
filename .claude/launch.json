@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "n9-homepage",
+      "name": "ns-home",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", "-l", "8000", "."],
-      "port": 8000
+      "runtimeArgs": ["--yes", "serve", "-l", "5050", "."],
+      "port": 5050
     }
   ]
 }

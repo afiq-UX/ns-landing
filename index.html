@@ -9,6 +9,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Urbanist:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
+<!-- Set the reveal flag before first paint, so the masthead is never
+     painted visible and then yanked back to animate. Mirrors the guard in
+     js/reveal.js: no IntersectionObserver or reduced motion => never hide. -->
+<script>
+(function(){try{if('IntersectionObserver' in window &&
+  !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  var r=document.documentElement;r.classList.add('js-reveal');
+  // Watchdog: if reveal.js never runs, drop the hidden state rather than
+  // leave the page blank. A reveal system that can hide content for good
+  // is a bug, not an effect.
+  // Skipped while the tab is in the background: rAF is paused there, so
+  // "not started yet" is expected, not a failure. Re-armed on first view.
+  var bail=function(){
+    if(r.classList.contains('is-loaded')||document.hidden)return;
+    r.classList.remove('js-reveal');};
+  setTimeout(bail,1800);
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden)setTimeout(bail,1800);});
+}}catch(e){}})();
+</script>
+
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
@@ -24,7 +45,7 @@
   <div class="hero__plate" aria-hidden="true"></div>
 
   <header class="masthead">
-    <a class="brand" href="#">
+    <a class="brand" href="#" data-load>
       <span class="brand__crest">
         <img src="assets/img/logo-banner.png" alt="">
       </span>
@@ -35,15 +56,15 @@
     </a>
     <div class="masthead__nav">
       <nav class="utility" aria-label="Pautan utiliti">
-        <a href="#">Hubungi Kami</a>
-        <a href="#">Aduan &amp; Maklumbalas</a>
-        <a href="#">Balai Berita</a>
-        <a href="#">Soalan Lazim</a>
+        <a href="#" data-load>Hubungi Kami</a>
+        <a href="#" data-load>Aduan &amp; Maklumbalas</a>
+        <a href="#" data-load>Balai Berita</a>
+        <a href="#" data-load>Soalan Lazim</a>
       </nav>
       <nav class="primary" aria-label="Navigasi utama">
-        <a href="#" data-megamenu="mm-info">Info &amp; Perkhidmatan</a>
-        <a href="#" data-megamenu="mm-kerajaan">Kerajaan</a>
-        <a href="#" data-megamenu="mm-kakitangan">Kakitangan</a>
+        <a href="#" data-megamenu="mm-info" data-load>Info &amp; Perkhidmatan</a>
+        <a href="#" data-megamenu="mm-kerajaan" data-load>Kerajaan</a>
+        <a href="#" data-megamenu="mm-kakitangan" data-load>Kakitangan</a>
       </nav>
     </div>
   </header>
