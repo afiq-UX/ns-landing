@@ -30,12 +30,17 @@
 }}catch(e){}})();
 </script>
 
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/megamenu.css">
-<link rel="stylesheet" href="css/kerajaan.css">
-<link rel="stylesheet" href="css/motion.css">
+<!-- ?v= is a cache buster, not a build artefact. Cloudflare caches CSS and
+     JS at the edge, so a deploy can leave new HTML paired with an old
+     stylesheet until the edge object expires. Changing this token changes
+     the URL, which no cache can have seen before. Bump it on any release
+     that touches css/ or js/. -->
+<link rel="stylesheet" href="css/tokens.css?v=20261116">
+<link rel="stylesheet" href="css/base.css?v=20261116">
+<link rel="stylesheet" href="css/components.css?v=20261116">
+<link rel="stylesheet" href="css/megamenu.css?v=20261116">
+<link rel="stylesheet" href="css/kerajaan.css?v=20261116">
+<link rel="stylesheet" href="css/motion.css?v=20261116">
 </head>
 <body>
 
@@ -619,7 +624,7 @@
   <img src="assets/img/chatbot-avatar.png" alt="" width="64" height="64">
 </button>
 
-<script src="js/reveal.js"></script>
-<script src="js/megamenu.js"></script>
+<script src="js/reveal.js?v=20261116"></script>
+<script src="js/megamenu.js?v=20261116"></script>
 </body>
 </html>
