@@ -431,7 +431,12 @@
   height: 100px;
   width: 150px;
   padding-top: 12px;
+  /* Clip long titles to the fixed height, but let the hover rule paint one
+     hairline above the box. overflow:hidden would eat it; browsers without
+     overflow:clip keep the hidden fallback and simply show no fill. */
   overflow: hidden;
+  overflow: clip;
+  overflow-clip-margin: var(--hairline);
   border-top: var(--hairline) solid var(--rule-dark);
   font-size: var(--size-meta);
 }
@@ -441,15 +446,24 @@
 .lk__arrow { font-weight: 700; line-height: normal; }
 
 /* These carry no underline: the rule they already sit under fills instead,
-   left to right, sitting exactly on the existing hairline. */
+   left to right, sitting exactly on the existing hairline.
+
+   The fill lives on a pseudo-element for a reason. The reveal system sets
+   a `transition` shorthand on these cards (they are staggered children of
+   the grid), and a shorthand resets every other transition on the element
+   — so a hover transition declared on .lk itself is silently dropped and
+   the fill snaps. Nothing targets ::before, so its transition survives.
+
+   currentColor, so it reads white on the black breakers and black on the
+   yellow one without a second rule. */
 .lk { position: relative; }
 .lk::before {
   content: "";
   position: absolute;
-  top: -1px;
+  top: calc(var(--hairline) * -1);
   left: 0;
   width: 100%;
-  height: 1px;
+  height: var(--hairline);
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left center;
