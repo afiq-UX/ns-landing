@@ -50,6 +50,67 @@
   margin-inline: auto;
 }
 
+/* ---- Section head band ---------------------------------------------------
+   Figma node 592:52. Every megamenu opens with the section it belongs to
+   and a way straight into that section's own page — the annotation on the
+   link reads "to parent page". It sits above .megamenu__inner, so the
+   bunga lada wash (which starts at the inner) stays clear of it.
+   ------------------------------------------------------------------------ */
+
+.megamenu__head {
+  position: relative;
+  background: var(--n9-light);
+  border-bottom: var(--hairline) solid #e5e5e5;
+}
+
+.megamenu__head-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  /* 36px lines the band up with the rail's link text, not the rail box. */
+  padding: 16px 36px 14px;
+}
+
+.mm-section-eyebrow {
+  font-size: var(--size-label);
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--n9-red);
+}
+
+/* A red rule flows in from the left and fills to the right end on hover.
+   It lives on ::after, which nothing else targets, so no transition
+   shorthand elsewhere can wipe it out; inline-block keeps the rule the
+   width of the words rather than the band. */
+.mm-section-link {
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: normal;
+  color: #0a0a0a;
+}
+.mm-section-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--n9-red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-sweep) var(--ease-in);
+}
+.mm-section-link:hover::after,
+.mm-section-link:focus-visible::after { transform: scaleX(1); }
+
 /* ---- Rail ---------------------------------------------------------------- */
 
 /* Both columns sit above the motif, so the rail's white stays solid. */
@@ -150,14 +211,6 @@
   gap: 10px;
   margin-bottom: 34px;
 }
-.mm-eyebrow {
-  font-size: var(--size-label);
-  font-weight: 700;
-  line-height: 17px;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--n9-red);
-}
 .mm-title {
   font-family: var(--font-display);
   font-weight: 600;
@@ -243,8 +296,12 @@
    so the masthead borrows the panel's surface and flips its text to black. */
 
 /* The band is pinned to the hero, which is already full-bleed, so it needs no
-   viewport-width trickery. It sits above the shader plate and below the row. */
-.hero::after {
+   viewport-width trickery. It sits above the shader plate and below the row.
+   Every page that puts the masthead on a dark header needs it, not just the
+   home page: without it the open menu leaves a red strip above a white panel
+   and the red active item is unreadable against it. */
+.hero::after,
+.page-hero::after {
   content: "";
   position: absolute;
   top: 0;
@@ -257,7 +314,8 @@
   pointer-events: none;
   transition: opacity var(--dur-fast) var(--ease-out);
 }
-.masthead-zone.is-menu-open .hero::after { opacity: 1; }
+.masthead-zone.is-menu-open .hero::after,
+.masthead-zone.is-menu-open .page-hero::after { opacity: 1; }
 
 .masthead {
   z-index: 1;

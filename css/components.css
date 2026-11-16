@@ -420,16 +420,26 @@
 }
 
 /* Link columns under a hairline — shared by every breaker. */
-.lk-grid { display: grid; gap: 28px; }
-.lk-grid--row { grid-auto-flow: column; gap: 10px; }
+.lk-grid {
+  display: grid;
+  gap: 28px;
+  /* Equal rows, so one four-line title lifts every card with it. */
+  grid-auto-rows: 1fr;
+}
+.lk-grid--row { grid-auto-flow: column; gap: 24px; }
 .lk-grid--3 { grid-template-columns: repeat(3, 1fr); width: 506px; }
 
 .lk {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100px;
   width: 150px;
+  /* 130 is the floor, not the height. Every card in a grid stretches to
+     the tallest in it (grid-auto-rows: 1fr below), so the arrows line up
+     on one baseline without a long title — "Tabung Pembangunan Usahawan
+     NS (TUNS)" runs to four lines at 20px — shoving its own arrow out
+     through the bottom of the box. */
+  min-height: 130px;
   padding-top: 12px;
   /* Clip long titles to the fixed height, but let the hover rule paint one
      hairline above the box. overflow:hidden would eat it; browsers without
@@ -441,8 +451,11 @@
   font-size: var(--size-meta);
 }
 .lk-grid--3 .lk { width: auto; }
+/* Kenali dan Lawati sits on yellow, so its hairline is the on-light rule.
+   That is the only thing that differs between breakers — the card itself
+   is one component everywhere. */
 .breaker--tourism .lk { border-top-color: var(--rule-ondark); }
-.lk__title { font-weight: 600; line-height: var(--lh-link); }
+.lk__title { font-size: 20px; font-weight: 600; line-height: var(--lh-link); }
 .lk__arrow { font-weight: 700; line-height: normal; }
 
 /* These carry no underline: the rule they already sit under fills instead,
