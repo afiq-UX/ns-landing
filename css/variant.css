@@ -117,13 +117,15 @@ html { scrollbar-gutter: stable; }
 .v2 .hero__pause[hidden] { display: none; }
 .v2 .hero__pause:hover { background: rgba(0, 0, 0, 0.6); }
 
-.v2 .hero__pause-glyph {
+/* Shared by the hero control and the carousel control: two bars while
+   something is running, a triangle once it is held. */
+.v2 .pause-glyph {
   width: 10px;
   height: 12px;
   border-left: 3px solid currentColor;
   border-right: 3px solid currentColor;
 }
-.v2 .hero__pause[aria-pressed="true"] .hero__pause-glyph {
+.v2 [aria-pressed="true"] > .pause-glyph {
   width: 0;
   height: 0;
   border: 0;
@@ -471,18 +473,48 @@ html { scrollbar-gutter: stable; }
 
 .v2 .lawat__loader { display: flex; align-items: center; gap: 6px; }
 
+/* The strip is a clock, not just a position marker. While rotation runs,
+   the current bar fills across the hold, so the next move is announced
+   rather than sprung — the standard read for an auto-advancing carousel.
+
+   An animation rather than a transition because animation-play-state can
+   freeze it mid-fill and resume from exactly there, which is what the
+   pointer, a focused control and the hold button all need. */
 .v2 .lawat__bar {
+  position: relative;
   width: 80px;
   height: 8px;
   padding: 0;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.5);
-  transition: background var(--dur-fast) var(--ease-out);
 }
-.v2 .lawat__bar.is-current { background: var(--n9-light); }
+
+.v2 .lawat__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--n9-light);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.v2 .lawat.is-rotating .lawat__bar.is-current::after {
+  animation: bar-fill var(--slide-hold) linear forwards;
+}
+.v2 .lawat.is-paused .lawat__bar.is-current::after { animation-play-state: paused; }
+
+/* Rotation off, or never started: the current bar is simply the lit one. */
+.v2 .lawat:not(.is-rotating) .lawat__bar.is-current::after { transform: scaleX(1); }
+
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .v2 .lawat__slide,
   .v2 .lawat__panel { transition: none; }
+  .v2 .lawat__bar::after { animation: none; }
 }
 
 

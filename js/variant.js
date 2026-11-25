@@ -158,11 +158,17 @@
      owns the cross-fade; this only moves the index and keeps the bars,
      panels and aria state in step.
 
-     It advances on its own because the frame draws a progress strip, but:
-     it never runs while off screen, it pauses under the pointer or a
-     focused control, it stops for good the moment someone takes over, and
-     it does not start at all when motion is off. An auto-advancing
-     carousel with no way to stop it fails SC 2.2.2.
+     It advances on its own, as the frame's progress strip implies, and
+     keeps doing so after a click — a carousel that quietly gives up the
+     moment you touch it is the more annoying failure. Taking a control
+     moves it and restarts the clock; the hold button is the one thing
+     that stops it.
+
+     Around that: it never runs off screen, it freezes under the pointer or
+     a focused control and resumes from where it froze rather than starting
+     the slide over, and it does not start at all when motion is off. The
+     hold button is also what SC 2.2.2 requires of anything that moves on
+     its own for more than five seconds.
      ====================================================================== */
   (function lawat() {
     var section = document.querySelector('.lawat');
@@ -171,20 +177,27 @@
     var slides = Array.prototype.slice.call(section.querySelectorAll('.lawat__slide'));
     var panels = Array.prototype.slice.call(section.querySelectorAll('.lawat__panel'));
     var bars = Array.prototype.slice.call(section.querySelectorAll('.lawat__bar'));
+    var text = section.querySelector('.lawat__text');
     var prev = section.querySelector('.lawat__nav--prev');
     var next = section.querySelector('.lawat__nav--next');
+    var toggle = section.querySelector('.lawat__nav--toggle');
     if (slides.length < 2 || panels.length !== slides.length) return;
 
     var index = 0;
     var timer = null;
-    var surrendered = reduced.matches;   // motion off: never auto-advance
+    var startedAt = 0;
+    var remaining = 0;
+    var rotating = !reduced.matches;   // motion off: hold on slide one
     var onScreen = false;
 
-    var hold = function () {
-      var raw = getComputedStyle(document.documentElement).getPropertyValue('--slide-hold');
-      var ms = parseFloat(raw);
+    // Read from the token rather than duplicated here, so the bar's fill and
+    // the clock driving it can never disagree.
+    function hold() {
+      var ms = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--slide-hold')
+      );
       return isNaN(ms) ? 6400 : ms;
-    };
+    }
 
     function paint() {
       slides.forEach(function (el, i) { el.classList.toggle('is-current', i === index); });
@@ -202,62 +215,112 @@
       });
     }
 
+    // Send the progress fill back to zero. The animation sits on the current
+    // bar's ::after, so the class has to be dropped and re-added with a
+    // reflow between for the browser to run it a second time.
+    function restartFill() {
+      section.classList.remove('is-rotating');
+      if (!rotating || !onScreen) return;
+      void section.offsetWidth;
+      section.classList.add('is-rotating');
+    }
+
+    function disarm() {
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+
+    function arm(ms) {
+      disarm();
+      if (!rotating || !onScreen) return;
+      remaining = ms;
+      startedAt = Date.now();
+      timer = setTimeout(function () { go(index + 1); }, ms);
+    }
+
     function go(to) {
       index = (to + slides.length) % slides.length;
       paint();
+      restartFill();
+      arm(hold());
     }
 
-    function stop() {
-      if (timer) { clearInterval(timer); timer = null; }
+    // Held: the fill freezes where it stands and the clock keeps its
+    // remainder, so letting go carries on instead of starting over.
+    function holdOn() {
+      if (timer) remaining -= Date.now() - startedAt;
+      disarm();
+      section.classList.add('is-paused');
     }
 
-    function start() {
-      if (surrendered || !onScreen || timer) return;
-      timer = setInterval(function () { go(index + 1); }, hold());
+    function holdOff() {
+      section.classList.remove('is-paused');
+      if (!rotating || !onScreen) return;
+      arm(remaining > 0 ? remaining : hold());
     }
 
-    // Any deliberate move hands control over for the rest of the visit.
-    function takeOver(to) {
-      surrendered = true;
-      stop();
-      go(to);
+    function setRotating(on) {
+      rotating = on;
+      if (toggle) {
+        // pressed = the hold is engaged, matching the hero control.
+        toggle.setAttribute('aria-pressed', String(!on));
+        toggle.setAttribute('aria-label', on ? 'Jeda tayangan automatik' : 'Mula tayangan automatik');
+      }
+      // While it moves on its own, announcing each slide would talk over
+      // the reader. Once stopped, the slide they chose is worth announcing.
+      if (text) text.setAttribute('aria-live', on ? 'off' : 'polite');
+
+      if (on) {
+        restartFill();
+        arm(hold());
+      } else {
+        disarm();
+        section.classList.remove('is-rotating', 'is-paused');
+      }
     }
 
-    if (prev) prev.addEventListener('click', function () { takeOver(index - 1); });
-    if (next) next.addEventListener('click', function () { takeOver(index + 1); });
+    // Taking a control moves the carousel and restarts the clock. It does
+    // not end the rotation: the hold button is the way to stop it, and
+    // leaving it as the only way means a click never strands the carousel.
+    if (prev) prev.addEventListener('click', function () { go(index - 1); });
+    if (next) next.addEventListener('click', function () { go(index + 1); });
     bars.forEach(function (bar, i) {
-      bar.addEventListener('click', function () { takeOver(i); });
+      bar.addEventListener('click', function () { go(i); });
     });
+    if (toggle) toggle.addEventListener('click', function () { setRotating(!rotating); });
 
-    section.addEventListener('pointerenter', stop);
-    section.addEventListener('pointerleave', start);
-    section.addEventListener('focusin', stop);
+    section.addEventListener('pointerenter', holdOn);
+    section.addEventListener('pointerleave', holdOff);
+    section.addEventListener('focusin', holdOn);
     section.addEventListener('focusout', function (event) {
-      if (!section.contains(event.relatedTarget)) start();
+      if (!section.contains(event.relatedTarget)) holdOff();
     });
 
-    // Off screen it does nothing at all — no timer, no repaints behind the
-    // reader's back.
+    // Off screen it does nothing at all — no clock, and no fill running
+    // itself down where nobody can see it.
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           onScreen = entry.isIntersecting;
-          if (onScreen) start(); else stop();
+          if (onScreen) {
+            restartFill();
+            arm(hold());
+          } else {
+            disarm();
+            section.classList.remove('is-rotating', 'is-paused');
+          }
         });
       }, { threshold: 0.35 }).observe(section);
     } else {
       onScreen = true;
-      start();
+      restartFill();
+      arm(hold());
     }
 
-    var onChange = function (e) {
-      if (!e.matches) return;
-      surrendered = true;
-      stop();
-    };
+    var onChange = function (e) { if (e.matches) setRotating(false); };
     if (reduced.addEventListener) reduced.addEventListener('change', onChange);
     else if (reduced.addListener) reduced.addListener(onChange);
 
     paint();
+    setRotating(rotating);
   })();
 })();

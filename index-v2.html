@@ -48,12 +48,14 @@
 
 <!-- ===== Hero ===== -->
 <section class="hero hero--v2 on-dark">
-  <!-- Background footage. poster= means the hero renders as the v1 plate
-       until assets/video/hero-bg.mp4 lands, and still reads correctly if
-       the file 404s or the codec is unsupported. aria-hidden + no controls:
-       it carries no information, the title does. -->
+  <!-- Background footage. The poster is the hero fill pulled out of the
+       frame itself (1920x1080), so before assets/video/hero-bg.mp4 lands the
+       hero already looks like the design, and still does if the file 404s on
+       a deploy or the codec is refused. Figma holds that fill as video, but
+       exposes only stills of it, so the clip has to come from its source.
+       aria-hidden + no controls: it carries no information, the title does. -->
   <video class="hero__video" autoplay muted loop playsinline preload="metadata"
-         poster="assets/img/hero-bg.jpg" aria-hidden="true" tabindex="-1">
+         poster="assets/img/hero-poster.jpg" aria-hidden="true" tabindex="-1">
     <source src="assets/video/hero-bg.webm" type="video/webm">
     <source src="assets/video/hero-bg.mp4" type="video/mp4">
   </video>
@@ -114,7 +116,7 @@
   <!-- Not in the frame. A looping background over 5s needs a pause
        mechanism under WCAG 2.2 SC 2.2.2, which MGDS audits against. -->
   <button class="hero__pause" type="button" aria-pressed="false" aria-label="Jeda video latar" hidden>
-    <span class="hero__pause-glyph" aria-hidden="true"></span>
+    <span class="pause-glyph" aria-hidden="true"></span>
   </button>
 </section>
 
@@ -491,7 +493,7 @@
 
   <div class="lawat__body">
     <div class="container lawat__container">
-      <div class="lawat__text">
+      <div class="lawat__text" aria-live="off">
           <div class="lawat__panel is-current" role="group" aria-roledescription="slaid" aria-label="1 daripada 4">
             <h2 class="lawat__title">Terokai Negeri Sembilan: adat, alam dan rasa menanti anda</h2>
             <p class="lawat__lead">Warisan Adat Perpatih, air terjun Jelebu, pantai Port Dickson dan masakan Minang. Semuanya dalam satu perjalanan pendek.</p>
@@ -512,6 +514,9 @@
 
       <div class="lawat__controls">
         <div class="lawat__buttons">
+          <button class="lawat__nav lawat__nav--toggle" type="button" aria-pressed="false" aria-label="Jeda tayangan automatik">
+            <span class="pause-glyph" aria-hidden="true"></span>
+          </button>
           <button class="lawat__nav lawat__nav--prev" type="button" aria-label="Slaid sebelumnya">
             <img src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24">
           </button>
