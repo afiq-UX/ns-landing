@@ -33,6 +33,25 @@
 
     var paused = false;
 
+    // Hold playback inside data-loop-start..data-loop-end when the markup
+    // asks for it, so a clip with burned-in captions outside that window
+    // never shows them. With no attributes this does nothing at all.
+    var from = parseFloat(video.getAttribute('data-loop-start'));
+    var to = parseFloat(video.getAttribute('data-loop-end'));
+    if (!isNaN(from) && !isNaN(to) && to > from) {
+      var rewind = function () {
+        // Seeking while a seek is pending throws the element into a loop of
+        // its own, so wait for the current one to land.
+        if (video.seeking) return;
+        if (video.currentTime < from - 0.25 || video.currentTime >= to) {
+          video.currentTime = from;
+        }
+      };
+      video.addEventListener('timeupdate', rewind);
+      video.addEventListener('loadedmetadata', rewind);
+      if (video.readyState >= 1) rewind();
+    }
+
     var setState = function (isPaused) {
       paused = isPaused;
       if (isPaused) video.pause(); else video.play().catch(function () {});
