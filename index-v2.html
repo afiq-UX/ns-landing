@@ -54,16 +54,21 @@
        a deploy or the codec is refused. Figma holds that fill as video, but
        exposes only stills of it, so the clip has to come from its source.
        aria-hidden + no controls: it carries no information, the title does. -->
-  <!-- data-loop-* is a stopgap, not a feature. The supplied clip is the
-       TMNS26 promotional film, which carries burned-in lyric captions and
-       location lower-thirds over most of its 41s; they collide with the
-       H1 and read as a bug. 13.8-20.6s is the only caption-free stretch
-       (beach aerial, horses, archery). Replace the file with a clean cut
-       of that window and these two attributes come straight back off. -->
+  <!-- The webm is the delivery copy: 7s cut from the supplied TMNS26 film,
+       no audio, 2.9 MB against the original 30.3 MB. The film carries
+       burned-in lyric captions and location lower-thirds over most of its
+       41s, which collide with the H1; 13.9-20.0s is the only caption-free
+       stretch, and that is what this is.
+
+       The mp4 is still the untrimmed original, kept as the fallback for
+       browsers that will not take VP9. data-loop-* holds IT to the same
+       window, and belongs on its <source> rather than the element because
+       the webm needs no clamping — it is already the window. -->
   <video class="hero__video" autoplay muted loop playsinline preload="metadata"
-         data-loop-start="13.8" data-loop-end="20.6"
          poster="assets/img/hero-poster.jpg" aria-hidden="true" tabindex="-1">
-    <source src="assets/video/hero-bg.mp4" type="video/mp4">
+    <source src="assets/video/hero-bg.webm" type="video/webm">
+    <source src="assets/video/hero-bg.mp4" type="video/mp4"
+            data-loop-start="13.8" data-loop-end="20.6">
   </video>
   <div class="hero__scrim" aria-hidden="true"></div>
 

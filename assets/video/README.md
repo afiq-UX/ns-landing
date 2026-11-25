@@ -1,45 +1,58 @@
 # Hero footage
 
-`index-v2.html` plays `hero-bg.mp4` behind the title, muted and looping.
+`index-v2.html` plays this behind the title, muted and looping.
 
-In place now: the TMNS26 official loop — 1920x1080, 41.6s, H.264 + AAC,
-**30.3 MB**.
+| file | what it is | size |
+|---|---|---|
+| `hero-bg.webm` | the delivery copy — VP9, 1920x1080, 7.07s, no audio | 2.9 MB |
+| `hero-bg.mp4` | the untrimmed original, kept as a fallback | 30.3 MB |
 
-## Before this goes anywhere public
+## Why there are two, and why one is clamped
 
-The size is the problem. It is fetched on first visit, `.htaccess`
-deliberately leaves media on the long TTL rather than revalidating it, and
-the audience is a state portal where a lot of visitors arrive on mobile
-data. A background loop wants to be a couple of megabytes, not thirty.
+The supplied clip is the TMNS26 official film, not a background plate. It
+carries burned-in lyric captions ("Salam Bertandang", "Alam terkembang
+mengajar guru") and location lower-thirds ("Masjid Sri Sendayan / Seremban")
+across most of its 41 seconds. Those land exactly where the H1 does and read
+as a bug.
 
-Three changes get it there, in order of payoff:
+Sampling it second by second, **13.9-20.0s is the only caption-free
+stretch** — beach aerial, horses on the sand, archery. The webm is that
+stretch, cut out and re-encoded without the audio track the muted element
+was never going to use.
 
-1. **Shorten it.** Nobody watches 41.6s of footage sitting behind a
-   headline. Eight to twelve seconds that loop cleanly is the usual
-   answer, and on its own it is most of the saving.
-2. **Drop the audio.** There is an AAC track in the file and the element
-   is muted, so it is paid for and never heard.
-3. **Re-encode for delivery** — CRF around 26-28, and `-movflags +faststart`
-   so the `moov` atom leads the file. It currently trails the media, which
-   means a player has to go looking for it before it can show frame one.
+The mp4 is still the whole film. It stays as a fallback for anything that
+will not take VP9, and `data-loop-start` / `data-loop-end` on its `<source>`
+hold it to the same window. Those attributes are deliberately on the
+`<source>` and not the `<video>`: the webm is already the window and must
+play whole, so `js/variant.js` reads the window from whichever file the
+browser actually chose.
 
-With ffmpeg:
+## Still worth doing
 
-    ffmpeg -i hero-bg.mp4 -t 12 -an -vf scale=1920:-2 \
-           -c:v libx264 -crf 27 -preset slow -movflags +faststart \
-           hero-bg-web.mp4
+**Replace the mp4 with a trimmed one.** 30.3 MB is indefensible on a state
+portal where plenty of visitors arrive on mobile data, `.htaccess`
+deliberately leaves media on the long TTL, and its `moov` atom trails the
+media so a player has to go hunting before frame one:
 
-A VP9 `hero-bg.webm` is worth adding next to it — roughly 30% smaller
-again. If you make one, put its `<source>` **before** the mp4 in
-`index-v2.html`. There is no webm listed at the moment, because listing a
-file that does not exist only buys a 404 on every single load.
+    ffmpeg -ss 13.9 -t 6.1 -i hero-bg.mp4 -an \
+           -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p \
+           -movflags +faststart hero-bg-trimmed.mp4
+
+That should land around 2-3 MB. Drop it in as `hero-bg.mp4` and remove the
+two `data-loop-*` attributes from its `<source>` — the file will already be
+the window.
+
+**Re-encoding the webm through ffmpeg would also fix its header.** It was
+produced in-browser, and the recorder does not write a duration into the
+container, so `video.duration` reads `Infinity` until something seeks to the
+end. Looping is unaffected and nothing on the page reads the duration, but
+it is a defect in the file:
+
+    ffmpeg -i hero-bg.webm -c copy hero-bg-fixed.webm
 
 ## The poster
 
-`assets/img/hero-poster.jpg` is the hero fill lifted out of the Figma frame
-at 1920x1080. It holds until the first frame decodes, and stays put if the
-mp4 404s on a deploy or the codec is refused — so the hero reads as
-finished rather than broken either way.
-
-It is a different shot from the clip, so the handover is visible. Export a
-frame from the loop itself and overwrite it if you want that seam gone.
+`assets/img/hero-poster.jpg` is the first frame of the re-cut, so the
+handover from poster to footage is invisible. It also stays put if both
+sources fail on a deploy, which means the hero reads as finished rather than
+broken.

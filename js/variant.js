@@ -33,24 +33,39 @@
 
     var paused = false;
 
-    // Hold playback inside data-loop-start..data-loop-end when the markup
-    // asks for it, so a clip with burned-in captions outside that window
-    // never shows them. With no attributes this does nothing at all.
-    var from = parseFloat(video.getAttribute('data-loop-start'));
-    var to = parseFloat(video.getAttribute('data-loop-end'));
-    if (!isNaN(from) && !isNaN(to) && to > from) {
-      var rewind = function () {
+    // Hold playback inside a window when the source that actually loaded
+    // asks for one. Only the untrimmed mp4 fallback carries the attributes;
+    // the webm is already cut to the clean stretch and must play whole, so
+    // the window is read from the matched <source> rather than the element.
+    // With no attributes on it, this does nothing at all.
+    var clamped = false;
+    var armWindow = function () {
+      if (clamped) return;
+      var current = video.currentSrc || '';
+      var matched = null;
+      Array.prototype.forEach.call(video.querySelectorAll('source'), function (s) {
+        var path = s.getAttribute('src');
+        if (path && current.slice(-path.length) === path) matched = s;
+      });
+      if (!matched) return;
+
+      var from = parseFloat(matched.getAttribute('data-loop-start'));
+      var to = parseFloat(matched.getAttribute('data-loop-end'));
+      if (isNaN(from) || isNaN(to) || to <= from) return;
+
+      clamped = true;
+      video.addEventListener('timeupdate', function () {
         // Seeking while a seek is pending throws the element into a loop of
         // its own, so wait for the current one to land.
         if (video.seeking) return;
         if (video.currentTime < from - 0.25 || video.currentTime >= to) {
           video.currentTime = from;
         }
-      };
-      video.addEventListener('timeupdate', rewind);
-      video.addEventListener('loadedmetadata', rewind);
-      if (video.readyState >= 1) rewind();
-    }
+      });
+      if (video.currentTime < from) video.currentTime = from;
+    };
+    video.addEventListener('loadedmetadata', armWindow);
+    if (video.readyState >= 1) armWindow();
 
     var setState = function (isPaused) {
       paused = isPaused;
