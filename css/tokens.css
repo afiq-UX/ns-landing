@@ -98,3 +98,79 @@
     --track-hero:     -0.9px;
   }
 }
+
+/* ==========================================================================
+   Variant 2 — index-v2.html only.
+
+   Appended, never edited into the block above: both variants render from one
+   token layer, so a colour or type change still reaches v1 and v2 together.
+   Figma: Hero 654:1953, head 654:1955, new card 656:2589, Breaker 654:2007.
+   ========================================================================== */
+
+:root {
+  /* ---- Full-height stages (hero + Kenali dan Lawati) -------------------
+     svh, not vh: a collapsing mobile URL bar must not resize the stage
+     halfway through a scroll. */
+  --stage-min:      100svh;
+
+  /* ---- Type added by the variant --------------------------------------
+     text-xl/semibold in the frame — the hero lead and the Kenali lead are
+     the same style, so they share one token. */
+  --size-lead:      20px;
+  --lh-lead:        28px;
+
+  /* Masthead, resized per the new nav frame: utility 14 -> 16, primary
+     16 -> 18, both Urbanist Bold, each primary link gaining a chevron. */
+  --size-nav:       18px;
+  --track-nav:      -0.09px;
+  --size-nav-icon:  24px;
+  --nav-hit:        44px;   /* search button; its glyph is 20px inside it */
+
+  /* Kenali dan Lawati headline — Urbanist Black 48/0.88, sentence case,
+     not the uppercase .wordmark treatment v1 uses on its breakers. */
+  --size-lawat:     48px;
+  --track-lawat:    -1.44px;
+
+  /* ---- Legibility washes ----------------------------------------------
+     White Urbanist over arbitrary footage and photography will not hold
+     4.5:1 on its own, and the floor is audited. --scrim-lawat is the
+     frame's own gradient; --scrim-hero is darker top and bottom so the
+     masthead and the title both clear it. */
+  --scrim-hero:  linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.14) 30%, rgba(0, 0, 0, 0.74) 100%);
+  --scrim-lawat: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.7) 80.134%);
+  --scrim-modal: rgba(0, 0, 0, 0.94);
+
+  /* ---- Bunga lada wash -------------------------------------------------
+     The "N9 Bunga Lado" shader fill on the new card and persona chip,
+     rebuilt from assets/img/bunga-lada.svg exactly as .megamenu__motif
+     already does. Every number below is the shader's own parameter, so
+     the two stay reconcilable.
+
+     The shader fades the motif OUT towards its fade centre ("pudar di
+     tengah") and up to full strength at the far corner — hence an inner
+     stop that is transparent and an outer that is not fully opaque:
+     smoothstep(0.43, 1.5) only reaches ~0.55 at the corner. */
+  --wash-motif:        #e2e2e2;           /* motifColor, default state */
+  --wash-motif-active: var(--n9-yellow);  /* motifColor, hover state */
+  --wash-rotate:       -21deg;            /* rotation */
+  --wash-fade-x:       16%;               /* fadeCentre.x */
+  --wash-fade-y:       44%;               /* fadeCentre.y */
+  --wash-fade-inner:   38%;               /* fadeInner 0.43 */
+  --wash-opacity:      0.55;              /* smoothstep at the far corner */
+  --wash-tile-card:    119px;             /* tiles 5 over a 270px card */
+  --wash-tile-persona: 50px;              /* tiles 3.5 over an 87px chip */
+
+  /* ---- Kenali dan Lawati carousel -------------------------------------- */
+  --slide-dur:   640ms;
+  --slide-hold:  6400ms;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --size-lawat:  32px;
+    --track-lawat: -0.96px;
+    --size-nav:    16px;
+    --size-lead:   18px;
+    --lh-lead:     26px;
+  }
+}

@@ -1,0 +1,532 @@
+/* ==========================================================================
+   variant.css — everything that makes index-v2.html differ from index.html.
+   Loaded last, and only by index-v2.html.
+
+   Every rule is scoped under .v2 (set on <body> in index-v2.html), so this
+   file is inert on any page that does not opt in, and nothing in
+   components.css, megamenu.css or motion.css had to be rewritten to make
+   room for it. v1 and v2 render from the same tokens, base and components.
+
+   Figma: Hero 654:1953 · head 654:1955 · new card 656:2589 ·
+          Breaker · Pelancongan 654:2007
+   ========================================================================== */
+
+/* Reserved before anything can lock the scroll, not at the moment of
+   locking — a gutter that appears with the lock is the shift it was meant
+   to prevent. */
+html { scrollbar-gutter: stable; }
+
+
+/* ===== Hero · full-height video ==========================================
+   The frame pads 24 top / 48 bottom and stacks head, title, cue at a 48px
+   gap — the same box v1 already builds. Only two things change: the box is
+   now at least a viewport tall, and the title is pushed to the bottom of
+   it rather than sitting under a 569px spacer.
+   ========================================================================== */
+
+.v2 .hero--v2 {
+  min-height: var(--stage-min);
+  background: var(--n9-black);   /* under the footage while it buffers */
+}
+
+/* The hero caps its children at --container and makes them relative.
+   The footage and its scrim are neither: they bleed the full width and
+   sit behind everything. */
+.v2 .hero--v2 > .hero__video,
+.v2 .hero--v2 > .hero__scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+.v2 .hero__video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v2 .hero__scrim { background: var(--scrim-hero); }
+
+/* Everything after the masthead is pushed to the floor of the hero, which
+   is what the frame's 569px top spacer expresses at a fixed height. */
+.v2 .hero--v2 .hero__body { margin-top: auto; }
+
+/* Red to yellow, clipped to the glyphs, sampled across the whole 744px
+   block — which is why the short lines read red and only the long one
+   reaches the yellow end. Guarded: without background-clip the title stays
+   white rather than vanishing. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .v2 .hero--v2 .hero__title {
+    background-image: linear-gradient(90deg, var(--n9-red) 0%, var(--n9-yellow) 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+  }
+}
+
+.v2 .hero--v2 .hero__lead {
+  font-size: var(--size-lead);
+  font-weight: 600;
+  line-height: var(--lh-lead);
+}
+
+/* ---- Scroll cue ----------------------------------------------------------
+   A link, so it does something; animated, so it says the page continues. */
+
+.v2 .hero__cue {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--nav-hit);
+  height: var(--nav-hit);
+  max-width: none;
+  animation: cue-bob 1.9s var(--ease-out) infinite;
+}
+.v2 .hero__cue img { width: var(--nav-hit); height: var(--nav-hit); }
+
+@keyframes cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(7px); }
+}
+
+/* ---- Pause control -------------------------------------------------------
+   Not in the frame. A loop that runs past five seconds needs a pause
+   mechanism (WCAG 2.2 SC 2.2.2). js/variant.js only unhides it once the
+   footage is actually playing, so a missing mp4 leaves no dead button. */
+
+.v2 .hero__pause {
+  position: absolute;
+  right: var(--gutter-hero);
+  bottom: 48px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  max-width: none;
+  padding: 0;
+  border: var(--hairline) solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--n9-light);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.v2 .hero__pause[hidden] { display: none; }
+.v2 .hero__pause:hover { background: rgba(0, 0, 0, 0.6); }
+
+.v2 .hero__pause-glyph {
+  width: 10px;
+  height: 12px;
+  border-left: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+}
+.v2 .hero__pause[aria-pressed="true"] .hero__pause-glyph {
+  width: 0;
+  height: 0;
+  border: 0;
+  border-left: 11px solid currentColor;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2 .hero__cue { animation: none; }
+}
+
+
+/* ===== Masthead · resized, chevrons, search ===============================
+   Utility 14 -> 16, primary 16 -> 18, both Urbanist Bold, and each primary
+   link gains a 24px chevron. The search button closes the row.
+   ========================================================================== */
+
+.v2 .hero--v2 .masthead__nav { font-weight: 700; }
+
+.v2 .hero--v2 .masthead__nav .utility {
+  font-size: var(--size-body);
+  letter-spacing: var(--track-16);
+}
+
+/* gap 0 on the row: the frame butts the search button against the last
+   link, and the 24px rhythm lives on the link group instead. */
+.v2 .hero--v2 .masthead__nav .primary {
+  gap: 0;
+  font-size: var(--size-nav);
+  letter-spacing: var(--track-nav);
+}
+
+.v2 .primary__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+}
+
+.v2 .primary__links > a { display: flex; align-items: center; }
+
+/* 2px under the text, per the frame's `text` wrapper — it is what keeps the
+   label's sweeping underline off the chevron's baseline. */
+.v2 .nav-link__text {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2px;
+}
+
+.v2 .nav-link__chev {
+  flex: none;
+  width: var(--size-nav-icon);
+  height: var(--size-nav-icon);
+}
+
+/* The sweep belongs to the label, not to label + chevron, so the rule that
+   components.css hangs on the anchor is stood down here. The replacement
+   is declared there too, with every other sweep on the site — one
+   definition, so duration and easing cannot drift. */
+.v2 .primary__links > a::after { content: none; }
+
+.v2 .masthead__search {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--nav-hit);
+  height: var(--nav-hit);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.v2 .masthead__search::after { content: none; }   /* an icon, not a label */
+.v2 .masthead__search img { width: 20px; height: 20px; }
+.v2 .masthead__search:hover,
+.v2 .masthead__search[aria-expanded="true"] { background: rgba(255, 255, 255, 0.14); }
+
+
+/* ===== Search · modal ====================================================
+   The field and the Carian popular list are v1's markup unchanged; only
+   their container is new.
+   ========================================================================== */
+
+.v2 .search-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;              /* over the masthead zone (20) and its scrim */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 120px var(--gutter) 48px;
+  overflow-y: auto;
+}
+
+.v2 .search-modal[hidden] { display: none; }
+
+/* With JS dead, this is the whole mechanism: the trigger is an anchor and
+   the panel is its target. Declared after the [hidden] rule so it wins. */
+.v2 .search-modal:target { display: flex; }
+
+.v2 .search-modal__scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim-modal);
+}
+
+.v2 .search-modal__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 720px;
+  color: var(--n9-light);
+}
+
+.v2 .search-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  border-bottom: var(--hairline) solid rgba(255, 255, 255, 0.35);
+}
+
+.v2 .search-modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nav-hit);
+  height: var(--nav-hit);
+  margin-right: -10px;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* The panel is its own dark surface and sits outside any .on-dark
+   ancestor, so it has to ask for the light focus ring itself. */
+.v2 .search-modal :focus-visible { outline-color: var(--n9-yellow); }
+
+/* Set by js/variant.js while the dialog owns the screen. */
+.is-search-open { overflow: hidden; }
+
+
+/* ===== Bunga lada wash ===================================================
+   The "N9 Bunga Lado" shader fill on the new card and persona chip.
+
+   Rebuilt from assets/img/bunga-lada.svg — the tile is already a faithful
+   static copy of that shader's geometry (five petals, five stamens,
+   staggered rows) and the same pattern already backs .megamenu__motif.
+   The WebGPU runtime it was authored against needs React and a bundler,
+   which this prototype deliberately does not have.
+
+   Two nested layers, because one cannot do both jobs: the outer carries
+   the fade in the element's own upright coordinates, the inner carries the
+   lattice at the shader's -21deg. Masking the rotated layer directly would
+   rotate the fade with it and move the clear patch off the title.
+
+   The motif is painted, not drawn: the tile is the inner layer's mask and
+   the colour underneath it is a plain background-color, so grey to yellow
+   on hover is one transitionable property rather than a second asset.
+   ========================================================================== */
+
+.v2 .wash {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle at var(--wash-fade-x) var(--wash-fade-y),
+                        rgb(0 0 0 / 0) var(--wash-fade-inner), rgb(0 0 0) 100%);
+          mask-image: radial-gradient(circle at var(--wash-fade-x) var(--wash-fade-y),
+                        rgb(0 0 0 / 0) var(--wash-fade-inner), rgb(0 0 0) 100%);
+}
+
+.v2 .wash::before {
+  content: "";
+  position: absolute;
+  /* Oversized so the -21deg rotation never swings a bald corner into the
+     box it is filling. */
+  inset: -50%;
+  background-color: var(--wash-motif);
+  -webkit-mask-image: url("../assets/img/bunga-lada.svg");
+          mask-image: url("../assets/img/bunga-lada.svg");
+  -webkit-mask-repeat: repeat;
+          mask-repeat: repeat;
+  -webkit-mask-size: var(--wash-tile) var(--wash-tile);
+          mask-size: var(--wash-tile) var(--wash-tile);
+  transform: rotate(var(--wash-rotate));
+  opacity: var(--wash-opacity);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.v2 .card--all     .wash { --wash-tile: var(--wash-tile-card); }
+.v2 .persona__chip .wash { --wash-tile: var(--wash-tile-persona); }
+
+.v2 .card--all:hover .wash::before,
+.v2 .card--all:focus-visible .wash::before,
+.v2 .persona__chip:hover .wash::before,
+.v2 .persona__chip:focus-visible .wash::before {
+  background-color: var(--wash-motif-active);
+}
+
+/* ---- Card + chip, with the wash under their contents --------------------- */
+
+/* v1 clips the chip but never positions it; the wash needs it to. */
+.v2 .persona__chip { position: relative; }
+
+/* An absolutely positioned first child paints over static siblings, so the
+   label and arrow are lifted back above it. */
+.v2 .persona__chip > span:not(.wash) { position: relative; }
+
+/* The label used to be reachable as span:first-child. The wash holds that
+   slot now, so the type is addressed by name instead. */
+.v2 .persona__chip-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-persona);
+  letter-spacing: var(--track-persona);
+  line-height: normal;
+}
+
+
+/* ===== Kenali dan Lawati · full-height photo stage ========================
+   Replaces v1's yellow band and its marquee strip. Those stay in
+   components.css, untouched, for index.html.
+   ========================================================================== */
+
+.v2 .lawat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;   /* the frame anchors its copy to the floor */
+  min-height: var(--stage-min);
+  padding-block: 80px;
+  overflow: hidden;
+  background: var(--n9-black);
+  color: var(--n9-light);
+}
+
+.v2 .lawat__stage { position: absolute; inset: 0; }
+
+.v2 .lawat__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--slide-dur) var(--ease-out);
+}
+.v2 .lawat__slide.is-current { opacity: 1; }
+.v2 .lawat__slide img { width: 100%; height: 100%; object-fit: cover; }
+
+.v2 .lawat__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim-lawat);
+  pointer-events: none;
+}
+
+.v2 .lawat__body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-inline: var(--gutter);
+}
+
+.v2 .lawat__container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* All four panels share one grid cell, so the stage is as tall as the
+   wordiest slide and nothing lifts or drops as they cross-fade.
+   visibility, not display, so the fade has something to animate; its
+   delay is what keeps an outgoing panel focusable until it has gone. */
+.v2 .lawat__text {
+  display: grid;
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.v2 .lawat__panel {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 700px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--slide-dur) var(--ease-out),
+    visibility 0s linear var(--slide-dur);
+}
+.v2 .lawat__panel.is-current {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Sentence case, not the uppercase .wordmark v1 gives its breakers. */
+.v2 .lawat__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--size-lawat);
+  letter-spacing: var(--track-lawat);
+  line-height: var(--lh-display);
+}
+
+.v2 .lawat__lead {
+  font-size: var(--size-lead);
+  font-weight: 500;
+  line-height: var(--lh-lead);
+}
+
+.v2 .lawat__controls {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.v2 .lawat__buttons { display: flex; align-items: center; gap: 16px; }
+
+.v2 .lawat__nav {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid var(--n9-light);
+  border-radius: 4px;   /* the frame's own radius, as on v1's search field */
+  background: rgba(255, 255, 255, 0.1);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.v2 .lawat__nav:hover { background: rgba(255, 255, 255, 0.24); }
+.v2 .lawat__nav img { width: 24px; height: 24px; }
+
+/* One arrow asset, mirrored — the frame builds its back button the same
+   way, by flipping the forward one. */
+.v2 .lawat__nav--prev img { transform: scaleX(-1); }
+
+.v2 .lawat__loader { display: flex; align-items: center; gap: 6px; }
+
+.v2 .lawat__bar {
+  width: 80px;
+  height: 8px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.v2 .lawat__bar.is-current { background: var(--n9-light); }
+
+@media (prefers-reduced-motion: reduce) {
+  .v2 .lawat__slide,
+  .v2 .lawat__panel { transition: none; }
+}
+
+
+/* ===== Load sequence · retimed ===========================================
+   motion.css derives the opening cascade from the last element in the hero
+   and starts Info & Perkhidmatan Utama after it. In v1 that element is the
+   search block, at +166ms. v2 has no search block; its last arrival is the
+   scroll cue, at +200ms.
+
+   Only the one input changes. --hero-end has to be restated with it because
+   motion.css computes it on <html>, above the .v2 flag on <body>, so it
+   would otherwise still be carrying v1's figure.
+   ========================================================================== */
+
+.js-reveal .v2 {
+  --hero-tail: 200ms;
+  --hero-end: calc(var(--masthead-end) + 200ms + var(--load-dur));
+}
+
+.js-reveal .v2 .hero__cue[data-reveal="rise"] {
+  --load-base: calc(var(--masthead-end) + 200ms);
+}
+
+
+/* ===== Responsive ======================================================== */
+
+@media (max-width: 1100px) {
+  .v2 .lawat__title,
+  .v2 .lawat__lead { max-width: none; }
+}
+
+@media (max-width: 900px) {
+  /* The masthead stacks here, so the search button leaves the end of the
+     nav row and the row keeps its own rhythm. */
+  .v2 .hero--v2 .masthead__nav .primary { gap: 24px; }
+  .v2 .primary__links { gap: 16px; }
+
+  .v2 .lawat__container { flex-direction: column; align-items: stretch; gap: 32px; }
+  .v2 .lawat__controls { align-items: flex-start; }
+  .v2 .search-modal { padding-top: 80px; }
+  .v2 .hero__pause { bottom: 24px; }
+}
+
+@media (max-width: 620px) {
+  .v2 .lawat__bar { width: 48px; }
+  .v2 .lawat__loader { gap: 4px; }
+}

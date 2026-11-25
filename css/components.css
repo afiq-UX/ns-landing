@@ -760,7 +760,10 @@
 .urusan__agency-name,
 .gov-card__cta,
 .explore__link > span:first-child,
-.explore__cta {
+.explore__cta,
+/* Variant 2 masthead (index-v2.html). Its primary links wrap their label in
+   a span so the rule hugs the text and clears the chevron beside it. */
+.v2 .nav-link__text {
   position: relative;
 }
 
@@ -772,7 +775,8 @@
 .urusan__agency-name::after,
 .gov-card__cta::after,
 .explore__link > span:first-child::after,
-.explore__cta::after {
+.explore__cta::after,
+.v2 .nav-link__text::after {
   content: "";
   position: absolute;
   left: 0;
@@ -787,7 +791,8 @@
 
 /* Offsets match what the old text-decoration used. */
 .masthead__nav a::after,
-.popular a span::after { margin-top: 4px; }
+.popular a span::after,
+.v2 .nav-link__text::after { margin-top: 4px; }
 .news__title::after,
 .footer__col a:not(.underline)::after,
 .crumb a::after,
@@ -813,7 +818,9 @@
 .explore__link:hover > span:first-child::after,
 .explore__link:focus-visible > span:first-child::after,
 .explore__cta:hover::after,
-.explore__cta:focus-visible::after { transform: scaleX(1); }
+.explore__cta:focus-visible::after,
+.v2 .primary__links > a:hover .nav-link__text::after,
+.v2 .primary__links > a:focus-visible .nav-link__text::after { transform: scaleX(1); }
 
 /* Footer links hug their text rather than the column they sit in. */
 .footer__col a { width: fit-content; }
@@ -828,6 +835,7 @@
   .gov-card__cta::after,
   .explore__link > span:first-child::after,
   .explore__cta::after,
+  .v2 .nav-link__text::after,
   .lk::before,
   .chatbot { transition: none; }
 }
