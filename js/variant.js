@@ -25,6 +25,10 @@
      The button stays hidden until the footage actually plays. Before the
      mp4 is dropped in, the hero is a poster frame and a pause button would
      control nothing.
+
+     There is no seeking here any more. Both sources are cut to the stretch
+     the hero plays — the first ten seconds of the film — so the element
+     loops the whole file and the window needs no help from script.
      ====================================================================== */
   (function heroVideo() {
     var video = document.querySelector('.hero__video');
@@ -32,40 +36,6 @@
     if (!video) return;
 
     var paused = false;
-
-    // Hold playback inside a window when the source that actually loaded
-    // asks for one. Only the untrimmed mp4 fallback carries the attributes;
-    // the webm is already cut to the clean stretch and must play whole, so
-    // the window is read from the matched <source> rather than the element.
-    // With no attributes on it, this does nothing at all.
-    var clamped = false;
-    var armWindow = function () {
-      if (clamped) return;
-      var current = video.currentSrc || '';
-      var matched = null;
-      Array.prototype.forEach.call(video.querySelectorAll('source'), function (s) {
-        var path = s.getAttribute('src');
-        if (path && current.slice(-path.length) === path) matched = s;
-      });
-      if (!matched) return;
-
-      var from = parseFloat(matched.getAttribute('data-loop-start'));
-      var to = parseFloat(matched.getAttribute('data-loop-end'));
-      if (isNaN(from) || isNaN(to) || to <= from) return;
-
-      clamped = true;
-      video.addEventListener('timeupdate', function () {
-        // Seeking while a seek is pending throws the element into a loop of
-        // its own, so wait for the current one to land.
-        if (video.seeking) return;
-        if (video.currentTime < from - 0.25 || video.currentTime >= to) {
-          video.currentTime = from;
-        }
-      });
-      if (video.currentTime < from) video.currentTime = from;
-    };
-    video.addEventListener('loadedmetadata', armWindow);
-    if (video.readyState >= 1) armWindow();
 
     var setState = function (isPaused) {
       paused = isPaused;
@@ -193,16 +163,20 @@
      panels and aria state in step.
 
      It advances on its own, as the frame's progress strip implies, and
-     keeps doing so after a click — a carousel that quietly gives up the
-     moment you touch it is the more annoying failure. Taking a control
-     moves it and restarts the clock; the hold button is the one thing
-     that stops it.
+     the hold button is the only thing that stops it — not a click on the
+     arrows, not the pointer resting over the section, not a focused
+     control. A carousel that stalls whenever the cursor happens to sit on
+     it reads as broken, and nothing in the frame tells you hovering was
+     meant to do anything. Taking an arrow or a bar moves it and buys a
+     full fresh hold instead.
 
-     Around that: it never runs off screen, it freezes under the pointer or
-     a focused control and resumes from where it froze rather than starting
-     the slide over, and it does not start at all when motion is off. The
-     hold button is also what SC 2.2.2 requires of anything that moves on
-     its own for more than five seconds.
+     The strip is a round rather than a lamp: bars already shown stay full,
+     and the fill drops back to empty on the wrap round to slide one. The
+     hold freezes the current fill where it stands and resumes from there.
+
+     Around that: it never runs off screen, and it does not start at all
+     when motion is off. The hold button is also what SC 2.2.2 requires of
+     anything that moves on its own for more than five seconds.
      ====================================================================== */
   (function lawat() {
     var section = document.querySelector('.lawat');
@@ -218,20 +192,8 @@
     if (slides.length < 2 || panels.length !== slides.length) return;
 
     var index = 0;
-    var timer = null;
-    var startedAt = 0;
-    var remaining = 0;
     var rotating = !reduced.matches;   // motion off: hold on slide one
     var onScreen = false;
-
-    // Read from the token rather than duplicated here, so the bar's fill and
-    // the clock driving it can never disagree.
-    function hold() {
-      var ms = parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue('--slide-hold')
-      );
-      return isNaN(ms) ? 6400 : ms;
-    }
 
     function paint() {
       slides.forEach(function (el, i) { el.classList.toggle('is-current', i === index); });
@@ -244,6 +206,10 @@
       bars.forEach(function (el, i) {
         var on = i === index;
         el.classList.toggle('is-current', on);
+        // A slide already shown this round keeps its bar filled, so the strip
+        // reads as progress through the set rather than a lamp that lights
+        // one bar at a time. The round clears on the wrap back to slide one.
+        el.classList.toggle('is-done', i < index);
         if (on) el.setAttribute('aria-current', 'true');
         else el.removeAttribute('aria-current');
       });
@@ -254,43 +220,33 @@
     // reflow between for the browser to run it a second time.
     function restartFill() {
       section.classList.remove('is-rotating');
-      if (!rotating || !onScreen) return;
+      if (!onScreen) return;
       void section.offsetWidth;
-      section.classList.add('is-rotating');
-    }
-
-    function disarm() {
-      if (timer) { clearTimeout(timer); timer = null; }
-    }
-
-    function arm(ms) {
-      disarm();
-      if (!rotating || !onScreen) return;
-      remaining = ms;
-      startedAt = Date.now();
-      timer = setTimeout(function () { go(index + 1); }, ms);
+      // Sticky: the slow drift across each photograph is held back until
+      // the section is first seen, so slide one still has its to spend.
+      // Dropping the flag again on the way out would only pull the image
+      // back to where it started while part of it is still showing.
+      section.classList.add('is-live', 'is-rotating');
     }
 
     function go(to) {
       index = (to + slides.length) % slides.length;
       paint();
       restartFill();
-      arm(hold());
     }
 
-    // Held: the fill freezes where it stands and the clock keeps its
-    // remainder, so letting go carries on instead of starting over.
-    function holdOn() {
-      if (timer) remaining -= Date.now() - startedAt;
-      disarm();
-      section.classList.add('is-paused');
-    }
-
-    function holdOff() {
-      section.classList.remove('is-paused');
+    // The fill IS the clock. A setTimeout started at the class flip runs
+    // ahead of an animation that cannot begin until the next paint — a
+    // couple of hundred milliseconds here, more while the slide images
+    // decode — so the bar was always still short of full when the slide
+    // changed under it. Advancing on the animation's own end keeps the two
+    // exactly together, and leaves --slide-hold as the single place the
+    // duration is written.
+    section.addEventListener('animationend', function (event) {
+      if (event.animationName !== 'bar-fill') return;
       if (!rotating || !onScreen) return;
-      arm(remaining > 0 ? remaining : hold());
-    }
+      go(index + 1);
+    });
 
     function setRotating(on) {
       rotating = on;
@@ -304,17 +260,24 @@
       if (text) text.setAttribute('aria-live', on ? 'off' : 'polite');
 
       if (on) {
-        restartFill();
-        arm(hold());
+        // Coming off the hold, the fill carries on from where it froze
+        // rather than starting the slide over. Only a first start — or a
+        // start after the fill was dropped — lays a fresh one down.
+        section.classList.remove('is-paused');
+        if (!section.classList.contains('is-rotating')) restartFill();
       } else {
-        disarm();
-        section.classList.remove('is-rotating', 'is-paused');
+        // Held: the fill freezes where it stands, and with it the clock,
+        // since they are now the same thing. is-rotating stays on, because
+        // it is what puts the animation on the bar for animation-play-state
+        // to freeze.
+        section.classList.add('is-paused');
       }
     }
 
-    // Taking a control moves the carousel and restarts the clock. It does
-    // not end the rotation: the hold button is the way to stop it, and
-    // leaving it as the only way means a click never strands the carousel.
+    // Taking a control moves the carousel and lays a fresh fill down, which
+    // is the same thing as restarting the clock. It does not end the
+    // rotation: the hold button is the way to stop it, and leaving it as
+    // the only way means a click never strands the carousel.
     if (prev) prev.addEventListener('click', function () { go(index - 1); });
     if (next) next.addEventListener('click', function () { go(index + 1); });
     bars.forEach(function (bar, i) {
@@ -322,12 +285,11 @@
     });
     if (toggle) toggle.addEventListener('click', function () { setRotating(!rotating); });
 
-    section.addEventListener('pointerenter', holdOn);
-    section.addEventListener('pointerleave', holdOff);
-    section.addEventListener('focusin', holdOn);
-    section.addEventListener('focusout', function (event) {
-      if (!section.contains(event.relatedTarget)) holdOff();
-    });
+    // Nothing but the hold button stops the rotation. The pointer resting
+    // over the section and a focused control used to freeze it, but the
+    // frame gives no sign that hovering does anything, so a carousel that
+    // stops under the cursor reads as one that has stalled. SC 2.2.2 is
+    // met by the hold button on its own.
 
     // Off screen it does nothing at all — no clock, and no fill running
     // itself down where nobody can see it.
@@ -335,19 +297,13 @@
       new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           onScreen = entry.isIntersecting;
-          if (onScreen) {
-            restartFill();
-            arm(hold());
-          } else {
-            disarm();
-            section.classList.remove('is-rotating', 'is-paused');
-          }
+          if (onScreen) restartFill();
+          else section.classList.remove('is-rotating');
         });
       }, { threshold: 0.35 }).observe(section);
     } else {
       onScreen = true;
       restartFill();
-      arm(hold());
     }
 
     var onChange = function (e) { if (e.matches) setRotating(false); };
@@ -356,5 +312,80 @@
 
     paint();
     setRotating(rotating);
+  })();
+
+
+  /* ======================================================================
+     4 · Back to top
+
+     The link does the scrolling by itself — html carries
+     scroll-behavior: smooth, and motion.css drops it to auto under
+     reduced motion, so there is nothing here to honour a second time.
+
+     All this does is keep it out of the way near the top of the page,
+     where "back to top" means nothing and it would only crowd the
+     chatbot. One viewport of scroll is the threshold: past the hero,
+     the masthead is gone and there is something to go back to.
+     ====================================================================== */
+  (function toTop() {
+    var link = document.querySelector('.to-top');
+    if (!link) return;
+
+    var ticking = false;
+
+    // Hit-test the point the control actually covers, rather than compare
+    // bounding boxes. A dark section’s box can run on behind whatever is
+    // stacked over it, so box arithmetic lights the control up over pale
+    // sections that merely overlap one. What is painted at the point is
+    // the only thing that settles it.
+    function overDark() {
+      if (!document.elementsFromPoint) return false;
+      var box = link.getBoundingClientRect();
+      var stack = document.elementsFromPoint(
+        box.left + box.width / 2,
+        box.top + box.height / 2
+      );
+      for (var i = 0; i < stack.length; i++) {
+        var el = stack[i];
+        if (el === link || link.contains(el)) continue;
+        if (el === document.body || el === document.documentElement) break;
+        if (el.closest && el.closest('.on-dark, .lawat')) return true;
+      }
+      return false;
+    }
+
+    function sync() {
+      ticking = false;
+      link.classList.toggle('is-idle', window.pageYOffset < window.innerHeight);
+      // A black disc on a dark breaker is a hole in the page. Read what is
+      // actually behind the control rather than inferring it from how far
+      // down the page we are — the sections move, the scroll number does
+      // not tell you which one you are over.
+      link.classList.toggle('is-over-dark', overDark());
+    }
+
+    // Scroll fires far faster than the page can paint; one read per frame
+    // is enough and keeps the handler off the scrolling thread’s back.
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(sync);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    // Taking it should leave the keyboard at the top of the page too, not
+    // stranded at the bottom with the view somewhere else. The zone takes
+    // tabindex="-1" only at that moment, so it never becomes a tab stop of
+    // its own, and preventScroll leaves the smooth scroll to the link.
+    link.addEventListener('click', function () {
+      var zone = document.getElementById('atas');
+      if (!zone) return;
+      zone.setAttribute('tabindex', '-1');
+      zone.focus({ preventScroll: true });
+    });
+
+    sync();
   })();
 })();

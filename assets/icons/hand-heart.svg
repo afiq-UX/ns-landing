@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- coolicons hand heart, the N9Digital card icon (Figma 697:31083).
+       Figma draws it on a 24 unit box with a 2 stroke, 8.3% of the box. The
+       other card icons here are older 100 unit exports with a 4 stroke, 4%.
+       At the 36px the card renders them that is 3px against their 1.44px, so
+       straight from Figma this one came out at twice the weight of the row
+       it sits in. The stroke is cut to 0.96, which is the same 4%, to match
+       its neighbours. Deliberate: a fresh export will bring the 2 back. -->
+  <g id="coolicons:hand-heart">
+    <path id="Vector" d="M4 16L7 13C7.6 12.4 8.2 12 9 12H12C12.5304 12 13.0391 12.2107 13.4142 12.5858C13.7893 12.9609 14 13.4696 14 14M8 20L4 16L3 15M14 14C14 14.5304 13.7893 15.0391 13.4142 15.4142C13.0391 15.7893 12.5304 16 12 16H10M14 14L17 11C17.197 10.803 17.4308 10.6468 17.6882 10.5402C17.9456 10.4335 18.2214 10.3787 18.5 10.3787C18.7786 10.3787 19.0544 10.4335 19.3118 10.5402C19.5692 10.6468 19.803 10.803 20 11C20.197 11.197 20.3532 11.4308 20.4598 11.6882C20.5665 11.9456 20.6213 12.2214 20.6213 12.5C20.6213 12.7786 20.5665 13.0544 20.4598 13.3118C20.3532 13.5692 20.197 13.803 20 14L15 19C14.36 19.64 13.64 20 13 20H8M8 20L9 21M12 4C10 2 7 4 9 6L12 9L15 6C17 4 14 2 12 4Z" stroke-width="0.96" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+  </g>
+</svg>

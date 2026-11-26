@@ -35,16 +35,16 @@
      stylesheet until the edge object expires. Changing this token changes
      the URL, which no cache can have seen before. Bump it on any release
      that touches css/ or js/. -->
-<link rel="stylesheet" href="css/tokens.css?v=20261125">
-<link rel="stylesheet" href="css/base.css?v=20261125">
-<link rel="stylesheet" href="css/components.css?v=20261125">
-<link rel="stylesheet" href="css/megamenu.css?v=20261125">
-<link rel="stylesheet" href="css/motion.css?v=20261125">
-<link rel="stylesheet" href="css/variant.css?v=20261125">
+<link rel="stylesheet" href="css/tokens.css?v=20261213">
+<link rel="stylesheet" href="css/base.css?v=20261213">
+<link rel="stylesheet" href="css/components.css?v=20261213">
+<link rel="stylesheet" href="css/megamenu.css?v=20261213">
+<link rel="stylesheet" href="css/motion.css?v=20261213">
+<link rel="stylesheet" href="css/variant.css?v=20261213">
 </head>
 <body class="v2">
 
-<div class="masthead-zone">
+<div class="masthead-zone" id="atas">
 
 <!-- ===== Hero ===== -->
 <section class="hero hero--v2 on-dark">
@@ -54,21 +54,19 @@
        a deploy or the codec is refused. Figma holds that fill as video, but
        exposes only stills of it, so the clip has to come from its source.
        aria-hidden + no controls: it carries no information, the title does. -->
-  <!-- The webm is the delivery copy: 7s cut from the supplied TMNS26 film,
-       no audio, 2.9 MB against the original 30.3 MB. The film carries
-       burned-in lyric captions and location lower-thirds over most of its
-       41s, which collide with the H1; 13.9-20.0s is the only caption-free
-       stretch, and that is what this is.
+  <!-- Both files are the same ten seconds: 00:00-00:10 of the supplied
+       TMNS26 film, no audio. The webm is the delivery copy at 3.4 MB; the
+       mp4 is the same cut at 3.7 MB, there for browsers that will not take
+       VP9. Neither needs clamping in script — the file IS the window, so
+       the element simply loops it.
 
-       The mp4 is still the untrimmed original, kept as the fallback for
-       browsers that will not take VP9. data-loop-* holds IT to the same
-       window, and belongs on its <source> rather than the element because
-       the webm needs no clamping — it is already the window. -->
+       Note the film carries burned-in lyric captions from about 00:01
+       ("Salam Bertandang", "Tanah Pusako"), low in frame. They sit inside
+       this window by choice. assets/video/README.md has the alternative. -->
   <video class="hero__video" autoplay muted loop playsinline preload="metadata"
          poster="assets/img/hero-poster.jpg" aria-hidden="true" tabindex="-1">
     <source src="assets/video/hero-bg.webm" type="video/webm">
-    <source src="assets/video/hero-bg.mp4" type="video/mp4"
-            data-loop-start="13.8" data-loop-end="20.6">
+    <source src="assets/video/hero-bg.mp4" type="video/mp4">
   </video>
   <div class="hero__scrim" aria-hidden="true"></div>
 
@@ -91,9 +89,9 @@
       </nav>
       <nav class="primary" aria-label="Navigasi utama">
         <span class="primary__links">
-          <a href="#" data-megamenu="mm-info" data-load><span class="nav-link__text">Info &amp; Perkhidmatan</span><img class="nav-link__chev" src="assets/icons/chevron-down.svg" alt="" width="24" height="24"></a>
-          <a href="#" data-megamenu="mm-kerajaan" data-load><span class="nav-link__text">Kerajaan</span><img class="nav-link__chev" src="assets/icons/chevron-down.svg" alt="" width="24" height="24"></a>
-          <a href="#" data-megamenu="mm-kakitangan" data-load><span class="nav-link__text">Kakitangan</span><img class="nav-link__chev" src="assets/icons/chevron-down.svg" alt="" width="24" height="24"></a>
+          <a href="#" data-megamenu="mm-info" data-load><span class="nav-link__text">Info &amp; Perkhidmatan</span><svg class="nav-link__chev" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true" focusable="false"><path d="M8 10L12 14L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#" data-megamenu="mm-kerajaan" data-load><span class="nav-link__text">Kerajaan</span><svg class="nav-link__chev" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true" focusable="false"><path d="M8 10L12 14L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#" data-megamenu="mm-kakitangan" data-load><span class="nav-link__text">Kakitangan</span><svg class="nav-link__chev" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true" focusable="false"><path d="M8 10L12 14L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </span>
         <!-- An anchor, not a button: with JS dead the :target rule in
              variant.css still opens the panel. js/variant.js upgrades it
@@ -110,25 +108,32 @@
   <div class="hero__body">
     <div class="hero__title-block">
       <div data-reveal="wipe">
-        <h1 class="hero__title">Apa yang<br>anda perlukan<br>hari ini?</h1>
+        <h1 class="hero__title">Apa yang anda perlukan hari ini?</h1>
       </div>
-      <p class="hero__lead" data-reveal="rise">Cari perkhidmatan, borang, maklumat dan pengumuman</p>
+      <p class="hero__lead" data-reveal="rise">Pilih peranan anda untuk melihat perkhidmatan dan maklumat yang berkaitan dengan keperluan anda.</p>
     </div>
 
+    <!-- Not in the frame. A looping background over 5s needs a pause
+         mechanism under WCAG 2.2 SC 2.2.2, which MGDS audits against. It
+         sits in the title row so the persona bar below can grow rows
+         without the two colliding. -->
+    <button class="hero__pause" type="button" aria-pressed="false" aria-label="Jeda video latar" hidden>
+      <span class="pause-glyph" aria-hidden="true"></span>
+    </button>
   </div>
 
-  <!-- Moving chevron: the frame's cue that the page continues. A real link,
-       not an ornament, so keyboard and screen-reader users get the same
-       affordance. -->
-  <a class="hero__cue" href="#services" aria-label="Skrol ke Info &amp; Perkhidmatan Utama" data-reveal="rise">
-    <img src="assets/icons/chevron-double-down.svg" alt="" width="44" height="44">
-  </a>
+  <!-- The persona bar stands on the floor of the hero now, where the
+       scroll cue used to. It carries no heading of its own: the lead
+       above it asks the question these four are the answers to. Each
+       chip holds the Bunga lada wash, which is decorative and so sits
+       in its own empty span rather than on the link. -->
+  <div class="persona hero__persona" data-reveal="stagger">
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Penduduk</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Pelabur</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Pelancong</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Penjawat Awam</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
+  </div>
 
-  <!-- Not in the frame. A looping background over 5s needs a pause
-       mechanism under WCAG 2.2 SC 2.2.2, which MGDS audits against. -->
-  <button class="hero__pause" type="button" aria-pressed="false" aria-label="Jeda video latar" hidden>
-    <span class="pause-glyph" aria-hidden="true"></span>
-  </button>
 </section>
 
 <div class="megamenu" id="mm-info" hidden>
@@ -423,67 +428,89 @@
       <h2 class="h2">Info &amp; Perkhidmatan Utama</h2>
     </div>
     <div class="services__grid" data-reveal="stagger">
-      <a class="card" href="#">
-        <span class="card__icon"><img src="assets/icons/life-buoy.svg" alt=""></span>
+      <a class="card card--svc" href="#">
+        <span class="card__wash" aria-hidden="true"></span>
+        <span class="card__top">
+          <span class="card__icon"><img src="assets/icons/hand-heart.svg" alt=""></span>
+          <span class="card__accent" aria-hidden="true"></span>
+        </span>
         <span class="card__body">
-          <span class="h3">N9Digital</span>
+          <span class="card__title-row">
+            <span class="h3">N9Digital</span>
+            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
+          </span>
           <span class="card__desc"><span>Perkhidmatan digital negeri</span></span>
         </span>
       </a>
-      <a class="card" href="#">
-        <span class="card__icon"><img src="assets/icons/scroll-text.svg" alt=""></span>
+      <a class="card card--svc" href="#">
+        <span class="card__wash" aria-hidden="true"></span>
+        <span class="card__top">
+          <span class="card__icon"><img src="assets/icons/scroll-text.svg" alt=""></span>
+          <span class="card__accent" aria-hidden="true"></span>
+        </span>
         <span class="card__body">
-          <span class="h3">Cari Borang</span>
+          <span class="card__title-row">
+            <span class="h3">Cari Borang</span>
+            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
+          </span>
           <span class="card__desc"><span>Borang rasmi jabatan dan agensi</span></span>
         </span>
       </a>
-      <a class="card" href="#">
-        <span class="card__icon"><img src="assets/icons/briefcase.svg" alt=""></span>
+      <a class="card card--svc" href="#">
+        <span class="card__wash" aria-hidden="true"></span>
+        <span class="card__top">
+          <span class="card__icon"><img src="assets/icons/briefcase.svg" alt=""></span>
+          <span class="card__accent" aria-hidden="true"></span>
+        </span>
         <span class="card__body">
-          <span class="h3">Jawatan Kosong</span>
+          <span class="card__title-row">
+            <span class="h3">Jawatan Kosong</span>
+            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
+          </span>
           <span class="card__desc"><span>Peluang kerjaya perkhidmatan awam</span></span>
         </span>
       </a>
-      <a class="card" href="#">
-        <span class="card__icon"><img src="assets/icons/house.svg" alt=""></span>
+      <a class="card card--svc" href="#">
+        <span class="card__wash" aria-hidden="true"></span>
+        <span class="card__top">
+          <span class="card__icon"><img src="assets/icons/house.svg" alt=""></span>
+          <span class="card__accent" aria-hidden="true"></span>
+        </span>
         <span class="card__body">
-          <span class="h3">Perumahan</span>
+          <span class="card__title-row">
+            <span class="h3">Perumahan</span>
+            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
+          </span>
           <span class="card__desc"><span>Rumah mampu milik dan permohonan</span></span>
         </span>
       </a>
-      <a class="card" href="#">
-        <span class="card__icon"><img src="assets/icons/handshake.svg" alt=""></span>
+      <a class="card card--svc" href="#">
+        <span class="card__wash" aria-hidden="true"></span>
+        <span class="card__top">
+          <span class="card__icon"><img src="assets/icons/handshake.svg" alt=""></span>
+          <span class="card__accent" aria-hidden="true"></span>
+        </span>
         <span class="card__body">
-          <span class="h3">Tender &amp; Sebut Harga</span>
+          <span class="card__title-row">
+            <span class="h3">Tender &amp; Sebut Harga</span>
+            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
+          </span>
           <span class="card__desc"><span>Kenyataan tawaran dan keputusan</span></span>
         </span>
       </a>
       <a class="card card--all" href="#">
-        <span class="wash" aria-hidden="true"></span>
-        <span class="card__icon">
-          <img src="assets/icons/grid-line.svg" alt="">
-          <img src="assets/icons/grid-hover.svg" alt="">
+        <span class="card__glow" aria-hidden="true"></span>
+        <span class="card__top">
+          <span class="card__icon"><img src="assets/icons/grid-line.svg" alt=""></span>
+          <span class="card__accent" aria-hidden="true"></span>
         </span>
         <span class="card__body">
-          <span class="h3">Lihat Semua</span>
+          <span class="card__title-row">
+            <span class="h3">Lihat Semua</span>
+            <img class="card__chev" src="assets/icons/chevron-right-white.svg" alt="" width="22" height="22">
+          </span>
         </span>
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 03 Saya seorang… ===== -->
-<section class="section persona-section">
-  <div class="container">
-    <div class="persona-section__head" data-reveal="rise">
-      <h2 class="h2">Saya seorang…</h2>
-      <p class="persona-section__deck">Tak jumpa di atas? Cari ikut siapa anda.</p>
-    </div>
-    <div class="persona" data-reveal="stagger">
-      <a class="persona__chip" href="#"><span class="wash" aria-hidden="true"></span><span class="persona__chip-label">Penduduk</span><span aria-hidden="true">→</span></a>
-      <a class="persona__chip" href="#"><span class="wash" aria-hidden="true"></span><span class="persona__chip-label">Pelabur</span><span aria-hidden="true">→</span></a>
-      <a class="persona__chip" href="#"><span class="wash" aria-hidden="true"></span><span class="persona__chip-label">Pelancong</span><span aria-hidden="true">→</span></a>
-      <a class="persona__chip" href="#"><span class="wash" aria-hidden="true"></span><span class="persona__chip-label">Penjawat Awam</span><span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
@@ -845,13 +872,23 @@
   </div>
 </div>
 
+<!-- ===== Back to top =====
+     Same corner as the chatbot, stacked directly above it. An anchor, not
+     a button, for the reason the hero cue is one: html already carries
+     scroll-behavior: smooth (and motion.css turns it off for reduced
+     motion), so the plain link does the whole job and still works with
+     js/variant.js missing — it is simply always on screen then. -->
+<a class="to-top" href="#atas" aria-label="Kembali ke atas">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true" focusable="false"><path d="M8 14L12 10L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+
 <!-- ===== Chatbot launcher · placeholder ===== -->
 <button class="chatbot" type="button" aria-label="Buka sembang bantuan">
   <img src="assets/img/chatbot-avatar.png" alt="" width="64" height="64">
 </button>
 
-<script src="js/reveal.js?v=20261125"></script>
-<script src="js/megamenu.js?v=20261125"></script>
-<script src="js/variant.js?v=20261125"></script>
+<script src="js/reveal.js?v=20261213"></script>
+<script src="js/megamenu.js?v=20261213"></script>
+<script src="js/variant.js?v=20261213"></script>
 </body>
 </html>

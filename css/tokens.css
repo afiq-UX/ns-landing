@@ -146,27 +146,54 @@
      after: 3.9:1 worst case. */
   --scrim-hero:  linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.12) 24%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.66) 70%, rgba(0, 0, 0, 0.86) 100%);
   --scrim-lawat: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.7) 80.134%);
-  --scrim-modal: rgba(0, 0, 0, 0.94);
+  /* The search dialog reads over the page rather than instead of it, so
+     this is a wash and not the blackout it used to be at 0.94.
 
-  /* ---- Bunga lada wash -------------------------------------------------
-     The "N9 Bunga Lado" shader fill on the new card and persona chip,
-     rebuilt from assets/img/bunga-lada.svg exactly as .megamenu__motif
-     already does. Every number below is the shader's own parameter, so
-     the two stay reconcilable.
+     0.55 is not a round number because it is a floor, not a taste: it is
+     the lightest flat value the dialog can sit on and still clear the
+     audited 4.5:1. The panel is set in --n9-light, and white measures
+     4.76:1 here, both over the plain white page body and at the worst
+     frame of the hero footage, sampled across the clip. 0.40 was tried
+     first and came in at 2.85:1 against both — under the 4.5:1 the
+     Carian popular list needs and under 3:1 for the heading.
 
-     The shader fades the motif OUT towards its fade centre ("pudar di
-     tengah") and up to full strength at the far corner — hence an inner
-     stop that is transparent and an outer that is not fully opaque:
-     smoothstep(0.43, 1.5) only reaches ~0.55 at the corner. */
-  --wash-motif:        #e2e2e2;           /* motifColor, default state */
-  --wash-motif-active: var(--n9-yellow);  /* motifColor, hover state */
-  --wash-rotate:       -21deg;            /* rotation */
-  --wash-fade-x:       16%;               /* fadeCentre.x */
-  --wash-fade-y:       44%;               /* fadeCentre.y */
-  --wash-fade-inner:   38%;               /* fadeInner 0.43 */
-  --wash-opacity:      0.55;              /* smoothstep at the far corner */
-  --wash-tile-card:    119px;             /* tiles 5 over a 270px card */
-  --wash-tile-persona: 50px;              /* tiles 3.5 over an 87px chip */
+     Blur on the scrim was measured as a way to stay lighter and does not
+     rescue it (3.3:1 at blur(16px)): it smooths the detail without
+     lowering the peak the white type has to clear. */
+  --scrim-modal: rgba(0, 0, 0, 0.55);
+
+
+  /* ---- Traced flower wash ----------------------------------------------
+     "Traced flower fade", the file's other shader fill, and the one the
+     persona bar carries now that it stands in the hero. It draws the same
+     flower differently — five traced petals round a maroon heart, rather
+     than five rings — so it gets its own tile in place of a recolour.
+     assets/img/bunga-lada-traced.svg is its lattice; the one number the
+     CSS needs on top of it is below. The tile is not here because it is
+     not a constant: the shader sizes its cell at a 3.5th of the shorter
+     side of the box, so the CSS sizes the two-cell tile off the box too.
+
+     The fade is linear here where the other is radial: clear at the label
+     end of the chip, full strength past the arrow, so a name never has to
+     be read against the pattern. */
+  --traced-bleed: 161px;     /* how far the wash overruns the chip, right */
+  --chip-swap:    300ms;     /* one beat of the 600ms rest/hover swap */
+
+  /* ---- Breaker blob ----------------------------------------------------
+     Figma draws the shape at 520 x 380 under a layer blur of 700, which it
+     writes out as a 350px deviation. Held to those numbers the wash spreads
+     1050 either side of the shape: wider than the section itself once the
+     window is under about 1200, which is where it stops reading as a glow
+     behind the cards and starts reading as a tint over the whole breaker.
+
+     So it is pulled in and pushed back from the frame on purpose. A tighter
+     blur alone would only concentrate it — peak strength goes with 1/blur²,
+     so 350 to 240 would make it half again as strong — hence the opacity
+     with it. Together: about three quarters of the strength over about two
+     thirds of the spread. These two are the dial; the shape itself is
+     untouched. */
+  --blob-blur:    240px;   /* frame: 350 */
+  --blob-opacity: 0.6;     /* frame: 1 */
 
   /* ---- Kenali dan Lawati carousel -------------------------------------- */
   --slide-dur:   640ms;

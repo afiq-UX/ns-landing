@@ -4,55 +4,48 @@
 
 | file | what it is | size |
 |---|---|---|
-| `hero-bg.webm` | the delivery copy — VP9, 1920x1080, 7.07s, no audio | 2.9 MB |
-| `hero-bg.mp4` | the untrimmed original, kept as a fallback | 30.3 MB |
+| `hero-bg.webm` | the delivery copy — VP9, 1920x1080, 10.0s, no audio | 3.4 MB |
+| `hero-bg.mp4` | the same cut for browsers without VP9 — H.264, faststart | 3.7 MB |
 
-## Why there are two, and why one is clamped
+Both files are **00:00–00:10 of the supplied TMNS26 film**. Each one is the
+window, so the `<video>` just loops whole and no script seeks it. There are
+no `data-loop-*` attributes any more, and `js/variant.js` no longer carries
+the clamp that read them.
 
-The supplied clip is the TMNS26 official film, not a background plate. It
-carries burned-in lyric captions ("Salam Bertandang", "Alam terkembang
-mengajar guru") and location lower-thirds ("Masjid Sri Sendayan / Seremban")
-across most of its 41 seconds. Those land exactly where the H1 does and read
-as a bug.
+## How they were cut
 
-Sampling it second by second, **13.9-20.0s is the only caption-free
-stretch** — beach aerial, horses on the sand, archery. The webm is that
-stretch, cut out and re-encoded without the audio track the muted element
-was never going to use.
+From the 41.6s original (kept in git history at `7609e9c`):
 
-The mp4 is still the whole film. It stays as a fallback for anything that
-will not take VP9, and `data-loop-start` / `data-loop-end` on its `<source>`
-hold it to the same window. Those attributes are deliberately on the
-`<source>` and not the `<video>`: the webm is already the window and must
-play whole, so `js/variant.js` reads the window from whichever file the
-browser actually chose.
-
-## Still worth doing
-
-**Replace the mp4 with a trimmed one.** 30.3 MB is indefensible on a state
-portal where plenty of visitors arrive on mobile data, `.htaccess`
-deliberately leaves media on the long TTL, and its `moov` atom trails the
-media so a player has to go hunting before frame one:
-
-    ffmpeg -ss 13.9 -t 6.1 -i hero-bg.mp4 -an \
+    ffmpeg -t 10 -i hero-bg-original.mp4 -an \
            -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p \
-           -movflags +faststart hero-bg-trimmed.mp4
+           -movflags +faststart hero-bg.mp4
 
-That should land around 2-3 MB. Drop it in as `hero-bg.mp4` and remove the
-two `data-loop-*` attributes from its `<source>` — the file will already be
-the window.
+    ffmpeg -t 10 -i hero-bg-original.mp4 -an \
+           -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 -cpu-used 2 \
+           -pix_fmt yuv420p hero-bg.webm
 
-**Re-encoding the webm through ffmpeg would also fix its header.** It was
-produced in-browser, and the recorder does not write a duration into the
-container, so `video.duration` reads `Infinity` until something seeks to the
-end. Looping is unaffected and nothing on the page reads the duration, but
-it is a defect in the file:
+CRF 36 on the webm is indistinguishable from the source at 1:1 under the
+hero scrim, and lands below the mp4 rather than above it.
 
-    ffmpeg -i hero-bg.webm -c copy hero-bg-fixed.webm
+## The captions, which are a known cost
+
+The film is the official TMNS26 cut, not a background plate. It carries
+burned-in lyric captions and location lower-thirds over most of its 41s —
+and the first ten seconds are no exception. From about **00:01** onward the
+window shows "Salam Bertandang / negeri adatku", then "Tanah Pusako / elok
+berbudi", "Alam terkombang / menjadi guru", "Tuah kotonyo". They sit low in
+frame; only the first second or so is clean.
+
+This window was asked for directly, so the captions stay. If they ever read
+as a bug behind the H1, **13.9–20.0s is the only caption-free stretch in the
+film** — beach aerial, horses on the sand, archery — and the same two
+commands with `-ss 13.9 -t 6.1` put the hero back on it.
 
 ## The poster
 
-`assets/img/hero-poster.jpg` is the first frame of the re-cut, so the
-handover from poster to footage is invisible. It also stays put if both
-sources fail on a deploy, which means the hero reads as finished rather than
-broken.
+`assets/img/hero-poster.jpg` is frame one of the cut, so the handover from
+poster to footage is invisible. It also stays put if both sources fail on a
+deploy, which means the hero reads as finished rather than broken. Re-cut
+the clip and this has to be re-pulled with it:
+
+    ffmpeg -i hero-bg.mp4 -frames:v 1 -q:v 4 ../img/hero-poster.jpg

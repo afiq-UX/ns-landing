@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="199.375 199.375 167.973 131.091" width="167.973" height="131.091" fill="none">
+  <!-- The blob that lights up behind Lihat Semua on hover, exported from
+       Figma (697:2657, the card component’s Button-Hover state). Figma holds
+       the blur as a layer effect and writes it out as a 100px Gaussian; as
+       with the breaker blob only the shape is kept here and the blur is left
+       to CSS. The path is Figma’s own and the viewBox is its bounding box. -->
+  <path d="M362.339 302.432C358.353 314.286 355.259 324.226 341.854 328.569C328.449 332.913 313.956 324.793 295.313 324.147C276.67 323.501 266.965 330.69 248.638 325.34C230.311 319.989 210.143 309.803 203.677 297.396C197.21 284.989 216.902 277.563 216.306 263.303C215.71 249.044 196.102 236.745 200.697 226.099C205.291 215.453 221.379 214.803 239.278 210.074C257.177 205.345 273.83 195.392 290.193 202.454C306.556 209.516 306.775 232.017 321.093 245.385C335.411 258.754 353.535 257.887 361.784 269.297C370.033 280.706 366.325 290.577 362.339 302.432Z" fill="#82181A"/>
+</svg>

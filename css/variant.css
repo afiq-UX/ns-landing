@@ -67,47 +67,34 @@ html { scrollbar-gutter: stable; }
 }
 
 .v2 .hero--v2 .hero__lead {
+  /* The frame sets the lead narrower than the 744 the title runs to, so
+     it breaks under "APA YANG ANDA" rather than under the whole line. */
+  max-width: 512px;
   font-size: var(--size-lead);
   font-weight: 600;
   line-height: var(--lh-lead);
 }
 
-/* ---- Scroll cue ----------------------------------------------------------
-   A link, so it does something; animated, so it says the page continues. */
-
-.v2 .hero__cue {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--nav-hit);
-  height: var(--nav-hit);
-  max-width: none;
-  animation: cue-bob 1.9s var(--ease-out) infinite;
-}
-.v2 .hero__cue img { width: var(--nav-hit); height: var(--nav-hit); }
-
-@keyframes cue-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(7px); }
-}
-
 /* ---- Pause control -------------------------------------------------------
    Not in the frame. A loop that runs past five seconds needs a pause
    mechanism (WCAG 2.2 SC 2.2.2). js/variant.js only unhides it once the
-   footage is actually playing, so a missing mp4 leaves no dead button. */
+   footage is actually playing, so a missing mp4 leaves no dead button.
+
+   It rides at the right-hand end of the title row rather than in the
+   bottom corner it used to hold: the persona bar owns the floor of the
+   hero now, and below 900 it runs to two rows, below 620 to four. Sitting
+   in the row keeps the control clear of it at every width without anyone
+   having to keep a magic offset in step with the bar. */
 
 .v2 .hero__pause {
-  position: absolute;
-  right: var(--gutter-hero);
-  bottom: 48px;
-  z-index: 2;
+  flex: none;
+  margin-left: auto;
+  align-self: flex-end;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
-  max-width: none;
   padding: 0;
   border: var(--hairline) solid rgba(255, 255, 255, 0.55);
   background: rgba(0, 0, 0, 0.35);
@@ -135,7 +122,8 @@ html { scrollbar-gutter: stable; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .v2 .hero__cue { animation: none; }
+  /* The chevron still turns — it reports state. It just turns at once. */
+  .v2 .nav-link__chev { transition: none; }
 }
 
 
@@ -178,10 +166,21 @@ html { scrollbar-gutter: stable; }
   padding-bottom: 2px;
 }
 
+/* Inline SVG rather than an <img>, because the chevron has to take the
+   link’s colour: white over the hero, --ink once the panel opens behind
+   the masthead, red on the link whose panel is open. As a file it carried
+   stroke="white", which left all three invisible against the open panel. */
 .v2 .nav-link__chev {
   flex: none;
   width: var(--size-nav-icon);
   height: var(--size-nav-icon);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+/* Pointing down means "there is more"; pointing up means "this is the one
+   that is open, and taking it again puts it away". */
+.v2 .primary__links > a[aria-expanded="true"] .nav-link__chev {
+  transform: rotate(180deg);
 }
 
 /* The sweep belongs to the label, not to label + chevron, so the rule that
@@ -272,72 +271,108 @@ html { scrollbar-gutter: stable; }
 .is-search-open { overflow: hidden; }
 
 
-/* ===== Bunga lada wash ===================================================
-   The "N9 Bunga Lado" shader fill on the new card and persona chip.
+/* ===== Back to top ======================================================
+   Shares the chatbot’s corner and sits directly above it, centred on the
+   same column: the chatbot is 64px at right 24, so its centre is 56 from
+   the edge, and a 48px control centres on that at right 32.
 
-   Rebuilt from assets/img/bunga-lada.svg — the tile is already a faithful
-   static copy of that shader's geometry (five petals, five stamens,
-   staggered rows) and the same pattern already backs .megamenu__motif.
-   The WebGPU runtime it was authored against needs React and a bundler,
-   which this prototype deliberately does not have.
+   z-index 9 matches the chatbot for the same reason — an open megamenu
+   should dim and cover both, not leave one floating over the panel.
 
-   Two nested layers, because one cannot do both jobs: the outer carries
-   the fade in the element's own upright coordinates, the inner carries the
-   lattice at the shader's -21deg. Masking the rotated layer directly would
-   rotate the fade with it and move the clear patch off the title.
+   It is an anchor, so with js/variant.js missing it simply stays on
+   screen and still works. With the script there it keeps out of the way
+   until there is enough page behind you to be worth going back over.
+   ========================================================================== */
+.v2 .to-top {
+  position: fixed;
+  right: 32px;
+  bottom: 100px;           /* 24 chatbot inset + 64 chatbot + 12 gap */
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--n9-black);
+  color: var(--n9-light);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.28);
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out),
+              visibility 0s linear var(--dur-fast);
+}
 
-   The motif is painted, not drawn: the tile is the inner layer's mask and
-   the colour underneath it is a plain background-color, so grey to yellow
-   on hover is one transitionable property rather than a second asset.
+/* Over a dark section the black disc reads as a hole punched in the page.
+   Inverted, it matches the chatbot sitting below it, and the pair reads as
+   one column of controls instead of one of them going missing. */
+.v2 .to-top.is-over-dark {
+  background: var(--n9-light);
+  color: var(--n9-black);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
+}
+
+.v2 .to-top:hover,
+.v2 .to-top:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.34);
+}
+
+/* Idle rather than hidden: visibility takes it out of the tab order and
+   out of hit-testing, which display would do too — but visibility can be
+   transitioned, so it fades out instead of vanishing. The delay on the
+   visibility leg is what holds it on screen until the fade has finished. */
+.v2 .to-top.is-idle {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+}
+.v2 .to-top:not(.is-idle) { transition-delay: 0s; }
+
+
+/* ===== Persona bar · on the hero floor, on the traced-flower wash ========
+   The bar used to stand on its own under a "Saya seorang…" heading, below
+   Info & Perkhidmatan. The frame moves it onto the floor of the hero,
+   where the lead above it — "Pilih peranan anda…" — is the heading, and
+   repaints it with the file's other shader, "Traced flower fade".
+
+   assets/img/bunga-lada-traced.svg is that shader's lattice rebuilt as a
+   static tile, for the same reason the wash above is one: the WebGPU
+   runtime it was authored against wants React and a bundler, which this
+   prototype deliberately does not have.
+
+   One layer here, where the other wash needs two. That shader turns the
+   lattice; this one leaves the lattice square and turns each flower inside
+   its own cell, so the rotation is baked into the tile and the element is
+   left free to carry the fade itself. The motif is also two-toned — gold
+   petals round a maroon heart — so it is painted rather than masked, which
+   is why it has no hover recolour where the card does.
    ========================================================================== */
 
-.v2 .wash {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  -webkit-mask-image: radial-gradient(circle at var(--wash-fade-x) var(--wash-fade-y),
-                        rgb(0 0 0 / 0) var(--wash-fade-inner), rgb(0 0 0) 100%);
-          mask-image: radial-gradient(circle at var(--wash-fade-x) var(--wash-fade-y),
-                        rgb(0 0 0 / 0) var(--wash-fade-inner), rgb(0 0 0) 100%);
+.v2 .hero__persona .persona__chip {
+  position: relative;   /* v1 clips the chip but never positions it */
+
+  /* 87 is a height now, not a coincidence. v1 reaches it by adding up
+     16 of top padding, the line box and 40 underneath, which left the
+     label riding high in the plate; the frame states the height and
+     pads 16 either side, so the name sits in the middle of it. The
+     wash is pinned top to bottom and sizes its tile off that height,
+     so it follows without being told. */
+  height: 87px;
+  padding: 16px 24px;
+  background: var(--n9-black);
 }
-
-.v2 .wash::before {
-  content: "";
-  position: absolute;
-  /* Oversized so the -21deg rotation never swings a bald corner into the
-     box it is filling. */
-  inset: -50%;
-  background-color: var(--wash-motif);
-  -webkit-mask-image: url("../assets/img/bunga-lada.svg");
-          mask-image: url("../assets/img/bunga-lada.svg");
-  -webkit-mask-repeat: repeat;
-          mask-repeat: repeat;
-  -webkit-mask-size: var(--wash-tile) var(--wash-tile);
-          mask-size: var(--wash-tile) var(--wash-tile);
-  transform: rotate(var(--wash-rotate));
-  opacity: var(--wash-opacity);
-  transition: background-color var(--dur-fast) var(--ease-out);
-}
-
-.v2 .card--all     .wash { --wash-tile: var(--wash-tile-card); }
-.v2 .persona__chip .wash { --wash-tile: var(--wash-tile-persona); }
-
-.v2 .card--all:hover .wash::before,
-.v2 .card--all:focus-visible .wash::before,
-.v2 .persona__chip:hover .wash::before,
-.v2 .persona__chip:focus-visible .wash::before {
-  background-color: var(--wash-motif-active);
-}
-
-/* ---- Card + chip, with the wash under their contents --------------------- */
-
-/* v1 clips the chip but never positions it; the wash needs it to. */
-.v2 .persona__chip { position: relative; }
 
 /* An absolutely positioned first child paints over static siblings, so the
-   label and arrow are lifted back above it. */
-.v2 .persona__chip > span:not(.wash) { position: relative; }
+   label and arrow are lifted back above the wash. Not "span": the arrow is
+   an icon now. */
+.v2 .persona__chip > :not(.chip-wash) { position: relative; }
+
+/* coolicons arrow-right, the same white 24px file the link cards use. It
+   replaces the frame's typed arrow glyph by request. */
+.v2 .persona__chip-arrow { flex: none; width: 24px; height: 24px; }
 
 /* The label used to be reachable as span:first-child. The wash holds that
    slot now, so the type is addressed by name instead. */
@@ -348,6 +383,376 @@ html { scrollbar-gutter: stable; }
   letter-spacing: var(--track-persona);
   line-height: normal;
 }
+
+.v2 .chip-wash {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  /* The shader's box overruns the chip to the right and is clipped by it.
+     That is what keeps the far, full-strength end of the fade off the chip,
+     so the lattice never reads as a solid block of pattern. */
+  right: calc(-1 * var(--traced-bleed));
+  pointer-events: none;
+}
+
+/* Two lattices stacked, rather than one recoloured. Hover swaps the
+   shader's two colours — maroon petals round a gold heart instead of the
+   other way about — and turns the flower with them, 119deg to -40deg.
+   That turn happens inside the cell, which the square lattice must not
+   follow, so it cannot be a CSS rotation laid over the top: each state
+   needs its own tile, and the two cross-fade. Stacking them also means
+   the hover tile arrives with the page rather than at the moment a
+   pointer first lands on a chip. */
+.v2 .chip-wash::before,
+.v2 .chip-wash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* tiles 2.5: the cell is a 2.5th of the box's shorter side — here the
+     height — and the tile is two cells, so 2/2.5 of it. auto keeps the
+     tile square. */
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: auto 80%;
+  transition: opacity var(--chip-swap) var(--ease-out);
+}
+
+/* The swap is two beats, 600ms end to end: the lattice in place clears
+   over the first 300, the other draws in over the second. They do not
+   cross-fade. The two tiles sit at different rotations, and laid over one
+   another mid-fade they read as interference rather than as one pattern
+   turning — the beat of bare plate between them is what makes it a turn.
+   Each layer leaves on --ease-in and arrives on --ease-out, so the move
+   accelerates away and settles rather than running flat for 600ms.
+
+   The delays below are the resting halves of that: ::before is the one
+   that draws back in when the pointer leaves, ::after the one that goes.
+   The :hover block trades the roles. */
+/* Both states fade on a diagonal now, and not quite the same one: the
+   shader runs the rest state from (76.7%, -71.9%) of the box to
+   (15.1%, 66.1%), and the hover state from (76%, -71%) to (0%, 50%).
+   Either way the lattice is strongest off the top-right and thins away
+   towards the bottom-left, clearing the label.
+
+   The angles and stops below are those axes solved for the box the chip
+   actually draws at full width — 475 x 87, the 314 of chip plus the 161
+   it overruns by. Percentages are read against the box's own dimensions,
+   so a narrower column tips the axis by a degree or two; at this size it
+   cannot be seen. The five stops are the shader's smoothstep(0, 0.61) at
+   quarters, as before. */
+.v2 .chip-wash::before {
+  background-image: url("../assets/img/bunga-lada-traced.svg");
+  transition-delay: var(--chip-swap);
+  -webkit-mask-image: linear-gradient(247.7deg,
+      rgb(0 0 0) 16.7%, rgb(0 0 0 / 0.844) 26.9%, rgb(0 0 0 / 0.5) 37.1%,
+      rgb(0 0 0 / 0.156) 47.3%, rgb(0 0 0 / 0) 57.5%);
+          mask-image: linear-gradient(247.7deg,
+      rgb(0 0 0) 16.7%, rgb(0 0 0 / 0.844) 26.9%, rgb(0 0 0 / 0.5) 37.1%,
+      rgb(0 0 0 / 0.156) 47.3%, rgb(0 0 0 / 0) 57.5%);
+}
+
+.v2 .chip-wash::after {
+  opacity: 0;
+  background-image: url("../assets/img/bunga-lada-traced-hover.svg");
+  transition-timing-function: var(--ease-in);
+  -webkit-mask-image: linear-gradient(253.7deg,
+      rgb(0 0 0) 19.2%, rgb(0 0 0 / 0.844) 31.1%, rgb(0 0 0 / 0.5) 43.1%,
+      rgb(0 0 0 / 0.156) 55%, rgb(0 0 0 / 0) 66.9%);
+          mask-image: linear-gradient(253.7deg,
+      rgb(0 0 0) 19.2%, rgb(0 0 0 / 0.844) 31.1%, rgb(0 0 0 / 0.5) 43.1%,
+      rgb(0 0 0 / 0.156) 55%, rgb(0 0 0 / 0) 66.9%);
+}
+
+.v2 .persona__chip:hover .chip-wash::before,
+.v2 .persona__chip:focus-visible .chip-wash::before {
+  opacity: 0;
+  transition-delay: 0s;
+  transition-timing-function: var(--ease-in);
+}
+.v2 .persona__chip:hover .chip-wash::after,
+.v2 .persona__chip:focus-visible .chip-wash::after {
+  opacity: 1;
+  transition-delay: var(--chip-swap);
+  transition-timing-function: var(--ease-out);
+}
+
+/* Off, not slowed. Both lattices are still swapped — they report state —
+   they just swap on the spot. This has to sit after the rules above, not
+   in the reduced-motion block at the top of the file, or the transition
+   shorthand up there would simply win on source order. */
+@media (prefers-reduced-motion: reduce) {
+  .v2 .chip-wash::before,
+  .v2 .chip-wash::after { transition: none; }
+}
+
+/* v1 takes the label and arrow yellow on hover. Both frames keep them
+   white and say the whole thing with the lattice. Nothing is lost at the
+   keyboard: base.css's :focus-visible ring is untouched. */
+.v2 .hero__persona .persona__chip:hover,
+.v2 .hero__persona .persona__chip:focus-visible { color: var(--n9-light); }
+
+/* ===== Info & Perkhidmatan · the service card redrawn ====================
+   Figma card/service 691:459. v1's card is a 270px plate with a 100px icon
+   in the top corner that turns yellow under the pointer. This one is 250
+   tall, carries a 29px icon over a short yellow rule at the top left, and
+   on hover stays white while the traced-flower lattice gathers in the
+   top-right corner and the description opens under the title.
+
+   Only the five service cards take it. Lihat Semua is a different card and
+   keeps its own rules below; it follows along on height and corner radius
+   so the row still reads as one. v1's card is untouched in components.css.
+   ========================================================================== */
+
+.v2 .services { padding-block: 80px 100px; }
+
+.v2 .card {
+  justify-content: space-between;
+  height: 250px;
+  padding: 24px 20px;
+  border-radius: 4px;
+  border-color: rgb(0 0 0 / 0.1);
+}
+
+/* The black edge that wipes down v1's card is not in this frame. */
+.v2 .card::before { content: none; }
+
+.v2 .card__top {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* The icon leaves the top-right corner and joins the flow at 36px. Lihat
+   Semua additionally had it pinned bottom-right with two stacked copies
+   for its colour swap; the frame gives it neither now, so both are
+   unwound here rather than in components.css, which v1 still reads. */
+.v2 .card .card__icon {
+  position: static;
+  align-self: auto;
+  width: 36px;
+  height: 36px;
+}
+.v2 .card .card__icon img { position: static; width: 36px; height: 36px; }
+
+/* 32 at rest, 56 under the pointer — the one part of the card that moves. */
+.v2 .card__accent {
+  width: 32px;
+  height: 3px;
+  background: #f5b82e;
+  transition: width var(--dur-base) var(--ease-out);
+}
+.v2 .card:hover .card__accent,
+.v2 .card:focus-visible .card__accent { width: 56px; }
+
+.v2 .card .card__body {
+  flex: none;
+  justify-content: flex-start;
+  width: 100%;
+  padding-bottom: 0;
+}
+
+.v2 .card__title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.v2 .card .h3 {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 18px;
+  line-height: 23px;
+  /* -0.01em, as the frame sets it; it just reads off 18 now, not 19. */
+  letter-spacing: -0.18px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.v2 .card--svc .h3 { color: #121b30; }
+.v2 .card--svc:hover .h3,
+.v2 .card--svc:focus-visible .h3 { color: var(--n9-black); }
+
+/* The file carries #121b30 rather than currentColor, which is the title's
+   own resting colour — near enough black that the hover state does not
+   need a second copy of it. */
+.v2 .card__chev { flex: none; width: 22px; height: 22px; }
+
+.v2 .card--svc .card__desc > span {
+  padding-top: 10px;
+  max-width: none;
+  font-family: var(--font-text);
+  font-size: var(--size-meta);
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--n9-black);
+}
+
+/* The plate stays white and the icon stays lit. Everything this hover has
+   to say is said by the lattice, the rule and the description. */
+.v2 .card--svc:hover,
+.v2 .card--svc:focus-visible {
+  background: var(--n9-light);
+  border-color: rgb(0 0 0 / 0.1);
+}
+.v2 .card--svc:hover .card__icon,
+.v2 .card--svc:focus-visible .card__icon { opacity: 1; }
+.v2 .card--svc:hover .card__body,
+.v2 .card--svc:focus-visible .card__body { padding-bottom: 0; }
+
+/* "Traced flower fade" a third time, on its own parameters: tiles 4 across
+   the card's narrow side, spacing 0.15, the flower turned -9deg, and gold
+   on white rather than on black, so the shader's bgColor is the plate.
+
+   The fade is diagonal here. The shader runs it from (31.5%, 31.3%) out
+   past the top-right corner at full softness, so the lattice gathers in
+   that corner and leaves the title and the icon clear. The angle and the
+   stops below are that axis solved for the frame's 200x250 box; the grid's
+   columns run a few pixels wider and tip it slightly, which at this size
+   nobody can see.
+
+   Sized off the width, not the height: the shader lays its cell on the
+   shorter side, and here that is the width. */
+.v2 .card__wash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: url("../assets/img/bunga-lada-traced-card.svg") 0 0 / 50% auto repeat;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+  -webkit-mask-image: linear-gradient(61.2deg,
+      rgb(0 0 0 / 0) 46.7%, rgb(0 0 0 / 0.156) 64%, rgb(0 0 0 / 0.5) 81.3%,
+      rgb(0 0 0 / 0.844) 98.6%, rgb(0 0 0) 115.9%);
+          mask-image: linear-gradient(61.2deg,
+      rgb(0 0 0 / 0) 46.7%, rgb(0 0 0 / 0.156) 64%, rgb(0 0 0 / 0.5) 81.3%,
+      rgb(0 0 0 / 0.844) 98.6%, rgb(0 0 0) 115.9%);
+}
+
+/* 70%, not the full strength the shader is set to. Asked for: the gold
+   reads harder on white than it does in the frame, and at full opacity
+   it starts competing with the icon. Deliberate, so do not quietly
+   reconcile it back to the shader's opacity: 1. */
+.v2 .card--svc:hover .card__wash,
+.v2 .card--svc:focus-visible .card__wash { opacity: 0.7; }
+
+/* ---- Lihat Semua · the same card, State=Button -------------------------
+   Figma 697:2628 and 697:2657. It used to be its own thing: a dark plate
+   on a gradient, a 100px icon in the bottom corner that swapped to yellow,
+   and the Bunga lado lattice over it. The frame folds it back into the
+   service card as a state — same box, same 36px icon, same 18px title and
+   22px chevron, all of it white on black. What sets it apart is only the
+   palette and the missing description: the yellow rule under the icon is
+   the same 32, and runs out to the same 56 under the pointer, as every
+   card beside it.
+   ------------------------------------------------------------------------ */
+
+.v2 .card--all {
+  background: var(--n9-black);
+  color: var(--n9-light);
+}
+
+.v2 .card--all .h3 { color: var(--n9-light); }
+
+/* v1 stacked two icons here and cross-faded them under the pointer. The
+   frame has one icon and it does not move, so the swap is unwound. Without
+   this the lone copy is the one v1 fades out, and the icon disappears on
+   hover — which is a louder bug than it sounds, because everything else
+   about this card holds still. */
+.v2 .card--all:hover .card__icon img,
+.v2 .card--all:focus-visible .card__icon img { opacity: 1; }
+
+/* v1 turns the plate and the type yellow here. The frame holds both. */
+.v2 .card--all:hover,
+.v2 .card--all:focus-visible {
+  background: var(--n9-black);
+  border-color: rgb(0 0 0 / 0.1);
+  box-shadow: none;
+  color: var(--n9-light);
+}
+
+/* The blob again, a third set of numbers: Figma puts a 168 x 131 shape at
+   the top right of the 200 x 250 card under a layer blur of 200, which it
+   writes out as a 100px deviation. Kept at the frame’s own strength —
+   over black at this size it is already only a tint, which is what the
+   Button-Hover frame shows. assets/img/card-blob.svg is the shape; the
+   card clips the spread. */
+.v2 .card--all .card__glow {
+  position: absolute;
+  top: -27.5px;
+  right: -61px;
+  width: 168px;
+  height: 131px;
+  opacity: 0;
+  background: url("../assets/img/card-blob.svg") 0 0 / 100% 100% no-repeat;
+  filter: blur(100px);
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.v2 .card--all:hover .card__glow,
+.v2 .card--all:focus-visible .card__glow { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v2 .card__accent,
+  .v2 .card__wash,
+  .v2 .card__glow { transition: none; }
+}
+
+/* ===== Breakers · the blob behind =======================================
+   Figma 654:2052 (Inisiatif dan Kempen) and 654:2088 (Belia dan Sukan)
+   both gain the same thing: one soft maroon shape off the right edge of
+   the section, blurred until it is a wash rather than a shape.
+
+   assets/img/breaker-blob.svg is the shape alone. Figma carries the blur
+   as a layer effect and bakes it into its export as a 350px Gaussian — a
+   2680 x 1959 filter region around a 520 x 380 path — so the file would
+   be a 2MB-ish raster job for the browser on every resize. The shape is
+   kept and the blur handed to CSS, where it composites. The frame's own
+   figure is not a guess — Figma writes layer blur 700 out as stdDeviation
+   350, and CSS blur() takes the deviation — but the blur and the opacity
+   are both pulled back from it, in tokens.css, and the note there says
+   why. The shape itself is the frame’s, untouched.
+
+   Placed by the frame's own numbers — the path sits at x 760 of 1280 and
+   y -35, and the link cards end 64 short of that, so the blob lands
+   squarely behind them and overhangs by a gutter. Identical in both
+   sections, even though one is 524 tall and the other 373: it is the top
+   of the section it hangs from, not the middle. The section clips it,
+   which is what the frame does.
+
+   It is measured off the content, not the window. The frame is 1280 wide
+   and so is --container, so there the two are the same edge; past 1408
+   the gutters open up and a blob pinned to the window would walk off the
+   cards it belongs to. The max() keeps it at the window edge until there
+   is slack to give back.
+
+   Figma also puts a 4px background blur on the path. Over a flat black
+   plate there is nothing behind it to blur, so it is not carried over.
+   ========================================================================== */
+
+.v2 .breaker--dark {
+  position: relative;
+  overflow: hidden;
+}
+
+.v2 .breaker--dark::before {
+  content: "";
+  position: absolute;
+  top: -35px;
+  right: max(0px, calc(50% - var(--container) / 2 - var(--gutter)));
+  width: 520px;
+  height: 380px;
+  background: url("../assets/img/breaker-blob.svg") 0 0 / 100% 100% no-repeat;
+  opacity: var(--blob-opacity);
+  filter: blur(var(--blob-blur));
+  pointer-events: none;
+}
+
+/* An absolutely positioned first child paints over static siblings. */
+.v2 .breaker--dark .container { position: relative; }
 
 
 /* ===== Kenali dan Lawati · full-height photo stage ========================
@@ -377,7 +782,64 @@ html { scrollbar-gutter: stable; }
   transition: opacity var(--slide-dur) var(--ease-out);
 }
 .v2 .lawat__slide.is-current { opacity: 1; }
-.v2 .lawat__slide img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Each photograph drifts while it is up, so the breaker reads as footage
+   rather than four stills on a timer. The move is deliberately small: at a
+   glance you should not catch it moving, only notice afterwards that the
+   frame is not where it started.
+
+   The resting transform IS the animation’s end state, which is what keeps
+   the hand-off clean — when is-current drops and the animation goes with
+   it, the image stays exactly where the last frame left it instead of
+   snapping back mid-fade. For the same reason the drift runs for exactly
+   one hold: it lands as the slide changes, never halfway through. */
+.v2 .lawat__slide img {
+  --kb-from: scale(1) translate(0, 0);
+  --kb-to:   scale(1.08) translate(-1.4%, -1%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: var(--kb-from);
+}
+
+/* Live from the moment the section is first seen, and never switched back.
+
+   The resting frame moves to the END of the drift here, in the same frame
+   as the animation is first applied — and the animation’s own first frame
+   is the START, which is what was on screen a moment ago. Nothing jumps
+   either way: before live the image waits at the start of its move, after
+   live every image that has finished waits at the end of its own. */
+.v2 .lawat.is-live .lawat__slide img { transform: var(--kb-to); }
+
+/* Alternating sense and direction. Four slides panning the same way is a
+   tic; this way no two neighbours move alike. The ones that end at scale 1
+   end at translate 0 with them — at rest there is no overhang to pan into,
+   and any drift would show the edge. */
+.v2 .lawat__slide:nth-of-type(2) img {
+  --kb-from: scale(1.08) translate(1.4%, 1%);
+  --kb-to:   scale(1) translate(0, 0);
+}
+.v2 .lawat__slide:nth-of-type(3) img {
+  --kb-from: scale(1) translate(0, 0);
+  --kb-to:   scale(1.07) translate(1.4%, -0.8%);
+}
+.v2 .lawat__slide:nth-of-type(4) img {
+  --kb-from: scale(1.07) translate(-1.2%, 1%);
+  --kb-to:   scale(1) translate(0, 0);
+}
+
+.v2 .lawat.is-live .lawat__slide.is-current img {
+  will-change: transform;
+  animation: ken-burns var(--slide-hold) linear both;
+}
+
+/* Held: the photograph stops with the bar, since they are the same clock. */
+.v2 .lawat.is-paused .lawat__slide.is-current img { animation-play-state: paused; }
+
+@keyframes ken-burns {
+  from { transform: var(--kb-from); }
+  to   { transform: var(--kb-to); }
+}
 
 .v2 .lawat__scrim {
   position: absolute;
@@ -503,7 +965,12 @@ html { scrollbar-gutter: stable; }
 }
 .v2 .lawat.is-paused .lawat__bar.is-current::after { animation-play-state: paused; }
 
-/* Rotation off, or never started: the current bar is simply the lit one. */
+/* A slide already shown this round keeps its bar full. The strip then reads
+   as progress through the four, and the fill only drops back to empty on the
+   wrap round to slide one. */
+.v2 .lawat__bar.is-done::after { transform: scaleX(1); }
+
+/* Rotation never started: the current bar is simply the lit one. */
 .v2 .lawat:not(.is-rotating) .lawat__bar.is-current::after { transform: scaleX(1); }
 
 @keyframes bar-fill {
@@ -514,7 +981,10 @@ html { scrollbar-gutter: stable; }
 @media (prefers-reduced-motion: reduce) {
   .v2 .lawat__slide,
   .v2 .lawat__panel { transition: none; }
+  .v2 .lawat__slide img { animation: none; transform: none; }
+  /* No clock to run, so the current bar is lit rather than filling. */
   .v2 .lawat__bar::after { animation: none; }
+  .v2 .lawat__bar.is-current::after { transform: scaleX(1); }
 }
 
 
@@ -522,7 +992,8 @@ html { scrollbar-gutter: stable; }
    motion.css derives the opening cascade from the last element in the hero
    and starts Info & Perkhidmatan Utama after it. In v1 that element is the
    search block, at +166ms. v2 has no search block; its last arrival is the
-   scroll cue, at +200ms.
+   persona bar — its first chip at +200ms, its fourth three stagger steps
+   behind that.
 
    Only the one input changes. --hero-end has to be restated with it because
    motion.css computes it on <html>, above the .v2 flag on <body>, so it
@@ -530,11 +1001,12 @@ html { scrollbar-gutter: stable; }
    ========================================================================== */
 
 .js-reveal .v2 {
-  --hero-tail: 200ms;
-  --hero-end: calc(var(--masthead-end) + 200ms + var(--load-dur));
+  --hero-tail: calc(200ms + 3 * var(--load-stagger));
+  --hero-end: calc(var(--masthead-end) + 200ms + 3 * var(--load-stagger)
+                   + var(--load-dur));
 }
 
-.js-reveal .v2 .hero__cue[data-reveal="rise"] {
+.js-reveal .v2 .hero__persona[data-reveal="stagger"] {
   --load-base: calc(var(--masthead-end) + 200ms);
 }
 
@@ -552,10 +1024,12 @@ html { scrollbar-gutter: stable; }
   .v2 .hero--v2 .masthead__nav .primary { gap: 24px; }
   .v2 .primary__links { gap: 16px; }
 
+  /* Four 26px names will not sit across a tablet; two rows of two will. */
+  .v2 .hero__persona { grid-template-columns: repeat(2, 1fr); }
+
   .v2 .lawat__container { flex-direction: column; align-items: stretch; gap: 32px; }
   .v2 .lawat__controls { align-items: flex-start; }
   .v2 .search-modal { padding-top: 80px; }
-  .v2 .hero__pause { bottom: 24px; }
 }
 
 @media (max-width: 620px) {
