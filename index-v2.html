@@ -35,12 +35,12 @@
      stylesheet until the edge object expires. Changing this token changes
      the URL, which no cache can have seen before. Bump it on any release
      that touches css/ or js/. -->
-<link rel="stylesheet" href="css/tokens.css?v=20261213">
-<link rel="stylesheet" href="css/base.css?v=20261213">
-<link rel="stylesheet" href="css/components.css?v=20261213">
-<link rel="stylesheet" href="css/megamenu.css?v=20261213">
-<link rel="stylesheet" href="css/motion.css?v=20261213">
-<link rel="stylesheet" href="css/variant.css?v=20261213">
+<link rel="stylesheet" href="css/tokens.css?v=20261214">
+<link rel="stylesheet" href="css/base.css?v=20261214">
+<link rel="stylesheet" href="css/components.css?v=20261214">
+<link rel="stylesheet" href="css/megamenu.css?v=20261214">
+<link rel="stylesheet" href="css/motion.css?v=20261214">
+<link rel="stylesheet" href="css/variant.css?v=20261214">
 </head>
 <body class="v2">
 
@@ -54,18 +54,22 @@
        a deploy or the codec is refused. Figma holds that fill as video, but
        exposes only stills of it, so the clip has to come from its source.
        aria-hidden + no controls: it carries no information, the title does. -->
-  <!-- Both files are the same ten seconds: 00:00-00:10 of the supplied
-       TMNS26 film, no audio. The webm is the delivery copy at 3.4 MB; the
-       mp4 is the same cut at 3.7 MB, there for browsers that will not take
-       VP9. Neither needs clamping in script — the file IS the window, so
-       the element simply loops it.
+  <!-- The whole 41.6s TMNS26 film, no audio. It was cut to ten seconds for
+       a while; the film closes on the frame it opens on, so the wrap is
+       invisible and the long way round is the better loop. The file IS the
+       window — nothing clamps it in script, the element simply loops it.
+
+       The cost is the file: 30.3 MB, and the only encode of the full
+       length there is. There is no webm beside it any more, because the
+       3.4 MB one was the ten-second cut and VP9 browsers would have
+       preferred it. Both of those want an ffmpeg pass before this ships —
+       assets/video/README.md carries the commands.
 
        Note the film carries burned-in lyric captions from about 00:01
-       ("Salam Bertandang", "Tanah Pusako"), low in frame. They sit inside
-       this window by choice. assets/video/README.md has the alternative. -->
+       ("Salam Bertandang", "Tanah Pusako"), low in frame, and location
+       lower-thirds over most of the rest. They are part of the film. -->
   <video class="hero__video" autoplay muted loop playsinline preload="metadata"
          poster="assets/img/hero-poster.jpg" aria-hidden="true" tabindex="-1">
-    <source src="assets/video/hero-bg.webm" type="video/webm">
     <source src="assets/video/hero-bg.mp4" type="video/mp4">
   </video>
   <div class="hero__scrim" aria-hidden="true"></div>
@@ -128,10 +132,10 @@
        chip holds the Bunga lada wash, which is decorative and so sits
        in its own empty span rather than on the link. -->
   <div class="persona hero__persona" data-reveal="stagger">
-    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Penduduk</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
-    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Pelabur</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
-    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Pelancong</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
-    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Penjawat Awam</span><img class="persona__chip-arrow" src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24"></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Penduduk</span><span class="persona__chip-arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Pelabur</span><span class="persona__chip-arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Pelancong</span><span class="persona__chip-arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span></a>
+    <a class="persona__chip" href="#"><span class="chip-wash" aria-hidden="true"></span><span class="persona__chip-label">Penjawat Awam</span><span class="persona__chip-arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span></a>
   </div>
 
 </section>
@@ -156,7 +160,7 @@
       </ul>
       <div class="mm-rail__foot">
         <div class="mm-rule"></div>
-        <a class="mm-cta" href="#">Peta Laman Info &amp; Perkhidmatan <span aria-hidden="true">→</span></a>
+        <a class="mm-cta" href="#">Peta Laman Info &amp; Perkhidmatan <span class="ico-arrow ico-arrow--inline" aria-hidden="true"></span></a>
       </div>
     </div>
     <div class="mm-pane">
@@ -260,7 +264,7 @@
       </ul>
       <div class="mm-rail__foot">
         <div class="mm-rule"></div>
-        <a class="mm-cta" href="#">Peta Laman Kerajaan <span aria-hidden="true">→</span></a>
+        <a class="mm-cta" href="#">Peta Laman Kerajaan <span class="ico-arrow ico-arrow--inline" aria-hidden="true"></span></a>
       </div>
     </div>
     <div class="mm-pane">
@@ -359,7 +363,7 @@
       </ul>
       <div class="mm-rail__foot">
         <div class="mm-rule"></div>
-        <a class="mm-cta" href="#">Peta Laman Kakitangan <span aria-hidden="true">→</span></a>
+        <a class="mm-cta" href="#">Peta Laman Kakitangan <span class="ico-arrow ico-arrow--inline" aria-hidden="true"></span></a>
       </div>
     </div>
     <div class="mm-pane">
@@ -422,7 +426,21 @@
 <main>
 
 <!-- ===== 02 Info & Perkhidmatan Utama ===== -->
-<section class="section section--ruled services" id="services">
+<!-- The row as 654:1985 lays it out, with card / service v3 (698:638) in
+     it. The ground and the rhythm are v1's — white, 80 over, 100 under,
+     six across one row — and the cards are what changed: dark 320-tall
+     plates 16 apart, where v1 had 200x250 white ones 8 apart with a
+     chevron, a yellow rule and a description standing open.
+
+     A resting card says two things, the tile and the title; the
+     description is what the pointer buys, and the title lifts by its own
+     height to make room. Lihat Semua is the same card as State=Button:
+     black, no description, and the lattice carries its hover instead of
+     the border — slowly, 600ms, which is the one piece of motion on this
+     page that is not a token. 654:1985 leaves this card on the
+     component's unswapped default icon; icon/semua (700:31241) is the
+     one it should carry, and does. -->
+<section class="section section--ruled services services--v3" id="services">
   <div class="container">
     <div class="section__head" data-reveal="rise">
       <h2 class="h2">Info &amp; Perkhidmatan Utama</h2>
@@ -430,85 +448,49 @@
     <div class="services__grid" data-reveal="stagger">
       <a class="card card--svc" href="#">
         <span class="card__wash" aria-hidden="true"></span>
-        <span class="card__top">
-          <span class="card__icon"><img src="assets/icons/hand-heart.svg" alt=""></span>
-          <span class="card__accent" aria-hidden="true"></span>
-        </span>
+        <span class="card__icon"><img src="assets/icons/svc-n9digital.svg" alt="" width="32" height="32"></span>
         <span class="card__body">
-          <span class="card__title-row">
-            <span class="h3">N9Digital</span>
-            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
-          </span>
-          <span class="card__desc"><span>Perkhidmatan digital negeri</span></span>
+          <span class="h3">N9Digital</span>
+          <span class="card__desc"><span>Portal rasmi permohonan skim bantuan kerajaan Negeri Sembilan.</span></span>
         </span>
       </a>
       <a class="card card--svc" href="#">
         <span class="card__wash" aria-hidden="true"></span>
-        <span class="card__top">
-          <span class="card__icon"><img src="assets/icons/scroll-text.svg" alt=""></span>
-          <span class="card__accent" aria-hidden="true"></span>
-        </span>
+        <span class="card__icon"><img src="assets/icons/svc-borang.svg" alt="" width="32" height="32"></span>
         <span class="card__body">
-          <span class="card__title-row">
-            <span class="h3">Cari Borang</span>
-            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
-          </span>
-          <span class="card__desc"><span>Borang rasmi jabatan dan agensi</span></span>
+          <span class="h3">Cari Borang</span>
+          <span class="card__desc"><span>Cari dan muat turun borang rasmi.</span></span>
         </span>
       </a>
       <a class="card card--svc" href="#">
         <span class="card__wash" aria-hidden="true"></span>
-        <span class="card__top">
-          <span class="card__icon"><img src="assets/icons/briefcase.svg" alt=""></span>
-          <span class="card__accent" aria-hidden="true"></span>
-        </span>
+        <span class="card__icon"><img src="assets/icons/svc-jawatan.svg" alt="" width="32" height="32"></span>
         <span class="card__body">
-          <span class="card__title-row">
-            <span class="h3">Jawatan Kosong</span>
-            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
-          </span>
-          <span class="card__desc"><span>Peluang kerjaya perkhidmatan awam</span></span>
+          <span class="h3">Jawatan Kosong</span>
+          <span class="card__desc"><span>Semak dan mohon jawatan kosong terkini.</span></span>
         </span>
       </a>
       <a class="card card--svc" href="#">
         <span class="card__wash" aria-hidden="true"></span>
-        <span class="card__top">
-          <span class="card__icon"><img src="assets/icons/house.svg" alt=""></span>
-          <span class="card__accent" aria-hidden="true"></span>
-        </span>
+        <span class="card__icon"><img src="assets/icons/svc-perumahan.svg" alt="" width="32" height="32"></span>
         <span class="card__body">
-          <span class="card__title-row">
-            <span class="h3">Perumahan</span>
-            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
-          </span>
-          <span class="card__desc"><span>Rumah mampu milik dan permohonan</span></span>
+          <span class="h3">Perumahan</span>
+          <span class="card__desc"><span>Semak maklumat dan permohonan perumahan.</span></span>
         </span>
       </a>
       <a class="card card--svc" href="#">
         <span class="card__wash" aria-hidden="true"></span>
-        <span class="card__top">
-          <span class="card__icon"><img src="assets/icons/handshake.svg" alt=""></span>
-          <span class="card__accent" aria-hidden="true"></span>
-        </span>
+        <span class="card__icon"><img src="assets/icons/svc-tender.svg" alt="" width="32" height="32"></span>
         <span class="card__body">
-          <span class="card__title-row">
-            <span class="h3">Tender &amp; Sebut Harga</span>
-            <img class="card__chev" src="assets/icons/chevron-right.svg" alt="" width="22" height="22">
-          </span>
-          <span class="card__desc"><span>Kenyataan tawaran dan keputusan</span></span>
+          <span class="h3">Tender &amp; Sebut Harga</span>
+          <span class="card__desc"><span>Lihat tender dan sebut harga terkini.</span></span>
         </span>
       </a>
       <a class="card card--all" href="#">
-        <span class="card__glow" aria-hidden="true"></span>
-        <span class="card__top">
-          <span class="card__icon"><img src="assets/icons/grid-line.svg" alt=""></span>
-          <span class="card__accent" aria-hidden="true"></span>
-        </span>
+        <span class="card__wash" aria-hidden="true"></span>
+        <span class="card__icon"><img src="assets/icons/svc-semua.svg" alt="" width="32" height="32"></span>
         <span class="card__body">
-          <span class="card__title-row">
-            <span class="h3">Lihat Semua</span>
-            <img class="card__chev" src="assets/icons/chevron-right-white.svg" alt="" width="22" height="22">
-          </span>
+          <span class="h3">Lihat Semua</span>
         </span>
       </a>
     </div>
@@ -556,10 +538,10 @@
             <span class="pause-glyph" aria-hidden="true"></span>
           </button>
           <button class="lawat__nav lawat__nav--prev" type="button" aria-label="Slaid sebelumnya">
-            <img src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24">
+            <span class="ico-arrow ico-arrow--lg" aria-hidden="true"></span>
           </button>
           <button class="lawat__nav lawat__nav--next" type="button" aria-label="Slaid seterusnya">
-            <img src="assets/icons/arrow-right-white.svg" alt="" width="24" height="24">
+            <span class="ico-arrow ico-arrow--lg" aria-hidden="true"></span>
           </button>
         </div>
         <div class="lawat__loader">
@@ -578,40 +560,40 @@
   <div class="container">
     <div class="section__head" data-reveal="rise">
       <h2 class="h2">Berita Negeri</h2>
-      <a class="label" href="#">Semua berita →</a>
+      <a class="label" href="#">Semua berita <span class="ico-arrow ico-arrow--inline" aria-hidden="true"></span></a>
     </div>
 
     <div class="news__cols">
       <div class="news__list" data-reveal="stagger">
         <a class="news__item" href="#">
-          <span class="news__date label">02 Sep 2026</span>
-          <span class="news__title">Tahap tepu bina rendah, peluang Negeri Sembilan rancang pembangunan</span>
-          <span class="news__arrow" aria-hidden="true">→</span>
+          <span class="news__date label">05 Nov 2026</span>
+          <span class="news__title">Kumpulan Niskala, muncul Johan Nasyid Kategori Penjawat Awam</span>
+          <span class="news__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
         </a>
         <a class="news__item" href="#">
           <span class="news__date label">31 Ogo 2026</span>
           <span class="news__title">Lebih 30,000 pengunjung meriahkan Hari Kebangsaan</span>
-          <span class="news__arrow" aria-hidden="true">→</span>
+          <span class="news__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
         </a>
         <a class="news__item" href="#">
           <span class="news__date label">07 Ogo 2026</span>
           <span class="news__title">10 ADUN angkat sumpah EXCO Negeri Sembilan</span>
-          <span class="news__arrow" aria-hidden="true">→</span>
+          <span class="news__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
         </a>
         <a class="news__item" href="#">
           <span class="news__date label">07 Ogo 2026</span>
           <span class="news__title">10 ADUN angkat sumpah EXCO Negeri Sembilan</span>
-          <span class="news__arrow" aria-hidden="true">→</span>
+          <span class="news__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
         </a>
         <a class="news__item" href="#">
           <span class="news__date label">07 Ogo 2026</span>
           <span class="news__title">10 ADUN angkat sumpah EXCO Negeri Sembilan</span>
-          <span class="news__arrow" aria-hidden="true">→</span>
+          <span class="news__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
         </a>
       </div>
 
       <figure class="news__figure" data-reveal="rise">
-        <img src="assets/img/berita-utama.jpg" alt="Menteri Besar Negeri Sembilan bersama rombongan pada satu majlis rasmi">
+        <img src="assets/img/berita-utama.jpg" alt="Kumpulan Niskala menerima hadiah johan Pertandingan Nasyid Kategori Penjawat Awam di Festival Kesenian Islam">
       </figure>
     </div>
   </div>
@@ -629,27 +611,27 @@
     <div class="lk-grid lk-grid--3" data-reveal="stagger">
       <a class="lk" href="#">
         <span class="lk__title">Tabung Pembangunan Usahawan NS (TUNS)</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Insentif Pembangunan Tanah Terbiar</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Biasiswa Anak Negeri</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Rumah Harapan Rakyat</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Rancangan Pembangunan NS 2021–2025</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Pelan Ekonomi Digital</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
     </div>
   </div>
@@ -660,7 +642,7 @@
   <div class="container">
     <div class="section__head" data-reveal="rise">
       <h2 class="h2">Pimpinan Negeri</h2>
-      <a class="label" href="#">Kenali pimpinan →</a>
+      <a class="label" href="#">Kenali pimpinan <span class="ico-arrow ico-arrow--inline" aria-hidden="true"></span></a>
     </div>
     <div class="dir dir--5" data-reveal="stagger">
       <a class="dir__cell" href="#">
@@ -668,35 +650,35 @@
           <span class="h3 dir__title">Yang di-Pertuan Besar</span>
           <span class="dir__body">Institusi Diraja</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell" href="#">
         <span>
           <span class="h3 dir__title">Undang &amp; Tunku Besar Tampin</span>
           <span class="dir__body">Adat Perpatih</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell dir__cell--loose" href="#">
         <span>
           <span class="h3 dir__title">Menteri Besar</span>
           <span class="dir__body">Dato’ Haji Ismail Lasim</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell dir__cell--loose" href="#">
         <span>
           <span class="h3 dir__title">Ahli EXCO</span>
           <span class="dir__body">Agensi negeri</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell" href="#">
         <span>
           <span class="h3 dir__title">Dewan Undangan Negeri</span>
           <span class="dir__body">Ahli Dewan Undangan Negeri</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
     </div>
   </div>
@@ -714,15 +696,15 @@
     <div class="lk-grid lk-grid--3" data-reveal="stagger">
       <a class="lk" href="#">
         <span class="lk__title">Program &amp; acara sukan</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Kemudahan &amp; stadium</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
       <a class="lk" href="#">
         <span class="lk__title">Majlis Sukan Negeri Sembilan</span>
-        <span class="lk__arrow" aria-hidden="true">→</span>
+        <span class="lk__arrow ico-arrow" aria-hidden="true"></span>
       </a>
     </div>
   </div>
@@ -733,7 +715,7 @@
   <div class="container">
     <div class="section__head" data-reveal="rise">
       <h2 class="h2">Direktori agensi</h2>
-      <a class="label" href="#">Semua agensi →</a>
+      <a class="label" href="#">Semua agensi <span class="ico-arrow ico-arrow--inline" aria-hidden="true"></span></a>
     </div>
     <div class="dir dir--4 dir--agency" data-reveal="stagger">
       <a class="dir__cell" href="#">
@@ -741,28 +723,28 @@
           <span class="h3 dir__title">Jabatan Negeri</span>
           <span class="dir__body">Jabatan &amp; unit</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell" href="#">
         <span>
           <span class="h3 dir__title">Pejabat Daerah &amp; Tanah</span>
           <span class="dir__body">7 daerah</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell" href="#">
         <span>
           <span class="h3 dir__title">Pihak Berkuasa Tempatan</span>
           <span class="dir__body">Majlis bandaraya &amp; perbandaran</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
       <a class="dir__cell" href="#">
         <span>
           <span class="h3 dir__title">Badan Berkanun</span>
           <span class="dir__body">Agensi negeri</span>
         </span>
-        <img src="assets/icons/arrow-right.svg" alt="">
+        <span class="dir__arrow ico-arrow ico-arrow--lg" aria-hidden="true"></span>
       </a>
     </div>
   </div>
@@ -887,8 +869,8 @@
   <img src="assets/img/chatbot-avatar.png" alt="" width="64" height="64">
 </button>
 
-<script src="js/reveal.js?v=20261213"></script>
-<script src="js/megamenu.js?v=20261213"></script>
-<script src="js/variant.js?v=20261213"></script>
+<script src="js/reveal.js?v=20261214"></script>
+<script src="js/megamenu.js?v=20261214"></script>
+<script src="js/variant.js?v=20261214"></script>
 </body>
 </html>

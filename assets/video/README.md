@@ -4,48 +4,56 @@
 
 | file | what it is | size |
 |---|---|---|
-| `hero-bg.webm` | the delivery copy — VP9, 1920x1080, 10.0s, no audio | 3.4 MB |
-| `hero-bg.mp4` | the same cut for browsers without VP9 — H.264, faststart | 3.7 MB |
+| `hero-bg.mp4` | the supplied TMNS26 film, whole — H.264, 1920x1080, 41.6s, no audio | 30.3 MB |
 
-Both files are **00:00–00:10 of the supplied TMNS26 film**. Each one is the
-window, so the `<video>` just loops whole and no script seeks it. There are
-no `data-loop-*` attributes any more, and `js/variant.js` no longer carries
-the clamp that read them.
+**The whole film, not a window.** It closes on the frame it opens on, so
+`loop` wraps invisibly and the element needs no clamp: there are no
+`data-loop-*` attributes and `js/variant.js` carries no seek.
 
-## How they were cut
+This replaces a 10.0s cut (00:00–00:10) that shipped at 3.7 MB mp4 +
+3.4 MB webm. That cut is in git history at `7609e9c`.
 
-From the 41.6s original (kept in git history at `7609e9c`):
+## Two things to settle before this ships
 
-    ffmpeg -t 10 -i hero-bg-original.mp4 -an \
+**The size.** 30.3 MB is the source encode, not a web one, and it is the
+only copy of the full length that exists. It wants a pass:
+
+    ffmpeg -i hero-bg-original.mp4 -an \
            -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p \
            -movflags +faststart hero-bg.mp4
 
-    ffmpeg -t 10 -i hero-bg-original.mp4 -an \
+**There is no webm.** The 3.4 MB one was the ten-second cut, and a VP9
+browser would have preferred it over this file and played the wrong thing,
+so it was removed rather than left to win. To put one back at full length:
+
+    ffmpeg -i hero-bg-original.mp4 -an \
            -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 -cpu-used 2 \
            -pix_fmt yuv420p hero-bg.webm
 
-CRF 36 on the webm is indistinguishable from the source at 1:1 under the
-hero scrim, and lands below the mp4 rather than above it.
+then add its `<source>` above the mp4's in `index-v2.html`. CRF 36 on the
+webm was indistinguishable from the source at 1:1 under the hero scrim.
 
-## The captions, which are a known cost
+Re-encoding must not re-cut: the seamless wrap depends on the last frame
+being the first, so any trim has to keep both ends.
+
+## The captions
 
 The film is the official TMNS26 cut, not a background plate. It carries
-burned-in lyric captions and location lower-thirds over most of its 41s —
-and the first ten seconds are no exception. From about **00:01** onward the
-window shows "Salam Bertandang / negeri adatku", then "Tanah Pusako / elok
-berbudi", "Alam terkombang / menjadi guru", "Tuah kotonyo". They sit low in
-frame; only the first second or so is clean.
+burned-in lyric captions and location lower-thirds over most of its 41s.
+From about **00:01** the frame shows "Salam Bertandang / negeri adatku",
+then "Tanah Pusako / elok berbudi", "Alam terkombang / menjadi guru",
+"Tuah kotonyo", and location titles follow. They sit low in frame.
 
-This window was asked for directly, so the captions stay. If they ever read
-as a bug behind the H1, **13.9–20.0s is the only caption-free stretch in the
-film** — beach aerial, horses on the sand, archery — and the same two
-commands with `-ss 13.9 -t 6.1` put the hero back on it.
+Playing the film whole means playing all of them. **13.9–20.0s is the only
+caption-free stretch** — beach aerial, horses on the sand, archery — but it
+is six seconds and it does not loop on itself, so it is a window, not an
+alternative to this.
 
 ## The poster
 
-`assets/img/hero-poster.jpg` is frame one of the cut, so the handover from
-poster to footage is invisible. It also stays put if both sources fail on a
-deploy, which means the hero reads as finished rather than broken. Re-cut
-the clip and this has to be re-pulled with it:
+`assets/img/hero-poster.jpg` is frame one of the film, which is also its
+last frame, so the handover from poster to footage is invisible and so is
+every wrap. It also stays put if the source fails on a deploy, which means
+the hero reads as finished rather than broken. Re-encode and re-pull it:
 
     ffmpeg -i hero-bg.mp4 -frames:v 1 -q:v 4 ../img/hero-poster.jpg

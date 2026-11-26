@@ -1,5 +1,5 @@
 /* ==========================================================================
-   variant.js — the three behaviours index-v2.html adds. Loaded only by that
+   variant.js — the behaviours index-v2.html adds. Loaded only by that
    page, after megamenu.js.
 
    Same contract as the rest of the prototype: if this file never arrives,
@@ -386,6 +386,169 @@
       zone.focus({ preventScroll: true });
     });
 
+    sync();
+  })();
+
+  /* ======================================================================
+     5 · The breaker blob follows the pointer
+
+     Not in the frame. 654:2052 and 654:2088 both put the blob at one fixed
+     spot off the right edge and leave it there; this makes it drift toward
+     the cursor while the cursor is inside the section, and ease back when
+     it leaves. Asked for, and decorative — which is why it is the last
+     thing in this file and why nothing else depends on it.
+
+     Three things decide whether it runs at all:
+
+       · a mouse. (hover: hover) and (pointer: fine). On a touch screen
+         pointermove fires while the finger drags the page, and the blob
+         would crawl around during every scroll.
+       · motion on. prefers-reduced-motion stops it dead, like everything
+         else here.
+       · the element existing. No breakers, no listeners.
+
+     It moves by transform, never by top/right. The blob carries a 240px
+     blur: rasterising that is expensive and translating the result is not,
+     but only while it sits on its own compositor layer, which is what the
+     is-blob-live class buys with will-change. Changing top/right instead
+     would re-blur 520x380 on every frame.
+
+     TRAVEL is deliberately small. The blob is 520 wide and already blurred
+     past the point of having an edge, so tracking the cursor one-to-one
+     reads as jitter rather than as motion; 60px either way is enough to
+     feel like it noticed you. EASE is the approach per frame — roughly a
+     quarter of a second to arrive, which is what makes it a drift instead
+     of a cursor.
+     ====================================================================== */
+  (function breakerBlob() {
+    var TRAVEL = 60;      // px of offset at the far edge of the section
+    var EASE = 0.12;      // fraction of the remaining distance per frame
+    var SETTLED = 0.1;    // px below which it has arrived
+
+    var sections = document.querySelectorAll('.breaker--dark');
+    if (!sections.length) return;
+
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    var blobs = [];
+    var i;
+    for (i = 0; i < sections.length; i++) {
+      blobs.push({ el: sections[i], x: 0, y: 0, tx: 0, ty: 0, cx: 0, cy: 0, inside: false });
+    }
+
+    var running = false;
+    var live = false;
+
+    function clamp(v) {
+      return v < -TRAVEL ? -TRAVEL : (v > TRAVEL ? TRAVEL : v);
+    }
+
+    function frame() {
+      var moving = false;
+
+      for (var n = 0; n < blobs.length; n++) {
+        var b = blobs[n];
+
+        if (b.inside) {
+          // Read the box here rather than in the pointermove handler.
+          // pointermove fires far faster than the page paints and
+          // getBoundingClientRect forces layout, so this is one read per
+          // frame, and only for the section the pointer is actually in.
+          // It also keeps the mapping honest while the page scrolls under
+          // a stationary cursor, which is why an occupied section never
+          // settles.
+          var r = b.el.getBoundingClientRect();
+          // Clamped, because the box is read here and the coordinates were
+          // taken when the pointer last moved. Scroll between the two and
+          // the cursor is measured against a box that has since slid, which
+          // puts the ratio outside 0..1 and the offset outside TRAVEL. The
+          // cap is meant to be a cap.
+          b.tx = clamp(((b.cx - r.left) / r.width * 2 - 1) * TRAVEL);
+          b.ty = clamp(((b.cy - r.top) / r.height * 2 - 1) * TRAVEL);
+          moving = true;
+        }
+
+        b.x += (b.tx - b.x) * EASE;
+        b.y += (b.ty - b.y) * EASE;
+
+        if (Math.abs(b.tx - b.x) > SETTLED || Math.abs(b.ty - b.y) > SETTLED) {
+          moving = true;
+        } else {
+          b.x = b.tx;
+          b.y = b.ty;
+        }
+
+        b.el.style.setProperty('--blob-dx', b.x.toFixed(2) + 'px');
+        b.el.style.setProperty('--blob-dy', b.y.toFixed(2) + 'px');
+      }
+
+      running = moving;
+      if (moving) window.requestAnimationFrame(frame);
+    }
+
+    function tick() {
+      if (running) return;
+      running = true;
+      window.requestAnimationFrame(frame);
+    }
+
+    function onMove(e) {
+      // A pen or a touch contact gets no say, even on a machine that
+      // reports a fine pointer — a hybrid laptop has both.
+      if (e.pointerType !== 'mouse') return;
+      var b = this.__blob;
+      b.cx = e.clientX;
+      b.cy = e.clientY;
+      b.inside = true;
+      tick();
+    }
+
+    function onLeave() {
+      var b = this.__blob;
+      b.inside = false;
+      b.tx = 0;
+      b.ty = 0;
+      tick();
+    }
+
+    function setLive(on) {
+      if (on === live) return;
+      live = on;
+
+      for (var n = 0; n < blobs.length; n++) {
+        var b = blobs[n];
+        if (on) {
+          b.el.__blob = b;
+          b.el.addEventListener('pointermove', onMove, { passive: true });
+          b.el.addEventListener('pointerleave', onLeave, { passive: true });
+          b.el.classList.add('is-blob-live');
+        } else {
+          b.el.removeEventListener('pointermove', onMove);
+          b.el.removeEventListener('pointerleave', onLeave);
+          b.el.classList.remove('is-blob-live');
+          // Put it back where the frame has it, and drop the properties
+          // rather than writing 0 into them, so the CSS fallback is what
+          // is left behind.
+          b.inside = false;
+          b.x = b.y = b.tx = b.ty = 0;
+          b.el.style.removeProperty('--blob-dx');
+          b.el.style.removeProperty('--blob-dy');
+        }
+      }
+    }
+
+    function sync() {
+      setLive(fine.matches && !reduced.matches);
+    }
+
+    function watch(query) {
+      if (query.addEventListener) query.addEventListener('change', sync);
+      else if (query.addListener) query.addListener(sync);
+    }
+
+    // Both can change mid-session: the user turns motion off in the OS, or
+    // a tablet gets a mouse plugged into it.
+    watch(fine);
+    watch(reduced);
     sync();
   })();
 })();

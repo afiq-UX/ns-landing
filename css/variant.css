@@ -17,6 +17,51 @@
 html { scrollbar-gutter: stable; }
 
 
+/* ===== The arrow ==========================================================
+   Figma 717:811. One arrow for the whole page — the news rows, the link
+   cards in both breakers, the persona chips, the directory cells, the
+   carousel's prev/next, the "Semua berita" style links and the mega menu
+   CTAs. Before this the page had three of them: a 24px black export, a
+   24px white one, and a literal → glyph set in Inter wherever the arrow
+   sat inside a line of type.
+
+   It is drawn as a mask over currentColor rather than as an <img>, which
+   is the whole point: an <img> fixes its own colour and needs a second
+   file to be white, and the page asks for black on the light sections and
+   white on the dark ones. currentColor already knows which it is — every
+   .on-dark section sets white type — so the arrow follows the words it
+   belongs to, and follows them into hover too (the mega menu CTA turns
+   --n9-red, and its arrow now goes with it).
+
+   16 is the component's own size, and what 654:2052 places in the link
+   cards. --lg is 24, for the slots the page already built at 24: the news
+   row (654:2030 puts it in a 24 box), the chips, the directory cells and
+   the carousel buttons.
+   ========================================================================== */
+
+.v2 .ico-arrow {
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  -webkit-mask: url("../assets/icons/arrow-right-bulk.svg") center / contain no-repeat;
+          mask: url("../assets/icons/arrow-right-bulk.svg") center / contain no-repeat;
+}
+
+.v2 .ico-arrow--lg { width: 24px; height: 24px; }
+
+/* Sitting in a line of type rather than on a line of its own — the label
+   links and the mega menu CTAs. An inline-block sits on the baseline,
+   which hangs the arrow above where the glyph it replaced sat. */
+.v2 .ico-arrow--inline { vertical-align: -0.2em; }
+
+/* components.css pushes the directory arrow to the floor of its cell with
+   margin-top: auto on `.dir__cell img`. It is a span now, so that rule no
+   longer finds it and the arrow would ride up under the body text. */
+.v2 .dir__cell .dir__arrow { margin-top: auto; }
+
+
 /* ===== Hero · full-height video ==========================================
    The frame pads 24 top / 48 bottom and stacks head, title, cue at a 48px
    gap — the same box v1 already builds. Only two things change: the box is
@@ -64,6 +109,17 @@ html { scrollbar-gutter: stable; }
             background-clip: text;
     color: transparent;
   }
+}
+
+/* Drop Shadow/300, the effect style 654:1959 carries: two passes of
+   0 4 4, black at 5% and again at 10%. Figma's own export drops the
+   -1 spread, because text-shadow has no spread to drop it into; what is
+   left is a seat under the type rather than a shadow you can name, which
+   is the point of it over moving footage. */
+.v2 .hero--v2 .hero__title {
+  text-shadow:
+    0 4px 4px rgb(12 12 13 / 0.05),
+    0 4px 4px rgb(12 12 13 / 0.1);
 }
 
 .v2 .hero--v2 .hero__lead {
@@ -492,161 +548,214 @@ html { scrollbar-gutter: stable; }
 .v2 .hero__persona .persona__chip:hover,
 .v2 .hero__persona .persona__chip:focus-visible { color: var(--n9-light); }
 
-/* ===== Info & Perkhidmatan · the service card redrawn ====================
-   Figma card/service 691:459. v1's card is a 270px plate with a 100px icon
-   in the top corner that turns yellow under the pointer. This one is 250
-   tall, carries a 29px icon over a short yellow rule at the top left, and
-   on hover stays white while the traced-flower lattice gathers in the
-   top-right corner and the description opens under the title.
+/* ===== Info & Perkhidmatan · the service card, v3 ========================
+   Figma card/service v3 698:638. Nothing of v2's card survives but the
+   class names: that one was a white 200x250 plate with a chevron, a yellow
+   rule under a 36px icon and a 145px blurb. This is a dark 320-tall plate,
+   three across, two rows, on a section ground of its own.
 
-   Only the five service cards take it. Lihat Semua is a different card and
-   keeps its own rules below; it follows along on height and corner radius
-   so the row still reads as one. v1's card is untouched in components.css.
+   The states are the frame's four. Default is the tile and the title, with
+   the lattice gathering at the foot. Hover turns the border --n9-yellow,
+   takes the lattice away and opens the description — the plate itself does
+   not change colour. Button is Lihat Semua: the same card on black, no
+   description, and Button-Hover moves the lattice's fade rather than the
+   border, so that card answers the pointer in its own way.
+
+   v1's card is untouched in components.css.
    ========================================================================== */
 
-.v2 .services { padding-block: 80px 100px; }
+/* The ground does not change: white, under the same --rule hairline, on
+   v1's 80/100 rhythm. Only the cards standing on it went dark. */
+.v2 .services--v3 { padding-block: 80px 100px; }
+
+/* 24 between the heading and the grid, as the frame's gap. The heading
+   itself is the file's own .h2 — 40 ExtraBold, black — so it is left
+   alone. */
+.v2 .services--v3 .section__head { margin-bottom: 24px; }
+
+/* Still six across and still one row, as v1. What changed is the gap:
+   16 rather than 8, which is what takes each card to 178.67 inside the
+   1152 container. */
+.v2 .services__grid {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
 
 .v2 .card {
-  justify-content: space-between;
-  height: 250px;
-  padding: 24px 20px;
+  height: 320px;
+  padding: 24px;
   border-radius: 4px;
-  border-color: rgb(0 0 0 / 0.1);
+  border-color: #1f2a44;
+  background: #212023;
 }
 
 /* The black edge that wipes down v1's card is not in this frame. */
 .v2 .card::before { content: none; }
 
-.v2 .card__top {
-  position: relative;
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-/* The icon leaves the top-right corner and joins the flow at 36px. Lihat
-   Semua additionally had it pinned bottom-right with two stacked copies
-   for its colour swap; the frame gives it neither now, so both are
-   unwound here rather than in components.css, which v1 still reads. */
+/* The icon is a tile now: 52 square, 10px corners, #f5b82e, with the 32px
+   glyph centred in it. v1 pins a 100px icon in the top-right corner and
+   v2 put it in the flow at 36; both are unwound here rather than in
+   components.css, which v1 still reads. */
 .v2 .card .card__icon {
   position: static;
   align-self: auto;
-  width: 36px;
-  height: 36px;
-}
-.v2 .card .card__icon img { position: static; width: 36px; height: 36px; }
-
-/* 32 at rest, 56 under the pointer — the one part of the card that moves. */
-.v2 .card__accent {
-  width: 32px;
-  height: 3px;
-  background: #f5b82e;
-  transition: width var(--dur-base) var(--ease-out);
-}
-.v2 .card:hover .card__accent,
-.v2 .card:focus-visible .card__accent { width: 56px; }
-
-.v2 .card .card__body {
+  display: flex;
   flex: none;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f5b82e;
+}
+.v2 .card .card__icon img {
+  position: static;
+  width: 32px;
+  height: 32px;
+}
+
+/* v1 drops the icon to 0.2 under the pointer, because there it is a 100px
+   watermark the description has to read over. Here it is a 52px tile that
+   the frame holds lit in every state. */
+.v2 .card:hover .card__icon,
+.v2 .card:focus-visible .card__icon { opacity: 1; }
+
+/* The body takes everything under the tile and sits its contents on the
+   floor, so the title is on the floor while the description is closed and
+   is pushed up by exactly its height when it opens. v1 adds 24 of padding
+   here on hover to make that room instead; the frame has the type move,
+   not the box. */
+.v2 .card .card__body {
+  flex: 1 0 0;
+  justify-content: flex-end;
   width: 100%;
   padding-bottom: 0;
 }
-
-.v2 .card__title-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-}
+.v2 .card:hover .card__body,
+.v2 .card:focus-visible .card__body { padding-bottom: 0; }
 
 .v2 .card .h3 {
-  flex: 1 0 0;
-  min-width: 0;
-  font-size: 18px;
-  line-height: 23px;
-  /* -0.01em, as the frame sets it; it just reads off 18 now, not 19. */
-  letter-spacing: -0.18px;
-  transition: color var(--dur-fast) var(--ease-out);
+  flex: none;
+  width: 100%;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: -0.24px;
+  color: var(--n9-light);
 }
-.v2 .card--svc .h3 { color: #121b30; }
-.v2 .card--svc:hover .h3,
-.v2 .card--svc:focus-visible .h3 { color: var(--n9-black); }
 
-/* The file carries #121b30 rather than currentColor, which is the title's
-   own resting colour — near enough black that the hover state does not
-   need a second copy of it. */
-.v2 .card__chev { flex: none; width: 22px; height: 22px; }
-
-.v2 .card--svc .card__desc > span {
-  padding-top: 10px;
+/* 14/1.5 Inter Regular, white, and no 145px measure — the frame runs the
+   line to the card's inner width. The 0fr->1fr grid that opens it is
+   components.css's, and it is what lets the title lift by the
+   description's own height rather than a guessed one. */
+.v2 .card .card__desc > span {
+  padding-top: 0;
   max-width: none;
   font-family: var(--font-text);
   font-size: var(--size-meta);
   font-weight: 400;
-  line-height: 20px;
-  color: var(--n9-black);
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--n9-light);
 }
 
-/* The plate stays white and the icon stays lit. Everything this hover has
-   to say is said by the lattice, the rule and the description. */
+/* The plate holds its colour. The border goes yellow, the description
+   opens, and the lattice climbs — see .card__wash for that last one. */
 .v2 .card--svc:hover,
 .v2 .card--svc:focus-visible {
-  background: var(--n9-light);
-  border-color: rgb(0 0 0 / 0.1);
+  background: #212023;
+  border-color: var(--n9-yellow);
+  box-shadow: none;
 }
-.v2 .card--svc:hover .card__icon,
-.v2 .card--svc:focus-visible .card__icon { opacity: 1; }
-.v2 .card--svc:hover .card__body,
-.v2 .card--svc:focus-visible .card__body { padding-bottom: 0; }
 
-/* "Traced flower fade" a third time, on its own parameters: tiles 4 across
-   the card's narrow side, spacing 0.15, the flower turned -9deg, and gold
-   on white rather than on black, so the shader's bgColor is the plate.
+/* ---- The lattice -------------------------------------------------------
+   "Traced flower fade" again, on this card's own parameters: tiles 4,
+   spacing 0.23, the flower turned 92deg, gold over the plate.
+   assets/img/bunga-lada-traced-svc.svg is that motif re-cut at the wider
+   spacing — the card tile is the same drawing at 0.15.
 
-   The fade is diagonal here. The shader runs it from (31.5%, 31.3%) out
-   past the top-right corner at full softness, so the lattice gathers in
-   that corner and leaves the title and the icon clear. The angle and the
-   stops below are that axis solved for the frame's 200x250 box; the grid's
-   columns run a few pixels wider and tip it slightly, which at this size
-   nobody can see.
+   The shader lays its cell on the shorter side, and six across that is
+   the width: 178.67 / 4 = 44.67 to a cell, so the two-cell tile is half
+   the card. Written as 50% rather than 89.33px, so it keeps step if the
+   column moves.
 
-   Sized off the width, not the height: the shader lays its cell on the
-   shorter side, and here that is the width. */
+   The fade runs down and slightly left, from (59.3%, 70.2%) to (45.4%,
+   154.9%) — past the floor of the card — at full softness and reversed,
+   so the lattice is nothing across the top two thirds and is still only
+   gathering when the card ends. The angle and the stops are that axis
+   solved for the frame's 178.67 x 320 column; a column a few pixels wider
+   tips it slightly, and at this strength nobody can see it.
+
+   Every state carries the lattice. What the pointer moves is where the
+   fade starts: 697:31065 takes it from 70.2% of the height up to 44.5%,
+   so the flowers climb to the title. Every card in the row does this,
+   Lihat Semua included — 700:31238 gives that one a fade off the right
+   edge instead, which never reaches the title, and it was dropped for
+   the row's own.
+
+   No browser interpolates one mask into another, so the wash is two
+   layers — the resting fade and the hover fade, stacked and cross-faded.
+   Where the two masks agree the pair reads as one at every point in the
+   cross-fade; where they differ they blend, which is the growth.
+   ------------------------------------------------------------------------ */
 .v2 .card__wash {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  background: url("../assets/img/bunga-lada-traced-card.svg") 0 0 / 50% auto repeat;
   pointer-events: none;
-  transition: opacity var(--dur-base) var(--ease-out);
-  -webkit-mask-image: linear-gradient(61.2deg,
-      rgb(0 0 0 / 0) 46.7%, rgb(0 0 0 / 0.156) 64%, rgb(0 0 0 / 0.5) 81.3%,
-      rgb(0 0 0 / 0.844) 98.6%, rgb(0 0 0) 115.9%);
-          mask-image: linear-gradient(61.2deg,
-      rgb(0 0 0 / 0) 46.7%, rgb(0 0 0 / 0.156) 64%, rgb(0 0 0 / 0.5) 81.3%,
-      rgb(0 0 0 / 0.844) 98.6%, rgb(0 0 0) 115.9%);
 }
 
-/* 70%, not the full strength the shader is set to. Asked for: the gold
-   reads harder on white than it does in the frame, and at full opacity
-   it starts competing with the icon. Deliberate, so do not quietly
-   reconcile it back to the shader's opacity: 1. */
-.v2 .card--svc:hover .card__wash,
-.v2 .card--svc:focus-visible .card__wash { opacity: 0.7; }
+.v2 .card__wash::before,
+.v2 .card__wash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/img/bunga-lada-traced-svc.svg") 0 0 / 50% auto repeat;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+/* At rest. (59.3%, 70.2%) -> (45.4%, 154.9%), past the floor of the card,
+   at full softness and reversed, so the lattice is nothing across the top
+   two thirds and is still only gathering when the card ends. */
+.v2 .card__wash::before {
+  opacity: 1;
+  -webkit-mask-image: linear-gradient(185.3deg,
+      rgb(0 0 0 / 0) 68.8%, rgb(0 0 0 / 0.156) 89.1%, rgb(0 0 0 / 0.5) 109.4%,
+      rgb(0 0 0 / 0.844) 129.7%, rgb(0 0 0) 150%);
+          mask-image: linear-gradient(185.3deg,
+      rgb(0 0 0 / 0) 68.8%, rgb(0 0 0 / 0.156) 89.1%, rgb(0 0 0 / 0.5) 109.4%,
+      rgb(0 0 0 / 0.844) 129.7%, rgb(0 0 0) 150%);
+}
+
+/* Under the pointer. 697:31065: (61.5%, 44.5%) -> (45.4%, 154.9%). The
+   axis barely turns — 4.7deg off straight down against 5.3 — but it now
+   begins above the middle of the card, so the lattice reaches the title
+   instead of stopping short of it. */
+.v2 .card__wash::after {
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(184.7deg,
+      rgb(0 0 0 / 0) 44.2%, rgb(0 0 0 / 0.156) 70.8%, rgb(0 0 0 / 0.5) 97.4%,
+      rgb(0 0 0 / 0.844) 123.9%, rgb(0 0 0) 150.5%);
+          mask-image: linear-gradient(184.7deg,
+      rgb(0 0 0 / 0) 44.2%, rgb(0 0 0 / 0.156) 70.8%, rgb(0 0 0 / 0.5) 97.4%,
+      rgb(0 0 0 / 0.844) 123.9%, rgb(0 0 0) 150.5%);
+}
+
+.v2 .card:hover .card__wash::before,
+.v2 .card:focus-visible .card__wash::before { opacity: 0; }
+.v2 .card:hover .card__wash::after,
+.v2 .card:focus-visible .card__wash::after { opacity: 1; }
 
 /* ---- Lihat Semua · the same card, State=Button -------------------------
-   Figma 697:2628 and 697:2657. It used to be its own thing: a dark plate
-   on a gradient, a 100px icon in the bottom corner that swapped to yellow,
-   and the Bunga lado lattice over it. The frame folds it back into the
-   service card as a state — same box, same 36px icon, same 18px title and
-   22px chevron, all of it white on black. What sets it apart is only the
-   palette and the missing description: the yellow rule under the icon is
-   the same 32, and runs out to the same 56 under the pointer, as every
-   card beside it.
+   Figma 700:31228 and 700:31238. Black rather than #212023, and no
+   description — this card is a door, not a service. The border stays
+   #1f2a44 under the pointer: what answers instead is the lattice, climbing
+   as it does on every other card in the row.
+
+   It takes 600ms to do it, not the 420 of --dur-base. Asked for: this
+   card has nothing else to say under the pointer — no yellow border, no
+   description opening — so the lattice is the whole answer, and at the
+   service cards' speed it reads as a flicker rather than as growth. Not a
+   token, because nothing else in the file moves at this speed.
    ------------------------------------------------------------------------ */
 
 .v2 .card--all {
@@ -654,51 +763,50 @@ html { scrollbar-gutter: stable; }
   color: var(--n9-light);
 }
 
-.v2 .card--all .h3 { color: var(--n9-light); }
-
-/* v1 stacked two icons here and cross-faded them under the pointer. The
-   frame has one icon and it does not move, so the swap is unwound. Without
-   this the lone copy is the one v1 fades out, and the icon disappears on
-   hover — which is a louder bug than it sounds, because everything else
-   about this card holds still. */
+/* v1 pins this one icon bottom-right, stacks a second copy behind it and
+   cross-fades the two under the pointer so the glyph turns yellow. The
+   frame has one icon, in the tile, and it does not move or change. Both
+   halves of that are unwound here rather than in components.css, which v1
+   still reads — without the second rule the lone copy is the one v1 fades
+   out, and the icon vanishes on hover. */
+.v2 .card--all .card__icon { align-self: auto; }
 .v2 .card--all:hover .card__icon img,
 .v2 .card--all:focus-visible .card__icon img { opacity: 1; }
 
-/* v1 turns the plate and the type yellow here. The frame holds both. */
+/* v1 also turns the title yellow here. The frame holds it white. */
 .v2 .card--all:hover,
 .v2 .card--all:focus-visible {
   background: var(--n9-black);
-  border-color: rgb(0 0 0 / 0.1);
+  border-color: #1f2a44;
   box-shadow: none;
   color: var(--n9-light);
 }
 
-/* The blob again, a third set of numbers: Figma puts a 168 x 131 shape at
-   the top right of the 200 x 250 card under a layer blur of 200, which it
-   writes out as a 100px deviation. Kept at the frame’s own strength —
-   over black at this size it is already only a tint, which is what the
-   Button-Hover frame shows. assets/img/card-blob.svg is the shape; the
-   card clips the spread. */
-.v2 .card--all .card__glow {
-  position: absolute;
-  top: -27.5px;
-  right: -61px;
-  width: 168px;
-  height: 131px;
-  opacity: 0;
-  background: url("../assets/img/card-blob.svg") 0 0 / 100% 100% no-repeat;
-  filter: blur(100px);
-  pointer-events: none;
-  transition: opacity var(--dur-base) var(--ease-out);
+/* It takes the service card's hover fade — the one that starts at 44.5%
+   of the height — rather than 700:31238's own, which starts at the right
+   edge and climbs the floor without ever reaching the title. Asked for:
+   six cards in a row should answer the pointer the same way, and this is
+   the card that most needs the flowers to get far enough up to be seen.
+   So .card__wash::after is left exactly as it stands, and only the speed
+   changes here. */
+.v2 .card--all .card__wash::before,
+.v2 .card--all .card__wash::after {
+  transition-duration: 600ms;
 }
 
-.v2 .card--all:hover .card__glow,
-.v2 .card--all:focus-visible .card__glow { opacity: 1; }
+/* components.css narrows this grid for v1 at the same widths; it is
+   restated here because the rule above outranks it. */
+@media (max-width: 1100px) {
+  .v2 .services__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .v2 .services__grid { grid-template-columns: repeat(2, 1fr); }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .v2 .card__accent,
-  .v2 .card__wash,
-  .v2 .card__glow { transition: none; }
+  .v2 .card__wash::before,
+  .v2 .card__wash::after { transition: none; }
 }
 
 /* ===== Breakers · the blob behind =======================================
@@ -749,10 +857,29 @@ html { scrollbar-gutter: stable; }
   opacity: var(--blob-opacity);
   filter: blur(var(--blob-blur));
   pointer-events: none;
+  /* The rest position above is the frame's. This only ever offsets from
+     it, and only once js/variant.js has something to say: with the file
+     dead, or the pointer coarse, or motion off, both fall back to 0 and
+     the blob sits exactly where the frame puts it. */
+  transform: translate3d(var(--blob-dx, 0px), var(--blob-dy, 0px), 0);
 }
+
+/* js/variant.js adds this only when it is actually tracking. A 240px blur
+   is expensive to rasterise and cheap to translate, but only if the
+   element is on its own layer — which is the whole reason this moves by
+   transform and not by top/right. Promoting it unconditionally would hold
+   a layer for every breaker on pages that never move one. */
+.v2 .breaker--dark.is-blob-live::before { will-change: transform; }
 
 /* An absolutely positioned first child paints over static siblings. */
 .v2 .breaker--dark .container { position: relative; }
+
+/* Medium, not the 600 components.css gives every .lk. Asked for, and only
+   on these two: the cards sit on black under a wordmark set in Urbanist
+   Black, and at semibold the 20px titles were reading as a second heading
+   rather than as the list of links they are. Scoped to .v2 so v1's
+   breakers and the tourism one keep the shared weight. */
+.v2 .breaker--dark .lk__title { font-weight: 500; }
 
 
 /* ===== Kenali dan Lawati · full-height photo stage ========================
@@ -927,11 +1054,11 @@ html { scrollbar-gutter: stable; }
   transition: background var(--dur-fast) var(--ease-out);
 }
 .v2 .lawat__nav:hover { background: rgba(255, 255, 255, 0.24); }
-.v2 .lawat__nav img { width: 24px; height: 24px; }
 
 /* One arrow asset, mirrored — the frame builds its back button the same
-   way, by flipping the forward one. */
-.v2 .lawat__nav--prev img { transform: scaleX(-1); }
+   way, by flipping the forward one. The button sets its own colour, so
+   the mask takes white here without being told. */
+.v2 .lawat__nav--prev .ico-arrow { transform: scaleX(-1); }
 
 .v2 .lawat__loader { display: flex; align-items: center; gap: 6px; }
 

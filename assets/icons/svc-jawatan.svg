@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- card / service v3, the Jawatan Kosong tile (Figma icon/jawatan). -->
+<g id="icon/jawatan">
+<path id="Vector" d="M6 10H26C27.1046 10 28 10.8954 28 12V24.6667C28 25.7712 27.1046 26.6667 26 26.6667H6C4.89543 26.6667 4 25.7712 4 24.6667V12C4 10.8954 4.89543 10 6 10Z" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+<path id="Vector_2" d="M11.3333 10V7.33333C11.3333 6.8029 11.544 6.29419 11.9191 5.91912C12.2942 5.54405 12.8029 5.33333 13.3333 5.33333H18.6667C19.1971 5.33333 19.7058 5.54405 20.0809 5.91912C20.456 6.29419 20.6667 6.8029 20.6667 7.33333V10" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+<path id="Vector_3" d="M4 17.3333H28" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+</g>
+</svg>

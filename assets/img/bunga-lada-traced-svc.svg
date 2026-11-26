@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <!-- "Traced flower fade" — the shader fill Figma puts behind the persona
+       chip, rebuilt as a static tile. One 500-unit cell per flower, odd rows
+       offset by half a cell. The shader turns the motif inside its cell and
+       leaves the lattice square, so the 92deg is baked into the flower
+       rather than applied to the layer. Outline is the shader flowerColor,
+       the disc its veinColor; the geometry is the WGSL's own numbers at
+       0.9679 tile units per shader unit. Generated — do not hand-edit. -->
+  <defs>
+    <path id="petal" d="M0.05 20.33L12.55 15.93L17.47 11.52L21.16 7.13L24.25 2.73L26.95 -1.68L29.38 -6.07L31.6 -10.47L33.64 -14.87L35.56 -19.27L37.32 -23.67L38.97 -28.06L40.49 -32.47L41.9 -36.87L43.18 -41.26L44.34 -45.67L45.37 -50.07L46.25 -54.46L47.01 -58.86L47.6 -63.27L48.04 -67.66L48.3 -72.06L48.39 -76.47L48.3 -80.86L48.01 -85.26L47.52 -89.66L46.83 -94.06L45.92 -98.46L44.79 -102.86L43.43 -107.26L41.84 -111.66L40.04 -116.06L38 -120.46L35.74 -124.86L33.25 -129.25L30.56 -133.65L27.67 -138.06L24.59 -142.45L21.34 -146.85L17.95 -151.26L14.44 -155.65L10.84 -160.05L7.2 -164.45L3.56 -168.85L0 -173.25L0 -173.25L-3.56 -168.85L-7.2 -164.45L-10.84 -160.05L-14.44 -155.65L-17.95 -151.26L-21.34 -146.85L-24.59 -142.45L-27.67 -138.06L-30.56 -133.65L-33.25 -129.25L-35.74 -124.86L-38 -120.46L-40.04 -116.06L-41.84 -111.66L-43.43 -107.26L-44.79 -102.86L-45.92 -98.46L-46.83 -94.06L-47.52 -89.66L-48.01 -85.26L-48.3 -80.86L-48.39 -76.47L-48.3 -72.06L-48.04 -67.66L-47.6 -63.27L-47.01 -58.86L-46.25 -54.46L-45.37 -50.07L-44.34 -45.67L-43.18 -41.26L-41.9 -36.87L-40.49 -32.47L-38.97 -28.06L-37.32 -23.67L-35.56 -19.27L-33.64 -14.87L-31.6 -10.47L-29.38 -6.07L-26.95 -1.68L-24.25 2.73L-21.16 7.13L-17.47 11.52L-12.55 15.93L-0.05 20.33Z"/>
+    <line id="midrib" x1="0" y1="-22.26" x2="0" y2="-132.6"/>
+    <g id="bunga" transform="rotate(92)">
+      <circle r="38.23" fill="#7a1230"/>
+      <circle r="44.52" fill="none" stroke="#efc068" stroke-width="12.58"/>
+      <g fill="none" stroke="#efc068" stroke-linejoin="round" stroke-linecap="round">
+        <g stroke-width="7.75">
+          <use href="#petal" transform="rotate(0)"/>
+          <use href="#petal" transform="rotate(72)"/>
+          <use href="#petal" transform="rotate(144)"/>
+          <use href="#petal" transform="rotate(216)"/>
+          <use href="#petal" transform="rotate(288)"/>
+        </g>
+        <g stroke-width="4.84">
+          <use href="#midrib" transform="rotate(0)"/>
+          <use href="#midrib" transform="rotate(72)"/>
+          <use href="#midrib" transform="rotate(144)"/>
+          <use href="#midrib" transform="rotate(216)"/>
+          <use href="#midrib" transform="rotate(288)"/>
+        </g>
+      </g>
+    </g>
+  </defs>
+
+  <use href="#bunga" x="250" y="250"/>
+  <use href="#bunga" x="750" y="250"/>
+  <use href="#bunga" x="0" y="750"/>
+  <use href="#bunga" x="500" y="750"/>
+  <use href="#bunga" x="1000" y="750"/>
+</svg>

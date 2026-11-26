@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- card / service v3, the Lihat Semua tile (Figma icon/semua). -->
+<g id="icon/semua">
+<path id="Vector" d="M6 4.66667H12.6667C13.403 4.66667 14 5.26362 14 6V12.6667C14 13.403 13.403 14 12.6667 14H6C5.26362 14 4.66667 13.403 4.66667 12.6667V6C4.66667 5.26362 5.26362 4.66667 6 4.66667Z" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+<path id="Vector_2" d="M19.3333 4.66667H26C26.7364 4.66667 27.3333 5.26362 27.3333 6V12.6667C27.3333 13.403 26.7364 14 26 14H19.3333C18.597 14 18 13.403 18 12.6667V6C18 5.26362 18.597 4.66667 19.3333 4.66667Z" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+<path id="Vector_3" d="M6 18H12.6667C13.403 18 14 18.597 14 19.3333V26C14 26.7364 13.403 27.3333 12.6667 27.3333H6C5.26362 27.3333 4.66667 26.7364 4.66667 26V19.3333C4.66667 18.597 5.26362 18 6 18Z" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+<path id="Vector_4" d="M19.3333 18H26C26.7364 18 27.3333 18.597 27.3333 19.3333V26C27.3333 26.7364 26.7364 27.3333 26 27.3333H19.3333C18.597 27.3333 18 26.7364 18 26V19.3333C18 18.597 18.597 18 19.3333 18Z" stroke-width="2.11458" stroke-linecap="round" stroke-linejoin="round" stroke="#121B30"/>
+</g>
+</svg>

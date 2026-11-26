@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Figma 717:811, link card/1/coolicons:arrow-right-small-bulk-sharp —
+       the one arrow the page uses, everywhere. It is only ever a CSS mask
+       (.ico-arrow in variant.css), so this file is never painted as it
+       stands: the fill below is read as alpha, and the colour comes from
+       whatever currentColor is at the call site. That is what lets one
+       file be black on the light sections and white on the dark ones.
+
+       assets/icons/arrow-right.svg and arrow-right-white.svg are this
+       same drawing at 24, filled black and white. Nothing references
+       them any more. -->
+<g id="link card/1/coolicons:arrow-right-small-bulk-sharp">
+<path id="Vector" d="M10.5077 8.96972H3.15144C2.89426 8.96972 2.64761 8.86755 2.46575 8.68569C2.2839 8.50384 2.18173 8.25719 2.18173 8C2.18173 7.74282 2.2839 7.49617 2.46575 7.31431C2.64761 7.13245 2.89426 7.03029 3.15144 7.03029H10.5077L8.28414 4.80673C8.19411 4.7167 8.12269 4.60982 8.07397 4.49218C8.02524 4.37455 8.00016 4.24847 8.00016 4.12115C8.00016 3.99382 8.02524 3.86774 8.07397 3.75011C8.12269 3.63247 8.19411 3.52559 8.28414 3.43556C8.37417 3.34552 8.48106 3.27411 8.59869 3.22538C8.71633 3.17666 8.8424 3.15158 8.96973 3.15158C9.09706 3.15158 9.22313 3.17666 9.34077 3.22538C9.4584 3.27411 9.56528 3.34552 9.65532 3.43556L13.5342 7.31441C13.716 7.49626 13.8181 7.74287 13.8181 8C13.8181 8.25714 13.716 8.50374 13.5342 8.68559L9.65532 12.5644C9.56528 12.6545 9.4584 12.7259 9.34077 12.7746C9.22313 12.8233 9.09706 12.8484 8.96973 12.8484C8.8424 12.8484 8.71633 12.8233 8.59869 12.7746C8.48106 12.7259 8.37417 12.6545 8.28414 12.5644C8.19411 12.4744 8.12269 12.3675 8.07397 12.2499C8.02524 12.1323 8.00016 12.0062 8.00016 11.8789C8.00016 11.7515 8.02524 11.6255 8.07397 11.5078C8.12269 11.3902 8.19411 11.2833 8.28414 11.1933L10.5077 8.96972Z" fill="white"/>
+</g>
+</svg>
